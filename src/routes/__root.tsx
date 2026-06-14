@@ -84,11 +84,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Explore, compare, and research thousands of AI tools in one fast, trusted discovery platform.",
       },
       { name: "author", content: "MarkBook" },
-      { property: "og:title", content: "MarkBook — AI Discovery Platform" },
-      { property: "og:description", content: "Discover the right AI tool for any task, faster." },
+      { property: "og:title", content: "MarkBook — Discover the Best AI Tools" },
+      { property: "og:description", content: "MarkBook is an AI discovery platform for exploring, comparing, and researching over 20,000 AI tools." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "MarkBook — AI Discovery Platform" },
+      { name: "twitter:title", content: "MarkBook — Discover the Best AI Tools" },
+      { name: "description", content: "MarkBook is an AI discovery platform for exploring, comparing, and researching over 20,000 AI tools." },
+      { name: "twitter:description", content: "MarkBook is an AI discovery platform for exploring, comparing, and researching over 20,000 AI tools." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/Quqma2cNG3OcLDAlwOBBoEHar442/social-images/social-1781465592822-ChatGPT_Image_Jun_15,_2026,_01_24_41_AM.webp" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/Quqma2cNG3OcLDAlwOBBoEHar442/social-images/social-1781465592822-ChatGPT_Image_Jun_15,_2026,_01_24_41_AM.webp" },
     ],
     links: [
       {
