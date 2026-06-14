@@ -855,7 +855,7 @@ function Index() {
                 <span className="text-sm">🏆</span>
                 <h3 className="text-sm font-bold">Top Ranked</h3>
               </div>
-              {catalog.tools.slice(0, 5).map((tool, i) => (
+              {catalog.tools.filter(t => isToolActive(t.u)).slice(0, 5).map((tool, i) => (
                 <a
                   key={tool.n}
                   href={tool.u}
@@ -993,6 +993,8 @@ function ToolIcon({ name, small = false }: { name: string; small?: boolean }) {
   );
 }
 
+const isToolActive = (url: string) => url && url !== "#";
+
 function ToolCard({
   tool,
   saved,
@@ -1002,17 +1004,31 @@ function ToolCard({
   saved: boolean;
   onToggleSave: () => void;
 }) {
+  const active = isToolActive(tool.u);
   return (
-    <article className="tool-lift flex min-w-0 flex-col rounded-xl border border-border bg-card p-4">
+    <article className={`tool-lift flex min-w-0 flex-col rounded-xl border border-border bg-card p-4 ${!active ? "opacity-60" : ""}`}>
       <div className="flex min-w-0 items-start gap-3">
-        <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
-          <ToolIcon name={tool.n} />
-        </a>
+        {active ? (
+          <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
+            <ToolIcon name={tool.n} />
+          </a>
+        ) : (
+          <span className="shrink-0"><ToolIcon name={tool.n} /></span>
+        )}
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline">
+            {active ? (
+              <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                <h3 className="truncate font-semibold text-sm">{tool.n}</h3>
+              </a>
+            ) : (
               <h3 className="truncate font-semibold text-sm">{tool.n}</h3>
-            </a>
+            )}
+            {!active && (
+              <span className="shrink-0 rounded-md bg-muted px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground">
+                Offline
+              </span>
+            )}
             {tool.p === "Free" && (
               <span className="shrink-0 rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
                 Free
@@ -1054,11 +1070,15 @@ function ToolCard({
             </span>
           )}
         </div>
-        <a href={tool.u} target="_blank" rel="noopener noreferrer">
-          <Button variant="ghost" size="sm" className="shrink-0 text-xs text-primary hover:text-primary/80">
-            Visit <ExternalLink className="size-3 ml-0.5" />
-          </Button>
-        </a>
+        {active ? (
+          <a href={tool.u} target="_blank" rel="noopener noreferrer">
+            <Button variant="ghost" size="sm" className="shrink-0 text-xs text-primary hover:text-primary/80">
+              Visit <ExternalLink className="size-3 ml-0.5" />
+            </Button>
+          </a>
+        ) : (
+          <span className="shrink-0 text-xs text-muted-foreground italic">Unavailable</span>
+        )}
       </div>
     </article>
   );

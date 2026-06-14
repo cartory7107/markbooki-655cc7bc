@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as RankingRouteImport } from './routes/ranking'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -30,6 +31,11 @@ const RankingRoute = RankingRouteImport.update({
   path: '/ranking',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdvertiseRoute = AdvertiseRouteImport.update({
   id: '/advertise',
   path: '/advertise',
@@ -44,6 +50,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/advertise': typeof AdvertiseRoute
+  '/auth': typeof AuthRoute
   '/ranking': typeof RankingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/advertise': typeof AdvertiseRoute
+  '/auth': typeof AuthRoute
   '/ranking': typeof RankingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
@@ -59,21 +67,36 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/advertise': typeof AdvertiseRoute
+  '/auth': typeof AuthRoute
   '/ranking': typeof RankingRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/advertise' | '/ranking' | '/sitemap.xml' | '/submit'
+  fullPaths:
+    | '/'
+    | '/advertise'
+    | '/auth'
+    | '/ranking'
+    | '/sitemap.xml'
+    | '/submit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/advertise' | '/ranking' | '/sitemap.xml' | '/submit'
-  id: '__root__' | '/' | '/advertise' | '/ranking' | '/sitemap.xml' | '/submit'
+  to: '/' | '/advertise' | '/auth' | '/ranking' | '/sitemap.xml' | '/submit'
+  id:
+    | '__root__'
+    | '/'
+    | '/advertise'
+    | '/auth'
+    | '/ranking'
+    | '/sitemap.xml'
+    | '/submit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdvertiseRoute: typeof AdvertiseRoute
+  AuthRoute: typeof AuthRoute
   RankingRoute: typeof RankingRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubmitRoute: typeof SubmitRoute
@@ -102,6 +125,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RankingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/advertise': {
       id: '/advertise'
       path: '/advertise'
@@ -122,6 +152,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdvertiseRoute: AdvertiseRoute,
+  AuthRoute: AuthRoute,
   RankingRoute: RankingRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubmitRoute: SubmitRoute,
