@@ -375,7 +375,7 @@ function Index() {
       <section className="relative overflow-hidden border-b border-border">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-purple-500/5" />
         <div className="relative mx-auto max-w-[1480px] px-4 py-12 text-center sm:py-16 lg:py-20">
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary/70">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary/70">
             🔍 The AI Discovery Engine
           </p>
           <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
@@ -384,7 +384,7 @@ function Index() {
             <br />
             & Tools
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
+          <p className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
             {totalTools.toLocaleString()} AIs and {categories.length} categories in the best AI tools directory.
             Updated daily.
           </p>
@@ -422,7 +422,7 @@ function Index() {
             ].map((stat) => (
               <div key={stat.label} className="text-center">
                 <div className="text-xl font-extrabold sm:text-2xl">{stat.value}</div>
-                <div className="text-xs text-muted-foreground">{stat.label}</div>
+                <div className="mt-1.5 text-xs text-muted-foreground">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -489,7 +489,7 @@ function Index() {
             {/* Categories List */}
             <div className="overflow-hidden rounded-xl border border-border bg-card">
               <div className="border-b border-border p-3">
-                <h2 className="flex items-center gap-2 text-sm font-bold">
+                <h2 className="flex items-center gap-2.5 text-sm font-bold">
                   📂 Categories
                   <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
                     {categories.length}
@@ -551,7 +551,7 @@ function Index() {
                     <ToolIcon name={ad.n} small />
                     <div>
                       <p className="text-sm font-semibold">{ad.n}</p>
-                      <p className="text-[10px] text-muted-foreground">Verified partner</p>
+                      <p className="mt-0.5 text-[10px] text-muted-foreground">Verified partner</p>
                     </div>
                   </div>
                   <p className="text-xs text-muted-foreground mb-2">{ad.d}</p>
@@ -670,7 +670,7 @@ function Index() {
           </div>
 
           {/* Section Title */}
-          <div className="mb-3">
+          <div className="mb-4">
             <h2 className="text-lg font-bold sm:text-xl">
               {query
                 ? `Results for "${query}"`
@@ -678,7 +678,7 @@ function Index() {
                   ? `${catalog.categoryEmojis?.[activeCategory] || "🤖"} ${activeCategory.replace("Free ", "")}`
                   : "🔥 Latest AI Tools"}
             </h2>
-            <p className="text-xs text-muted-foreground">
+            <p className="mt-1 text-xs text-muted-foreground">
               {results.length.toLocaleString()} tools found
             </p>
           </div>
@@ -722,7 +722,7 @@ function Index() {
               <div className="mb-4 flex items-center gap-2">
                 <Star className="size-5 text-amber-500" />
                 <h2 className="text-lg font-bold">Hidden AI Gems</h2>
-                <span className="text-xs text-muted-foreground">Underrated, not underpowered</span>
+                <span className="ml-2 text-xs text-muted-foreground">Underrated, not underpowered</span>
               </div>
               <div className="grid gap-3 sm:grid-cols-3">
                 {catalog.tools
@@ -798,7 +798,7 @@ function Index() {
             <div className="mb-4 flex items-center gap-2">
               <Newspaper className="size-5 text-primary" />
               <h2 className="text-lg font-bold">AI News</h2>
-              <span className="text-xs text-muted-foreground">Latest updates</span>
+              <span className="ml-2 text-xs text-muted-foreground">Latest updates</span>
             </div>
             <div className="overflow-hidden rounded-xl border border-border bg-card">
               <div className="divide-y divide-border">
@@ -813,7 +813,7 @@ function Index() {
                     </span>
                     <div className="min-w-0">
                       <p className="line-clamp-2 text-sm font-medium leading-5">{news.title}</p>
-                      <span className="text-[10px] text-muted-foreground">{news.time}</span>
+                      <span className="mt-1 block text-[10px] text-muted-foreground">{news.time}</span>
                     </div>
                   </a>
                 ))}
@@ -848,7 +848,7 @@ function Index() {
                     </span>
                     <div className="min-w-0">
                       <p className="line-clamp-2 text-xs font-medium leading-4">{news.title}</p>
-                      <span className="text-[10px] text-muted-foreground">{news.time}</span>
+                      <span className="mt-0.5 block text-[10px] text-muted-foreground">{news.time}</span>
                     </div>
                   </a>
                 ))}
@@ -1040,7 +1040,7 @@ function ToolCard({
               </span>
             )}
           </div>
-          <p className="truncate text-xs text-muted-foreground">{tool.c}</p>
+          <p className="mt-1 truncate text-xs text-muted-foreground">{tool.c}</p>
         </div>
         <button
           onClick={(e) => {
