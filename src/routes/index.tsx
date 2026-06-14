@@ -179,7 +179,8 @@ function Index() {
   const totalTools = catalog.tools.length;
 
   return (
-    <div ref={topRef} className="min-h-screen bg-background text-foreground">
+    <div ref={topRef} className="min-h-screen bg-background text-foreground moving-grid-bg">
+      <div className="relative z-10">
       {/* ─── Sponsored Banner ─── */}
       {showSponsor && (
         <div className="sponsor-glow py-2 text-center text-sm text-white relative">
@@ -972,6 +973,7 @@ function Index() {
 
       {/* Back to Top */}
       <BackToTop />
+      </div>
     </div>
   );
 }
