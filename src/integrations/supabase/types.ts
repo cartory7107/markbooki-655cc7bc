@@ -14,16 +14,256 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      advertisements: {
+        Row: {
+          created_at: string
+          description: string
+          email: string
+          full_name: string
+          id: string
+          payment_status: string
+          placement: string
+          status: Database["public"]["Enums"]["review_status"]
+          telegram: string | null
+          title: string
+          tool_name: string
+          updated_at: string
+          website_url: string
+          whatsapp: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          email: string
+          full_name: string
+          id?: string
+          payment_status?: string
+          placement: string
+          status?: Database["public"]["Enums"]["review_status"]
+          telegram?: string | null
+          title: string
+          tool_name: string
+          updated_at?: string
+          website_url: string
+          whatsapp?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          email?: string
+          full_name?: string
+          id?: string
+          payment_status?: string
+          placement?: string
+          status?: Database["public"]["Enums"]["review_status"]
+          telegram?: string | null
+          title?: string
+          tool_name?: string
+          updated_at?: string
+          website_url?: string
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      ai_tools: {
+        Row: {
+          category_ids: string[]
+          cons: Json
+          created_at: string
+          date_added: string
+          discovery_source: string | null
+          features: Json
+          has_free_plan: boolean
+          id: string
+          is_featured: boolean
+          is_trending: boolean
+          languages: string[]
+          logo_url: string | null
+          name: string
+          official_url: string | null
+          overview: string | null
+          platforms: string[]
+          popularity_score: number
+          pricing_model: string
+          pros: Json
+          short_description: string
+          similar_tool_ids: string[]
+          slug: string
+          status: Database["public"]["Enums"]["review_status"]
+          updated_at: string
+          use_cases: Json
+          verification_notes: string | null
+        }
+        Insert: {
+          category_ids?: string[]
+          cons?: Json
+          created_at?: string
+          date_added?: string
+          discovery_source?: string | null
+          features?: Json
+          has_free_plan?: boolean
+          id?: string
+          is_featured?: boolean
+          is_trending?: boolean
+          languages?: string[]
+          logo_url?: string | null
+          name: string
+          official_url?: string | null
+          overview?: string | null
+          platforms?: string[]
+          popularity_score?: number
+          pricing_model?: string
+          pros?: Json
+          short_description?: string
+          similar_tool_ids?: string[]
+          slug: string
+          status?: Database["public"]["Enums"]["review_status"]
+          updated_at?: string
+          use_cases?: Json
+          verification_notes?: string | null
+        }
+        Update: {
+          category_ids?: string[]
+          cons?: Json
+          created_at?: string
+          date_added?: string
+          discovery_source?: string | null
+          features?: Json
+          has_free_plan?: boolean
+          id?: string
+          is_featured?: boolean
+          is_trending?: boolean
+          languages?: string[]
+          logo_url?: string | null
+          name?: string
+          official_url?: string | null
+          overview?: string | null
+          platforms?: string[]
+          popularity_score?: number
+          pricing_model?: string
+          pros?: Json
+          short_description?: string
+          similar_tool_ids?: string[]
+          slug?: string
+          status?: Database["public"]["Enums"]["review_status"]
+          updated_at?: string
+          use_cases?: Json
+          verification_notes?: string | null
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string
+          icon: string | null
+          id: string
+          name: string
+          slug: string
+          tool_count: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name: string
+          slug: string
+          tool_count?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          icon?: string | null
+          id?: string
+          name?: string
+          slug?: string
+          tool_count?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tool_discoveries: {
+        Row: {
+          candidate_url: string | null
+          confidence_score: number
+          created_at: string
+          extracted_data: Json
+          id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          source_type: string
+          source_url: string
+          status: Database["public"]["Enums"]["review_status"]
+          tool_name: string
+          updated_at: string
+        }
+        Insert: {
+          candidate_url?: string | null
+          confidence_score?: number
+          created_at?: string
+          extracted_data?: Json
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source_type: string
+          source_url: string
+          status?: Database["public"]["Enums"]["review_status"]
+          tool_name: string
+          updated_at?: string
+        }
+        Update: {
+          candidate_url?: string | null
+          confidence_score?: number
+          created_at?: string
+          extracted_data?: Json
+          id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          source_type?: string
+          source_url?: string
+          status?: Database["public"]["Enums"]["review_status"]
+          tool_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
+      review_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +390,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+      review_status: ["pending", "approved", "rejected"],
+    },
   },
 } as const
