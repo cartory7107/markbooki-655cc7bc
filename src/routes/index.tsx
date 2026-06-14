@@ -104,6 +104,7 @@ function Index() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [research, setResearch] = useState("");
   const [researchResult, setResearchResult] = useState<Tool[]>([]);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     fetch("/ai-catalog.json")
