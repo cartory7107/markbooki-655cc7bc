@@ -103,7 +103,7 @@ function getToolGradient(name: string) {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MarkBook — Discover 20,000+ AI Tools" },
+      { title: "MarkBook — Discover 16,000+ AI Tools" },
       {
         name: "description",
         content:
@@ -132,6 +132,26 @@ function Index() {
   const [showSponsor, setShowSponsor] = useState(true);
   const [activeFilter, setActiveFilter] = useState<"today" | "new" | "saved" | "popular">("today");
   const topRef = useRef<HTMLDivElement>(null);
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Auto-scroll to search results when user types
+  const scrollToResults = useCallback(() => {
+    setTimeout(() => {
+      document.getElementById("tools-feed")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 150);
+  }, []);
+
+  const handleSearchChange = useCallback((value: string) => {
+    setQuery(value);
+    setVisible(20);
+    // Auto-scroll to results after a brief delay so results render first
+    if (value.trim().length > 0) {
+      if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+      searchTimeoutRef.current = setTimeout(() => {
+        scrollToResults();
+      }, 300);
+    }
+  }, [scrollToResults]);
 
   useEffect(() => {
     Promise.all([
@@ -248,10 +268,7 @@ function Index() {
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
             <input
               value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setVisible(20);
-              }}
+              onChange={(e) => handleSearchChange(e.target.value)}
               onFocus={() => setSearchFocused(true)}
               onBlur={() => setTimeout(() => setSearchFocused(false), 200)}
               placeholder="Search AI tools, e.g. Video Translation..."
@@ -318,10 +335,7 @@ function Index() {
               <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  setVisible(20);
-                }}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder="Search AI tools..."
                 className="h-10 w-full rounded-lg border border-border bg-muted/40 pl-9 pr-4 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
               />
@@ -381,10 +395,7 @@ function Index() {
               <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" />
               <input
                 value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  setVisible(20);
-                }}
+                onChange={(e) => handleSearchChange(e.target.value)}
                 placeholder="Search by AI, e.g Video Translation AI Tool"
                 className="h-12 w-full rounded-xl border border-border bg-card pl-12 pr-4 text-base outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15 shadow-sm"
               />
@@ -393,7 +404,7 @@ function Index() {
               variant="brand"
               size="lg"
               onClick={() => {
-                if (query) document.getElementById("tools-feed")?.scrollIntoView({ behavior: "smooth" });
+                if (query) scrollToResults();
               }}
               className="h-12 rounded-xl px-8 shadow-sm"
             >
@@ -855,7 +866,7 @@ function Index() {
                 <span className="text-sm">🏆</span>
                 <h3 className="text-sm font-bold">Top Ranked</h3>
               </div>
-              {catalog.tools.filter(t => isToolActive(t.u)).slice(0, 5).map((tool, i) => (
+              {catalog.tools.slice(0, 5).map((tool, i) => (
                 <a
                   key={tool.n}
                   href={tool.u}
@@ -993,8 +1004,6 @@ function ToolIcon({ name, small = false }: { name: string; small?: boolean }) {
   );
 }
 
-const isToolActive = (url: string) => url && url !== "#";
-
 function ToolCard({
   tool,
   saved,
@@ -1004,31 +1013,17 @@ function ToolCard({
   saved: boolean;
   onToggleSave: () => void;
 }) {
-  const active = isToolActive(tool.u);
   return (
-    <article className={`tool-lift flex min-w-0 flex-col rounded-xl border border-border bg-card p-4 ${!active ? "opacity-60" : ""}`}>
+    <article className="tool-lift flex min-w-0 flex-col rounded-xl border border-border bg-card p-4">
       <div className="flex min-w-0 items-start gap-3">
-        {active ? (
-          <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
-            <ToolIcon name={tool.n} />
-          </a>
-        ) : (
-          <span className="shrink-0"><ToolIcon name={tool.n} /></span>
-        )}
+        <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
+          <ToolIcon name={tool.n} />
+        </a>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            {active ? (
-              <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                <h3 className="truncate font-semibold text-sm">{tool.n}</h3>
-              </a>
-            ) : (
+            <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline">
               <h3 className="truncate font-semibold text-sm">{tool.n}</h3>
-            )}
-            {!active && (
-              <span className="shrink-0 rounded-md bg-muted px-1.5 py-0.5 text-[10px] font-bold text-muted-foreground">
-                Offline
-              </span>
-            )}
+            </a>
             {tool.p === "Free" && (
               <span className="shrink-0 rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
                 Free
@@ -1070,15 +1065,11 @@ function ToolCard({
             </span>
           )}
         </div>
-        {active ? (
-          <a href={tool.u} target="_blank" rel="noopener noreferrer">
-            <Button variant="ghost" size="sm" className="shrink-0 text-xs text-primary hover:text-primary/80">
-              Visit <ExternalLink className="size-3 ml-0.5" />
-            </Button>
-          </a>
-        ) : (
-          <span className="shrink-0 text-xs text-muted-foreground italic">Unavailable</span>
-        )}
+        <a href={tool.u} target="_blank" rel="noopener noreferrer">
+          <Button variant="ghost" size="sm" className="shrink-0 text-xs text-primary hover:text-primary/80">
+            Visit <ExternalLink className="size-3 ml-0.5" />
+          </Button>
+        </a>
       </div>
     </article>
   );
