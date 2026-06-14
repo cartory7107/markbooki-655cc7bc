@@ -9,17 +9,21 @@ import {
   ExternalLink,
   Flame,
   Image,
+  LogIn,
+  LogOut,
   Menu,
   Moon,
   Search,
   Sparkles,
   Star,
   Sun,
+  User,
   Video,
   WandSparkles,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
 import logoAsset from "@/assets/markbook-symbol.png.asset.json";
 
 type Tool = { n: string; d: string; c: string; g: string; p: "Free" | "Paid" | "Freemium" };
@@ -100,6 +104,7 @@ function Index() {
   const [mobileMenu, setMobileMenu] = useState(false);
   const [research, setResearch] = useState("");
   const [researchResult, setResearchResult] = useState<Tool[]>([]);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     fetch("/ai-catalog.json")
@@ -206,6 +211,24 @@ function Index() {
                 <Link to="/advertise">Advertise</Link>
               </Button>
             </nav>
+            {user ? (
+              <div className="flex items-center gap-1">
+                <Button variant="ghost" size="sm" className="hidden gap-1.5 sm:flex" onClick={signOut}>
+                  <LogOut className="size-4" />
+                  Sign out
+                </Button>
+                <Button variant="ghost" size="icon" className="sm:hidden" onClick={signOut} aria-label="Sign out">
+                  <LogOut className="size-4" />
+                </Button>
+              </div>
+            ) : (
+              <Button variant="ghost" size="sm" className="hidden gap-1.5 xl:flex" asChild>
+                <Link to="/auth">
+                  <LogIn className="size-4" />
+                  Sign in
+                </Link>
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="icon"
@@ -245,6 +268,15 @@ function Index() {
                   {item}
                 </Button>
               ),
+            )}
+            {user ? (
+              <Button variant="outline" onClick={() => { signOut(); setMobileMenu(false); }}>
+                Sign out
+              </Button>
+            ) : (
+              <Button variant="outline" asChild>
+                <Link to="/auth" onClick={() => setMobileMenu(false)}>Sign in</Link>
+              </Button>
             )}
           </nav>
         )}
