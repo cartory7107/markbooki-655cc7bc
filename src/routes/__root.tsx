@@ -78,7 +78,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "MarkBook — Discover the Best AI Tools" },
-      { name: "description", content: "Explore, compare, and research thousands of AI tools in one fast, trusted discovery platform." },
+      {
+        name: "description",
+        content:
+          "Explore, compare, and research thousands of AI tools in one fast, trusted discovery platform.",
+      },
       { name: "author", content: "MarkBook" },
       { property: "og:title", content: "MarkBook — AI Discovery Platform" },
       { property: "og:description", content: "Discover the right AI tool for any task, faster." },
@@ -93,7 +97,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
+      },
     ],
   }),
   shellComponent: RootShell,
