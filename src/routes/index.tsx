@@ -269,6 +269,15 @@ function Index() {
                 </Button>
               ),
             )}
+            {user ? (
+              <Button variant="outline" onClick={() => { signOut(); setMobileMenu(false); }}>
+                Sign out
+              </Button>
+            ) : (
+              <Button variant="outline" asChild>
+                <Link to="/auth" onClick={() => setMobileMenu(false)}>Sign in</Link>
+              </Button>
+            )}
           </nav>
         )}
       </header>
