@@ -211,6 +211,24 @@ function Index() {
                 <Link to="/advertise">Advertise</Link>
               </Button>
             </nav>
+            {user ? (
+              <div className="flex items-center gap-1">
+                <Button variant="ghost" size="sm" className="hidden gap-1.5 sm:flex" onClick={signOut}>
+                  <LogOut className="size-4" />
+                  Sign out
+                </Button>
+                <Button variant="ghost" size="icon" className="sm:hidden" onClick={signOut} aria-label="Sign out">
+                  <LogOut className="size-4" />
+                </Button>
+              </div>
+            ) : (
+              <Button variant="ghost" size="sm" className="hidden gap-1.5 xl:flex" asChild>
+                <Link to="/auth">
+                  <LogIn className="size-4" />
+                  Sign in
+                </Link>
+              </Button>
+            )}
             <Button
               variant="ghost"
               size="icon"
