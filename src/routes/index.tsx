@@ -9,17 +9,21 @@ import {
   ExternalLink,
   Flame,
   Image,
+  LogIn,
+  LogOut,
   Menu,
   Moon,
   Search,
   Sparkles,
   Star,
   Sun,
+  User,
   Video,
   WandSparkles,
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/hooks/use-auth";
 import logoAsset from "@/assets/markbook-symbol.png.asset.json";
 
 type Tool = { n: string; d: string; c: string; g: string; p: "Free" | "Paid" | "Freemium" };
