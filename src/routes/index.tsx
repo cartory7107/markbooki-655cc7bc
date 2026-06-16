@@ -181,10 +181,41 @@ function Index() {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
 
-  const categories = useMemo(
-    () => Object.entries(catalog.categories).sort((a, b) => b[1] - a[1]),
-    [catalog],
-  );
+  const CATEGORY_PRIORITY = [
+    "AI Chatbot",
+    "AI Girlfriend",
+    "AI Code Generator",
+    "AI Code Assistant",
+    "AI Developer Tools",
+    "AI Video Generator",
+    "AI Video Editor",
+    "AI Image Generator",
+    "AI Art Generator",
+    "AI Photo Editor",
+    "AI 3D Model Generator",
+    "Image to 3D Model",
+    "Text to 3D",
+    "AI Writing",
+    "AI Music Generator",
+    "AI Voice Generator",
+    "AI Search Engine",
+    "AI Assistant",
+    "AI Character",
+    "AI Roleplay",
+  ];
+
+  const categories = useMemo(() => {
+    const prioritySet = new Set(CATEGORY_PRIORITY);
+    const priorityMap = new Map(CATEGORY_PRIORITY.map((c, i) => [c, i]));
+    return Object.entries(catalog.categories).sort((a, b) => {
+      const aPri = priorityMap.has(a[0]);
+      const bPri = priorityMap.has(b[0]);
+      if (aPri && bPri) return priorityMap.get(a[0])! - priorityMap.get(b[0])!;
+      if (aPri) return -1;
+      if (bPri) return 1;
+      return b[1] - a[1];
+    });
+  }, [catalog]);
 
   const results = useMemo(() => {
     const term = query.trim().toLowerCase();
