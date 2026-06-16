@@ -126,37 +126,12 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-/* ─── Instant Data Loading ─────────────────────────────────── */
-const catalogPromise = typeof document !== "undefined"
-  ? Promise.all([
-      fetch("/ai-catalog.json").then((r) => r.json()),
-      fetch("/category-emojis.json").then((r) => r.json()).catch(() => ({})),
-    ]).then(([data, emojis]: [Catalog, Record<string, string>]) => {
-      data.categoryEmojis = emojis;
-      return data;
-    })
-  : Promise.resolve({ tools: [], categories: {}, categoryEmojis: {} } as Catalog);
-
-let resolvedCatalog: Catalog | null = null;
-catalogPromise.then((d) => { resolvedCatalog = d; });
-
-function useCatalog() {
-  const [catalog, setCatalog] = useState<Catalog>(
-    () => resolvedCatalog ?? { tools: [], categories: {}, categoryEmojis: {} }
-  );
-  const [loaded, setLoaded] = useState(!!resolvedCatalog);
-  useEffect(() => {
-    if (!resolvedCatalog) {
-      catalogPromise.then((d) => { setCatalog(d); setLoaded(true); });
-    } else {
-      setLoaded(true);
-    }
-  }, []);
-  return { catalog, loaded };
-}
-
 function Index() {
-  const { catalog, loaded } = useCatalog();
+  const [catalog, setCatalog] = useState<Catalog>({
+    tools: [],
+    categories: {},
+    categoryEmojis: {},
+  });
   const [query, setQuery] = useState("");
   const [pricing, setPricing] = useState("All");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -190,15 +165,16 @@ function Index() {
     }
   }, [scrollToResults]);
 
-  // Preload hint — browser starts fetching JSON before JS even executes
   useEffect(() => {
-    const link = document.createElement("link");
-    link.rel = "preload";
-    link.as = "fetch";
-    link.href = "/ai-catalog.json";
-    link.crossOrigin = "anonymous";
-    document.head.appendChild(link);
-    return () => { document.head.removeChild(link); };
+    Promise.all([
+      fetch("/ai-catalog.json").then((r) => r.json()),
+      fetch("/category-emojis.json").then((r) => r.json()).catch(() => ({})),
+    ])
+      .then(([data, emojis]: [Catalog, Record<string, string>]) => {
+        data.categoryEmojis = emojis;
+        setCatalog(data);
+      })
+      .catch(() => undefined);
   }, []);
 
   useEffect(() => {
@@ -264,56 +240,6 @@ function Index() {
   }, []);
 
   const totalTools = catalog.tools.length;
-
-  if (!loaded) {
-    return (
-      <div className="min-h-screen bg-background text-foreground moving-grid-bg">
-        <div className="relative z-10">
-          {/* Skeleton nav */}
-          <header className="glass-nav sticky top-0 z-50">
-            <div className="mx-auto flex h-14 max-w-[1480px] items-center gap-4 px-4 lg:h-16">
-              <div className="h-8 w-32 animate-pulse rounded-lg bg-muted" />
-              <div className="ml-auto h-9 w-64 animate-pulse rounded-lg bg-muted" />
-              <div className="h-9 w-9 animate-pulse rounded-lg bg-muted" />
-            </div>
-          </header>
-          {/* Skeleton hero */}
-          <div className="mx-auto max-w-[1480px] px-4 pt-12 pb-8 text-center">
-            <div className="mx-auto h-10 w-80 animate-pulse rounded-lg bg-muted" />
-            <div className="mx-auto mt-4 h-5 w-96 animate-pulse rounded bg-muted" />
-            <div className="mx-auto mt-6 h-12 w-full max-w-xl animate-pulse rounded-xl bg-muted" />
-            <div className="mx-auto mt-4 flex justify-center gap-6">
-              {[1,2,3].map(i => <div key={i} className="h-12 w-24 animate-pulse rounded-xl bg-muted" />)}
-            </div>
-          </div>
-          {/* Skeleton cards grid */}
-          <div className="mx-auto max-w-[1480px] px-4 pb-16">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {Array.from({length: 8}).map((_, i) => (
-                <div key={i} className="rounded-xl border border-border bg-card p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="size-10 animate-pulse rounded-lg bg-muted" />
-                    <div className="flex-1">
-                      <div className="h-4 w-24 animate-pulse rounded bg-muted" />
-                      <div className="mt-1.5 h-3 w-16 animate-pulse rounded bg-muted" />
-                    </div>
-                  </div>
-                  <div className="mt-3 space-y-2">
-                    <div className="h-3 w-full animate-pulse rounded bg-muted" />
-                    <div className="h-3 w-3/4 animate-pulse rounded bg-muted" />
-                  </div>
-                  <div className="mt-3 flex justify-between border-t border-border pt-3">
-                    <div className="h-5 w-16 animate-pulse rounded-md bg-muted" />
-                    <div className="h-5 w-12 animate-pulse rounded-md bg-muted" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div ref={topRef} className="min-h-screen bg-background text-foreground moving-grid-bg">
