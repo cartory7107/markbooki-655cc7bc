@@ -132,6 +132,7 @@ function Index() {
     categories: {},
     categoryEmojis: {},
   });
+  const [catalogLoaded, setCatalogLoaded] = useState(false);
   const [query, setQuery] = useState("");
   const [pricing, setPricing] = useState("All");
   const [activeCategory, setActiveCategory] = useState("All");
@@ -173,8 +174,12 @@ function Index() {
       .then(([data, emojis]: [Catalog, Record<string, string>]) => {
         data.categoryEmojis = emojis;
         setCatalog(data);
+        setCatalogLoaded(true);
       })
-      .catch(() => undefined);
+      .catch(() => {
+        // Even on error, mark as loaded so skeletons stop shimmering
+        setCatalogLoaded(true);
+      });
   }, []);
 
   useEffect(() => {
@@ -428,8 +433,19 @@ function Index() {
             & Tools
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            {totalTools.toLocaleString()} AIs and {categories.length} categories in the best AI tools directory.
-            Updated daily.
+            {catalogLoaded ? (
+              <>
+                {totalTools.toLocaleString()} AIs and {categories.length} categories in the best AI tools directory.
+                Updated daily.
+              </>
+            ) : (
+              <>
+                <span className="mb-skeleton" style={{ width: "3ch", display: "inline-block", height: "1.2em", verticalAlign: "text-bottom" }}>&nbsp;</span>{" "}
+                AIs and{" "}
+                <span className="mb-skeleton" style={{ width: "2ch", display: "inline-block", height: "1.2em", verticalAlign: "text-bottom" }}>&nbsp;</span>{" "}
+                categories in the best AI tools directory. Updated daily.
+              </>
+            )}
           </p>
 
           {/* Search Bar */}
@@ -458,13 +474,32 @@ function Index() {
           {/* Quick Stats */}
           <div className="mx-auto mt-8 flex max-w-3xl items-center justify-center gap-6 sm:gap-10">
             {[
-              { value: `${(totalTools / 1000).toFixed(0)}K+`, label: "AI Tools" },
-              { value: `${categories.length}`, label: "Categories" },
-              { value: "Daily", label: "Updates" },
-              { value: "Free", label: "To Use" },
+              {
+                value: catalogLoaded ? `${(totalTools / 1000).toFixed(0)}K+` : null,
+                label: "AI Tools",
+                skeletonWidth: "4ch",
+              },
+              {
+                value: catalogLoaded ? `${categories.length}` : null,
+                label: "Categories",
+                skeletonWidth: "3ch",
+              },
+              { value: "Daily", label: "Updates", skeletonWidth: "4ch" },
+              { value: "Free", label: "To Use", skeletonWidth: "3ch" },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-xl font-extrabold sm:text-2xl">{stat.value}</div>
+                <div className="text-xl font-extrabold sm:text-2xl">
+                  {stat.value !== null ? (
+                    stat.value
+                  ) : (
+                    <span
+                      className="mb-skeleton"
+                      style={{ width: stat.skeletonWidth, height: "1em", display: "inline-block" }}
+                    >
+                      &nbsp;
+                    </span>
+                  )}
+                </div>
                 <div className="mt-1.5 text-xs text-muted-foreground">{stat.label}</div>
               </div>
             ))}
@@ -489,36 +524,52 @@ function Index() {
           >
             All
           </button>
-          {categories.slice(0, 30).map(([name, count]) => {
-            const emoji = catalog.categoryEmojis?.[name] || "🤖";
-            return (
-              <button
-                key={name}
-                onClick={() => {
-                  setActiveCategory(name);
-                  setVisible(20);
-                  document.getElementById("tools-feed")?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className={`flex shrink-0 items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
-                  activeCategory === name
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground"
-                }`}
+          {catalogLoaded ? (
+            <>
+              {categories.slice(0, 30).map(([name, count]) => {
+                const emoji = catalog.categoryEmojis?.[name] || "🤖";
+                return (
+                  <button
+                    key={name}
+                    onClick={() => {
+                      setActiveCategory(name);
+                      setVisible(20);
+                      document.getElementById("tools-feed")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className={`flex shrink-0 items-center gap-1 rounded-full px-3 py-1 text-xs font-medium transition-colors ${
+                      activeCategory === name
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground"
+                    }`}
+                  >
+                    <span>{emoji}</span>
+                    <span className="hidden sm:inline">{name.replace("Free ", "")}</span>
+                    <span className="sm:hidden">{name.replace("Free ", "").slice(0, 12)}</span>
+                    <span className="rounded-full bg-background/20 px-1 py-0.5 text-[10px]">{count}</span>
+                  </button>
+                );
+              })}
+              {categories.length > 30 && (
+                <button
+                  onClick={() => setMobileSidebar(true)}
+                  className="shrink-0 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary hover:bg-accent"
+                >
+                  +{categories.length - 30} more
+                </button>
+              )}
+            </>
+          ) : (
+            // Skeleton chip placeholders while catalog loads
+            Array.from({ length: 8 }).map((_, i) => (
+              <span
+                key={i}
+                className="mb-skeleton shrink-0 rounded-full"
+                style={{ width: `${60 + (i % 4) * 24}px`, height: "1.6em", display: "inline-block" }}
+                aria-hidden="true"
               >
-                <span>{emoji}</span>
-                <span className="hidden sm:inline">{name.replace("Free ", "")}</span>
-                <span className="sm:hidden">{name.replace("Free ", "").slice(0, 12)}</span>
-                <span className="rounded-full bg-background/20 px-1 py-0.5 text-[10px]">{count}</span>
-              </button>
-            );
-          })}
-          {categories.length > 30 && (
-            <button
-              onClick={() => setMobileSidebar(true)}
-              className="shrink-0 rounded-full bg-muted px-3 py-1 text-xs font-medium text-primary hover:bg-accent"
-            >
-              +{categories.length - 30} more
-            </button>
+                &nbsp;
+              </span>
+            ))
           )}
         </div>
       </div>
@@ -722,12 +773,20 @@ function Index() {
                   : "🔥 Latest AI Tools"}
             </h2>
             <p className="mt-1 text-xs text-muted-foreground">
-              {results.length.toLocaleString()} tools found
+              {catalogLoaded ? (
+                <>{results.length.toLocaleString()} tools found</>
+              ) : (
+                <span className="mb-skeleton" style={{ width: "8ch", height: "1em", display: "inline-block" }}>
+                  &nbsp;
+                </span>
+              )}
             </p>
           </div>
 
           {/* Tool Cards Grid */}
-          {results.length ? (
+          {!catalogLoaded ? (
+            <ToolCardSkeletons />
+          ) : results.length ? (
             <div className="grid gap-3 sm:grid-cols-2">
               {results.slice(0, visible).map((tool, index) => (
                 <ToolCard
@@ -1223,5 +1282,75 @@ function BackToTop() {
     >
       <ChevronRight className="size-4 -rotate-90" />
     </button>
+  );
+}
+
+/** Skeleton placeholder grid shown while the AI catalog JSON is still being fetched. */
+function ToolCardSkeletons() {
+  // Render 6 skeleton cards matching the layout of ToolCard
+  const cards = Array.from({ length: 6 });
+  return (
+    <div className="grid gap-3 sm:grid-cols-2" aria-hidden="true">
+      {cards.map((_, i) => (
+        <div
+          key={i}
+          className="rounded-xl border border-border bg-card p-3 flex gap-3 items-start"
+        >
+          {/* Icon placeholder */}
+          <div
+            className="mb-skeleton shrink-0 rounded-lg"
+            style={{ width: "44px", height: "44px", display: "block" }}
+          >
+            &nbsp;
+          </div>
+          <div className="min-w-0 flex-1 space-y-2">
+            {/* Title + pricing badge row */}
+            <div className="flex items-center justify-between gap-2">
+              <span
+                className="mb-skeleton"
+                style={{ width: "45%", height: "1em", display: "inline-block" }}
+              >
+                &nbsp;
+              </span>
+              <span
+                className="mb-skeleton"
+                style={{ width: "3ch", height: "1em", display: "inline-block" }}
+              >
+                &nbsp;
+              </span>
+            </div>
+            {/* Description line 1 */}
+            <span
+              className="mb-skeleton"
+              style={{ width: "92%", height: "0.9em", display: "inline-block" }}
+            >
+              &nbsp;
+            </span>
+            {/* Description line 2 */}
+            <span
+              className="mb-skeleton"
+              style={{ width: "70%", height: "0.9em", display: "inline-block" }}
+            >
+              &nbsp;
+            </span>
+            {/* Footer: category + visit button */}
+            <div className="flex items-center justify-between pt-1">
+              <span
+                className="mb-skeleton"
+                style={{ width: "8ch", height: "0.9em", display: "inline-block" }}
+              >
+                &nbsp;
+              </span>
+              <span
+                className="mb-skeleton"
+                style={{ width: "5ch", height: "0.9em", display: "inline-block" }}
+              >
+                &nbsp;
+              </span>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }

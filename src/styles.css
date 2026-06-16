@@ -245,6 +245,146 @@
   scrollbar-color: color-mix(in oklab, var(--muted-foreground) 30%, transparent) transparent;
 }
 
+/* ─── Skeleton shimmer & loading scene ─── */
+@keyframes mb-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes mb-fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes mb-logo-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.85;
+  }
+}
+
+@keyframes mb-bar-bounce {
+  0%, 80%, 100% {
+    transform: scaleY(0.4);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@keyframes mb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mb-skeleton {
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--muted) 70%, transparent) 25%,
+    color-mix(in oklab, var(--muted-foreground) 18%, transparent) 50%,
+    color-mix(in oklab, var(--muted) 70%, transparent) 75%
+  );
+  background-size: 200% 100%;
+  animation: mb-shimmer 1.6s ease-in-out infinite;
+  border-radius: 6px;
+  display: inline-block;
+  color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Initial full-screen splash shown before React hydrates */
+#mb-initial-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  background: var(--background);
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+#mb-initial-loader.mb-hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#mb-initial-loader .mb-loader-logo {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-family: "Inter", system-ui, sans-serif;
+  animation: mb-logo-pulse 1.4s ease-in-out infinite;
+}
+
+#mb-initial-loader .mb-loader-logo .mb-accent {
+  background: linear-gradient(135deg, oklch(0.51 0.262 276), oklch(0.59 0.24 293));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+#mb-initial-loader .mb-loader-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 22px;
+}
+
+#mb-initial-loader .mb-loader-bars span {
+  display: block;
+  width: 4px;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(180deg, oklch(0.51 0.262 276), oklch(0.59 0.24 293));
+  transform-origin: bottom;
+  animation: mb-bar-bounce 1s ease-in-out infinite;
+}
+
+#mb-initial-loader .mb-loader-bars span:nth-child(1) { animation-delay: 0s; }
+#mb-initial-loader .mb-loader-bars span:nth-child(2) { animation-delay: 0.15s; }
+#mb-initial-loader .mb-loader-bars span:nth-child(3) { animation-delay: 0.3s; }
+#mb-initial-loader .mb-loader-bars span:nth-child(4) { animation-delay: 0.45s; }
+#mb-initial-loader .mb-loader-bars span:nth-child(5) { animation-delay: 0.6s; }
+
+#mb-initial-loader .mb-loader-text {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  font-family: "Inter", system-ui, sans-serif;
+  letter-spacing: 0.04em;
+}
+
+.mb-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid color-mix(in oklab, var(--muted-foreground) 25%, transparent);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: mb-spin 0.8s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
