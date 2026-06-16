@@ -112,6 +112,20 @@ function getToolGradient(name: string) {
   return gradients[Math.abs(hash) % gradients.length];
 }
 
+/**
+ * Fisher-Yates shuffle — returns a NEW shuffled array, does not mutate the input.
+ * Used to randomize tool order on every page load / refresh / revisit so visitors
+ * always discover different tools near the top of the feed.
+ */
+function shuffle<T>(arr: T[]): T[] {
+  const out = arr.slice();
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -173,6 +187,13 @@ function Index() {
     ])
       .then(([data, emojis]: [Catalog, Record<string, string>]) => {
         data.categoryEmojis = emojis;
+        // Shuffle the tools once on every page load / refresh / revisit so the
+        // order visitors see is always different. The shuffle is applied only
+        // here (not on every render), so the order stays stable as the user
+        // scrolls, searches, paginates, etc.
+        if (Array.isArray(data.tools) && data.tools.length > 0) {
+          data.tools = shuffle(data.tools);
+        }
         setCatalog(data);
         setCatalogLoaded(true);
       })
