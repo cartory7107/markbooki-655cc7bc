@@ -1,0 +1,16 @@
+CREATE SCHEMA IF NOT EXISTS private;
+REVOKE ALL ON SCHEMA private FROM PUBLIC, anon;
+GRANT USAGE ON SCHEMA private TO authenticated;
+CREATE OR REPLACE FUNCTION private.has_role(_user_id UUID, _role public.app_role) RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER SET search_path = public AS $$ SELECT EXISTS (SELECT 1 FROM public.user_roles WHERE user_id = _user_id AND role = _role) $$;
+REVOKE ALL ON FUNCTION private.has_role(UUID, public.app_role) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION private.has_role(UUID, public.app_role) TO authenticated;
+DROP POLICY "Admins manage tools" ON public.ai_tools;
+DROP POLICY "Admins manage categories" ON public.categories;
+DROP POLICY "Admins manage advertisements" ON public.advertisements;
+DROP POLICY "Admins manage discoveries" ON public.tool_discoveries;
+CREATE POLICY "Admins manage tools" ON public.ai_tools FOR ALL TO authenticated USING (private.has_role(auth.uid(), 'admin')) WITH CHECK (private.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins manage categories" ON public.categories FOR ALL TO authenticated USING (private.has_role(auth.uid(), 'admin')) WITH CHECK (private.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins manage advertisements" ON public.advertisements FOR ALL TO authenticated USING (private.has_role(auth.uid(), 'admin')) WITH CHECK (private.has_role(auth.uid(), 'admin'));
+CREATE POLICY "Admins manage discoveries" ON public.tool_discoveries FOR ALL TO authenticated USING (private.has_role(auth.uid(), 'admin')) WITH CHECK (private.has_role(auth.uid(), 'admin'));
+REVOKE ALL ON FUNCTION public.has_role(UUID, public.app_role) FROM PUBLIC, anon, authenticated;
+DROP FUNCTION public.has_role(UUID, public.app_role);
