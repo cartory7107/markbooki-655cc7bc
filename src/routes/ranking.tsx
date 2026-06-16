@@ -54,6 +54,7 @@ function RankingToolIcon({ name, url, size = "sm" }: { name: string; url?: strin
   const cached = cacheKey ? logoCache.get(cacheKey) : undefined;
 
   const [stage, setStage] = useState<number>(cached !== undefined ? cached : domain ? 0 : -1);
+  const [loaded, setLoaded] = useState(false);
 
   const getLogoSrc = useCallback((dom: string, s: number): string | null => {
     if (s === 0) return `https://icon.horse/icon/${dom}`;
@@ -67,6 +68,7 @@ function RankingToolIcon({ name, url, size = "sm" }: { name: string; url?: strin
     if (nextStage <= 2) {
       if (cacheKey) logoCache.set(cacheKey, nextStage);
       setStage(nextStage);
+      setLoaded(false);
     } else {
       if (cacheKey) logoCache.set(cacheKey, -1);
       setStage(-1);
@@ -75,13 +77,14 @@ function RankingToolIcon({ name, url, size = "sm" }: { name: string; url?: strin
 
   const handleLoad = useCallback(() => {
     if (cacheKey) logoCache.set(cacheKey, stage);
+    setLoaded(true);
   }, [stage, cacheKey]);
 
   const sizeClass = size === "lg" ? "size-14" : "size-8";
   const textSize = size === "lg" ? "text-lg" : "text-[9px]";
   const currentSrc = domain ? getLogoSrc(domain, stage) : null;
 
-  // All sources failed or no domain — show gradient initials
+  // All sources failed or no domain — show gradient initials (original design)
   if (stage === -1 || !currentSrc) {
     return (
       <span
@@ -92,14 +95,20 @@ function RankingToolIcon({ name, url, size = "sm" }: { name: string; url?: strin
     );
   }
 
-  // Show logo image with gradient initials behind as loading placeholder
+  // Show logo inside a clean square matching original design
   return (
-    <span className={`relative shrink-0 overflow-hidden rounded-lg ${sizeClass}`}>
+    <span
+      className={`relative shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm ${sizeClass}`}
+    >
+      {/* Gradient initials placeholder — visible while image loads */}
       <span
-        className={`absolute inset-0 grid place-items-center bg-gradient-to-br ${gradient} font-bold text-white ${textSize}`}
+        className={`absolute inset-0 grid place-items-center bg-gradient-to-br ${gradient} font-bold text-white transition-opacity duration-200 ${textSize} ${
+          loaded ? "opacity-0" : "opacity-100"
+        }`}
       >
         {initials(name)}
       </span>
+      {/* Real logo image — fills the square cleanly */}
       <img
         src={currentSrc}
         alt={name}
@@ -108,7 +117,7 @@ function RankingToolIcon({ name, url, size = "sm" }: { name: string; url?: strin
         loading="lazy"
         onLoad={handleLoad}
         onError={handleError}
-        className="relative z-10 size-full object-contain rounded-lg bg-white/90 p-0.5 dark:bg-zinc-800/90"
+        className="absolute inset-0 z-10 size-full object-contain p-[3px]"
       />
     </span>
   );

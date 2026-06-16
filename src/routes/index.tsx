@@ -1056,6 +1056,7 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
   const cached = cacheKey ? logoCache.get(cacheKey) : undefined;
 
   const [stage, setStage] = useState<number>(cached !== undefined ? cached : domain ? 0 : -1);
+  const [loaded, setLoaded] = useState(false);
 
   const getLogoSrc = useCallback((dom: string, s: number): string | null => {
     if (s === 0) return `https://icon.horse/icon/${dom}`;
@@ -1069,6 +1070,7 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
     if (nextStage <= 2) {
       if (cacheKey) logoCache.set(cacheKey, nextStage);
       setStage(nextStage);
+      setLoaded(false);
     } else {
       if (cacheKey) logoCache.set(cacheKey, -1);
       setStage(-1);
@@ -1077,12 +1079,12 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
 
   const handleLoad = useCallback(() => {
     if (cacheKey) logoCache.set(cacheKey, stage);
+    setLoaded(true);
   }, [stage, cacheKey]);
 
-  const sizeClass = small ? "size-8" : "size-10";
   const currentSrc = domain ? getLogoSrc(domain, stage) : null;
 
-  // All sources failed or no domain — show gradient initials
+  // All sources failed or no domain — show gradient initials (original design)
   if (stage === -1 || !currentSrc) {
     return (
       <span
@@ -1095,20 +1097,22 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
     );
   }
 
-  // Show logo image with gradient initials behind as loading placeholder
+  // Show logo inside a clean square matching original design
   return (
     <span
-      className={`relative shrink-0 overflow-hidden rounded-lg ${sizeClass}`}
+      className={`relative shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm ${
+        small ? "size-8" : "size-10"
+      }`}
     >
-      {/* Gradient initials behind — visible while image loads */}
+      {/* Gradient initials placeholder — visible while image loads */}
       <span
-        className={`absolute inset-0 grid place-items-center bg-gradient-to-br ${gradient} font-bold text-white ${
+        className={`absolute inset-0 grid place-items-center bg-gradient-to-br ${gradient} font-bold text-white transition-opacity duration-200 ${
           small ? "text-[9px]" : "text-xs"
-        }`}
+        } ${loaded ? "opacity-0" : "opacity-100"}`}
       >
         {initials(name)}
       </span>
-      {/* Real logo image on top — covers initials once loaded */}
+      {/* Real logo image — fills the square cleanly */}
       <img
         src={currentSrc}
         alt={name}
@@ -1117,7 +1121,7 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
         loading="lazy"
         onLoad={handleLoad}
         onError={handleError}
-        className="relative z-10 size-full object-contain rounded-lg bg-white/90 p-0.5 dark:bg-zinc-800/90"
+        className="absolute inset-0 z-10 size-full object-contain p-[3px]"
       />
     </span>
   );
