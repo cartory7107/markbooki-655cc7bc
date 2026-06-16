@@ -98,7 +98,7 @@ function RankingToolIcon({ name, url, size = "sm" }: { name: string; url?: strin
   // Show logo inside a clean square matching original design
   return (
     <span
-      className={`relative shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm ${sizeClass}`}
+      className={`inline-grid shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm ${sizeClass}`}
     >
       {/* Gradient initials placeholder — visible while image loads */}
       <span

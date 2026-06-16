@@ -1100,7 +1100,7 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
   // Show logo inside a clean square matching original design
   return (
     <span
-      className={`relative shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm ${
+      className={`inline-grid shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm ${
         small ? "size-8" : "size-10"
       }`}
     >
