@@ -300,7 +300,7 @@ function Index() {
                     onMouseDown={() => setQuery(tool.n)}
                     className="flex w-full items-center gap-3 px-3 py-2.5 text-left hover:bg-accent"
                   >
-                    <ToolIcon name={tool.n} small />
+                    <ToolIcon name={tool.n} url={tool.u} small />
                     <span className="min-w-0 flex-1">
                       <b className="block truncate text-sm">{tool.n}</b>
                       <span className="block truncate text-xs text-muted-foreground">{tool.c}</span>
@@ -560,7 +560,7 @@ function Index() {
               ].map((ad) => (
                 <div key={ad.n} className="mb-3 last:mb-0">
                   <div className="flex items-center gap-2.5 mb-2">
-                    <ToolIcon name={ad.n} small />
+                    <ToolIcon name={ad.n} url={ad.u} small />
                     <div>
                       <p className="text-sm font-semibold">{ad.n}</p>
                       <p className="mt-0.5 text-[10px] text-muted-foreground">Verified partner</p>
@@ -745,7 +745,7 @@ function Index() {
                       key={tool.n}
                       className="tool-lift rounded-xl border border-border bg-card p-5"
                     >
-                      <ToolIcon name={tool.n} />
+                      <ToolIcon name={tool.n} url={tool.u} />
                       <h3 className="mt-3 font-bold text-sm">{tool.n}</h3>
                       <p className="mt-1.5 line-clamp-2 text-xs text-muted-foreground">{tool.d}</p>
                       <div className="mt-3 flex items-center gap-2">
@@ -892,7 +892,7 @@ function Index() {
                   <span className="flex size-5 shrink-0 place-items-center rounded bg-primary/10 text-[10px] font-bold text-primary">
                     {i + 1}
                   </span>
-                  <ToolIcon name={tool.n} small />
+                  <ToolIcon name={tool.n} url={tool.u} small />
                   <span className="min-w-0 flex-1 truncate font-medium text-xs">{tool.n}</span>
                   <span className="text-[10px] text-emerald-600 dark:text-emerald-400">Free</span>
                 </a>
@@ -1006,8 +1006,65 @@ function Index() {
 
 /* ─── Shared Components ─────────────────────────────────────── */
 
-function ToolIcon({ name, small = false }: { name: string; small?: boolean }) {
+function extractDomain(url: string): string | null {
+  try {
+    const u = new URL(url);
+    return u.hostname;
+  } catch {
+    return null;
+  }
+}
+
+const logoCache = new Map<string, "loaded" | "failed">();
+
+function ToolIcon({ name, url, small = false }: { name: string; url?: string; small?: boolean }) {
   const gradient = getToolGradient(name);
+  const domain = url ? extractDomain(url) : null;
+  const cacheKey = domain || "";
+  const cached = cacheKey ? logoCache.get(cacheKey) : undefined;
+  const [imgState, setImgState] = useState<"loading" | "loaded" | "failed">(
+    cached === "loaded" ? "loaded" : cached === "failed" ? "failed" : domain ? "loading" : "failed"
+  );
+
+  const handleLoaded = useCallback(() => {
+    if (cacheKey) logoCache.set(cacheKey, "loaded");
+    setImgState("loaded");
+  }, [cacheKey]);
+
+  const handleError = useCallback(() => {
+    if (cacheKey) logoCache.set(cacheKey, "failed");
+    setImgState("failed");
+  }, [cacheKey]);
+
+  const faviconUrl = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
+
+  if (faviconUrl && imgState !== "failed") {
+    return (
+      <span
+        className={`shrink-0 overflow-hidden rounded-lg border border-border/50 ${
+          small ? "size-8" : "size-10"
+        } ${imgState === "loading" ? `grid place-items-center bg-gradient-to-br ${gradient} border-transparent` : "bg-white dark:bg-zinc-800"}`}
+      >
+        <img
+          src={faviconUrl}
+          alt={name}
+          width={small ? 32 : 40}
+          height={small ? 32 : 40}
+          loading="lazy"
+          onLoad={handleLoaded}
+          onError={handleError}
+          className="size-full object-contain p-0.5"
+          style={{ display: imgState === "loaded" ? "block" : "none" }}
+        />
+        {imgState === "loading" && (
+          <span className={`font-bold text-white ${small ? "text-[9px]" : "text-xs"}`}>
+            {initials(name)}
+          </span>
+        )}
+      </span>
+    );
+  }
+
   return (
     <span
       className={`grid shrink-0 place-items-center rounded-lg bg-gradient-to-br ${gradient} font-bold text-white shadow-sm ${
@@ -1032,7 +1089,7 @@ function ToolCard({
     <article className="tool-lift flex min-w-0 flex-col rounded-xl border border-border bg-card p-4">
       <div className="flex min-w-0 items-start gap-3">
         <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
-          <ToolIcon name={tool.n} />
+          <ToolIcon name={tool.n} url={tool.u} />
         </a>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
