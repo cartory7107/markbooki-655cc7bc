@@ -1098,11 +1098,11 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
   }
 
   // Show logo inside a clean square matching original design
+  const pxSize = small ? 32 : 40;
   return (
     <span
-      className={`inline-grid shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm ${
-        small ? "size-8" : "size-10"
-      }`}
+      className="shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm"
+      style={{ display: "inline-flex", position: "relative", width: pxSize, height: pxSize }}
     >
       {/* Gradient initials placeholder — visible while image loads */}
       <span
@@ -1116,8 +1116,8 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
       <img
         src={currentSrc}
         alt={name}
-        width={small ? 32 : 40}
-        height={small ? 32 : 40}
+        width={pxSize}
+        height={pxSize}
         loading="lazy"
         onLoad={handleLoad}
         onError={handleError}

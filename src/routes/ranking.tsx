@@ -96,9 +96,11 @@ function RankingToolIcon({ name, url, size = "sm" }: { name: string; url?: strin
   }
 
   // Show logo inside a clean square matching original design
+  const pxSize = size === "sm" ? 32 : size === "lg" ? 56 : 40;
   return (
     <span
-      className={`inline-grid shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm ${sizeClass}`}
+      className="shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm"
+      style={{ display: "inline-flex", position: "relative", width: pxSize, height: pxSize }}
     >
       {/* Gradient initials placeholder — visible while image loads */}
       <span
@@ -112,8 +114,8 @@ function RankingToolIcon({ name, url, size = "sm" }: { name: string; url?: strin
       <img
         src={currentSrc}
         alt={name}
-        width={size === "lg" ? 56 : 32}
-        height={size === "lg" ? 56 : 32}
+        width={pxSize}
+        height={pxSize}
         loading="lazy"
         onLoad={handleLoad}
         onError={handleError}
