@@ -39,8 +39,20 @@ type Tool = {
   d: string;
   c: string;
   g: string;
-  p: "Free" | "Paid" | "Freemium";
+  p: "Free" | "Free Plan" | "Free Trial" | "Free Credits" | "Daily Free" | "Monthly Free" | "Paid" | "Paid Plans";
   u: string;
+  fl?: string;
+};
+
+const PRICING_STYLES: Record<Tool["p"], { bg: string; text: string; label: string }> = {
+  Free: { bg: "bg-emerald-50 dark:bg-emerald-950/50", text: "text-emerald-600 dark:text-emerald-400", label: "Free" },
+  "Free Plan": { bg: "bg-green-50 dark:bg-green-950/50", text: "text-green-600 dark:text-green-400", label: "Free Plan" },
+  "Free Trial": { bg: "bg-sky-50 dark:bg-sky-950/50", text: "text-sky-600 dark:text-sky-400", label: "Free Trial" },
+  "Free Credits": { bg: "bg-violet-50 dark:bg-violet-950/50", text: "text-violet-600 dark:text-violet-400", label: "Free Credits" },
+  "Daily Free": { bg: "bg-cyan-50 dark:bg-cyan-950/50", text: "text-cyan-600 dark:text-cyan-400", label: "Daily Free" },
+  "Monthly Free": { bg: "bg-teal-50 dark:bg-teal-950/50", text: "text-teal-600 dark:text-teal-400", label: "Monthly Free" },
+  Paid: { bg: "bg-amber-50 dark:bg-amber-950/50", text: "text-amber-600 dark:text-amber-400", label: "Paid" },
+  "Paid Plans": { bg: "bg-orange-50 dark:bg-orange-950/50", text: "text-orange-600 dark:text-orange-400", label: "Paid" },
 };
 type Catalog = {
   tools: Tool[];
@@ -629,7 +641,7 @@ function Index() {
           <div className="mb-4 flex items-center gap-2 border-b border-border pb-3">
             <div className="flex items-center gap-1">
               <Filter className="size-4 text-muted-foreground mr-1" />
-              {["All", "Free", "Freemium", "Paid"].map((item) => (
+              {["All", "Free", "Free Plan", "Free Trial", "Paid"].map((item) => (
                 <button
                   key={item}
                   onClick={() => {
@@ -866,7 +878,10 @@ function Index() {
                 <span className="text-sm">🏆</span>
                 <h3 className="text-sm font-bold">Top Ranked</h3>
               </div>
-              {catalog.tools.slice(0, 5).map((tool, i) => (
+              {catalog.tools
+                .filter((t) => t.p === "Free" && t.fl)
+                .slice(0, 5)
+                .map((tool, i) => (
                 <a
                   key={tool.n}
                   href={tool.u}
@@ -874,12 +889,12 @@ function Index() {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-sm transition-colors hover:bg-accent"
                 >
-                  <span className="flex size-5 shrink-0 place-items-center rounded bg-muted text-[10px] font-bold text-muted-foreground">
+                  <span className="flex size-5 shrink-0 place-items-center rounded bg-primary/10 text-[10px] font-bold text-primary">
                     {i + 1}
                   </span>
                   <ToolIcon name={tool.n} small />
                   <span className="min-w-0 flex-1 truncate font-medium text-xs">{tool.n}</span>
-                  <span className="text-[10px] text-muted-foreground">{tool.p}</span>
+                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400">Free</span>
                 </a>
               ))}
               <Link
@@ -1024,21 +1039,15 @@ function ToolCard({
             <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline">
               <h3 className="truncate font-semibold text-sm">{tool.n}</h3>
             </a>
-            {tool.p === "Free" && (
-              <span className="shrink-0 rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-bold text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
-                Free
-              </span>
-            )}
-            {tool.p === "Paid" && (
-              <span className="shrink-0 rounded-md bg-amber-50 px-1.5 py-0.5 text-[10px] font-bold text-amber-600 dark:bg-amber-950/50 dark:text-amber-400">
-                Paid
-              </span>
-            )}
-            {tool.p === "Freemium" && (
-              <span className="shrink-0 rounded-md bg-blue-50 px-1.5 py-0.5 text-[10px] font-bold text-blue-600 dark:bg-blue-950/50 dark:text-blue-400">
-                Freemium
-              </span>
-            )}
+            {(() => {
+              const style = PRICING_STYLES[tool.p];
+              if (!style) return null;
+              return (
+                <span className={`shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-bold ${style.bg} ${style.text}`}>
+                  {tool.fl || style.label}
+                </span>
+              );
+            })()}
           </div>
           <p className="mt-1 truncate text-xs text-muted-foreground">{tool.c}</p>
         </div>
