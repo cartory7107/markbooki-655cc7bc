@@ -1046,48 +1046,64 @@ function extractDomain(url: string): string | null {
   }
 }
 
-const logoCache = new Map<string, "loaded" | "failed">();
+const logoCache = new Map<string, "logo" | "favicon" | "failed">();
 
 function ToolIcon({ name, url, small = false }: { name: string; url?: string; small?: boolean }) {
   const gradient = getToolGradient(name);
   const domain = url ? extractDomain(url) : null;
   const cacheKey = domain || "";
   const cached = cacheKey ? logoCache.get(cacheKey) : undefined;
-  const [imgState, setImgState] = useState<"loading" | "loaded" | "failed">(
-    cached === "loaded" ? "loaded" : cached === "failed" ? "failed" : domain ? "loading" : "failed"
+
+  // "logo" = clearbit worked, "favicon" = clearbit failed but google favicon works, "failed" = both failed
+  const [source, setSource] = useState<"loading" | "logo" | "favicon" | "failed">(
+    cached === "logo" ? "logo" : cached === "favicon" ? "favicon" : cached === "failed" ? "failed" : domain ? "loading" : "failed"
   );
 
-  const handleLoaded = useCallback(() => {
-    if (cacheKey) logoCache.set(cacheKey, "loaded");
-    setImgState("loaded");
-  }, [cacheKey]);
-
-  const handleError = useCallback(() => {
-    if (cacheKey) logoCache.set(cacheKey, "failed");
-    setImgState("failed");
-  }, [cacheKey]);
-
+  const logoUrl = domain ? `https://logo.clearbit.com/${domain}` : null;
   const faviconUrl = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
 
-  if (faviconUrl && imgState !== "failed") {
+  const handleLogoLoaded = useCallback(() => {
+    if (cacheKey) logoCache.set(cacheKey, "logo");
+    setSource("logo");
+  }, [cacheKey]);
+
+  const handleLogoError = useCallback(() => {
+    // Clearbit logo failed — try Google favicon next
+    if (cacheKey) logoCache.set(cacheKey, "favicon");
+    setSource("favicon");
+  }, [cacheKey]);
+
+  const handleFaviconLoaded = useCallback(() => {
+    setSource("favicon");
+  }, []);
+
+  const handleFaviconError = useCallback(() => {
+    if (cacheKey) logoCache.set(cacheKey, "failed");
+    setSource("failed");
+  }, [cacheKey]);
+
+  const sizeClass = small ? "size-8" : "size-10";
+
+  // Real brand logo from Clearbit
+  if (logoUrl && (source === "loading" || source === "logo")) {
     return (
       <span
-        className={`shrink-0 overflow-hidden rounded-lg border border-border/50 ${
-          small ? "size-8" : "size-10"
-        } ${imgState === "loading" ? `grid place-items-center bg-gradient-to-br ${gradient} border-transparent` : "bg-white dark:bg-zinc-800"}`}
+        className={`shrink-0 overflow-hidden rounded-lg border border-border/50 ${sizeClass} ${
+          source === "loading" ? `grid place-items-center bg-gradient-to-br ${gradient} border-transparent` : "bg-white dark:bg-zinc-800"
+        }`}
       >
         <img
-          src={faviconUrl}
+          src={logoUrl}
           alt={name}
           width={small ? 32 : 40}
           height={small ? 32 : 40}
           loading="lazy"
-          onLoad={handleLoaded}
-          onError={handleError}
+          onLoad={handleLogoLoaded}
+          onError={handleLogoError}
           className="size-full object-contain p-0.5"
-          style={{ display: imgState === "loaded" ? "block" : "none" }}
+          style={{ display: source === "logo" ? "block" : "none" }}
         />
-        {imgState === "loading" && (
+        {source === "loading" && (
           <span className={`font-bold text-white ${small ? "text-[9px]" : "text-xs"}`}>
             {initials(name)}
           </span>
@@ -1096,6 +1112,27 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
     );
   }
 
+  // Fallback: Google favicon (larger, but not a full logo)
+  if (faviconUrl && source === "favicon") {
+    return (
+      <span
+        className={`shrink-0 overflow-hidden rounded-lg border border-border/50 bg-white dark:bg-zinc-800 ${sizeClass}`}
+      >
+        <img
+          src={faviconUrl}
+          alt={name}
+          width={small ? 32 : 40}
+          height={small ? 32 : 40}
+          loading="lazy"
+          onLoad={handleFaviconLoaded}
+          onError={handleFaviconError}
+          className="size-full object-contain p-0.5"
+        />
+      </span>
+    );
+  }
+
+  // Final fallback: gradient initials
   return (
     <span
       className={`grid shrink-0 place-items-center rounded-lg bg-gradient-to-br ${gradient} font-bold text-white shadow-sm ${
