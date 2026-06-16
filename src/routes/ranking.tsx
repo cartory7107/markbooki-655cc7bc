@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowLeft,
   Crown,
@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-type Tool = { n: string; d: string; c: string; g: string; p: "Free" | "Paid" | "Freemium"; v?: number };
+type Tool = { n: string; d: string; c: string; g: string; p: "Free" | "Free Plan" | "Free Trial" | "Free Credits" | "Daily Free" | "Monthly Free" | "Paid" | "Paid Plans"; u: string; v?: number; fl?: string };
 type Catalog = { tools: Tool[]; categories: Record<string, number> };
 
 function initials(name: string) {
@@ -33,6 +33,85 @@ function getToolColor(name: string) {
   let hash = 0;
   for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
   return colors[Math.abs(hash) % colors.length];
+}
+
+function extractDomain(url: string): string | null {
+  try {
+    const u = new URL(url);
+    return u.hostname;
+  } catch {
+    return null;
+  }
+}
+
+// Shared logo cache for ranking page
+const logoCache = new Map<string, number>();
+
+function RankingToolIcon({ name, url, size = "sm" }: { name: string; url?: string; size?: "sm" | "lg" }) {
+  const gradient = getToolColor(name);
+  const domain = url ? extractDomain(url) : null;
+  const cacheKey = domain || "";
+  const cached = cacheKey ? logoCache.get(cacheKey) : undefined;
+
+  const [stage, setStage] = useState<number>(cached !== undefined ? cached : domain ? 0 : -1);
+
+  const getLogoSrc = useCallback((dom: string, s: number): string | null => {
+    if (s === 0) return `https://icon.horse/icon/${dom}`;
+    if (s === 1) return `https://www.google.com/s2/favicons?domain=${dom}&sz=64`;
+    if (s === 2) return `https://icons.duckduckgo.com/ip3/${dom}.ico`;
+    return null;
+  }, []);
+
+  const handleError = useCallback(() => {
+    const nextStage = stage + 1;
+    if (nextStage <= 2) {
+      if (cacheKey) logoCache.set(cacheKey, nextStage);
+      setStage(nextStage);
+    } else {
+      if (cacheKey) logoCache.set(cacheKey, -1);
+      setStage(-1);
+    }
+  }, [stage, cacheKey]);
+
+  const handleLoad = useCallback(() => {
+    if (cacheKey) logoCache.set(cacheKey, stage);
+  }, [stage, cacheKey]);
+
+  const sizeClass = size === "lg" ? "size-14" : "size-8";
+  const textSize = size === "lg" ? "text-lg" : "text-[9px]";
+  const currentSrc = domain ? getLogoSrc(domain, stage) : null;
+
+  // All sources failed or no domain — show gradient initials
+  if (stage === -1 || !currentSrc) {
+    return (
+      <span
+        className={`grid shrink-0 place-items-center rounded-lg bg-gradient-to-br ${gradient} font-bold text-white shadow-sm ${sizeClass} ${textSize}`}
+      >
+        {initials(name)}
+      </span>
+    );
+  }
+
+  // Show logo image with gradient initials behind as loading placeholder
+  return (
+    <span className={`relative shrink-0 overflow-hidden rounded-lg ${sizeClass}`}>
+      <span
+        className={`absolute inset-0 grid place-items-center bg-gradient-to-br ${gradient} font-bold text-white ${textSize}`}
+      >
+        {initials(name)}
+      </span>
+      <img
+        src={currentSrc}
+        alt={name}
+        width={size === "lg" ? 56 : 32}
+        height={size === "lg" ? 56 : 32}
+        loading="lazy"
+        onLoad={handleLoad}
+        onError={handleError}
+        className="relative z-10 size-full object-contain rounded-lg bg-white/90 p-0.5 dark:bg-zinc-800/90"
+      />
+    </span>
+  );
 }
 
 export const Route = createFileRoute("/ranking")({
@@ -99,8 +178,8 @@ function RankingPage() {
               >
                 <m.icon className={`mx-auto size-8 ${m.color}`} />
                 <span className={`mt-1 block text-2xl font-extrabold ${m.color}`}>{m.label}</span>
-                <span className="mx-auto my-3 grid size-14 place-items-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-lg font-bold text-white">
-                  {initials(tool.n)}
+                <span className="mx-auto my-3">
+                  <RankingToolIcon name={tool.n} url={tool.u} size="lg" />
                 </span>
                 <h3 className="font-bold">{tool.n}</h3>
                 <p className="mt-1 text-xs text-muted-foreground">{tool.c}</p>
@@ -125,7 +204,7 @@ function RankingPage() {
           </div>
           <div className="flex items-center gap-1">
             <Filter className="size-4 text-muted-foreground" />
-            {["All", "Free", "Freemium", "Paid"].map((item) => (
+            {["All", "Free", "Free Plan", "Paid", "Paid Plans"].map((item) => (
               <button
                 key={item}
                 onClick={() => setPricing(item)}
@@ -166,9 +245,7 @@ function RankingPage() {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2.5">
-                      <span className={`grid size-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br ${getToolColor(tool.n)} text-[9px] font-bold text-white`}>
-                        {initials(tool.n)}
-                      </span>
+                      <RankingToolIcon name={tool.n} url={tool.u} size="sm" />
                       <span className="font-medium text-sm">{tool.n}</span>
                     </div>
                   </td>
@@ -182,9 +259,9 @@ function RankingPage() {
                   </td>
                   <td className="px-4 py-3">
                     <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-bold ${
-                      tool.p === "Free"
+                      tool.p === "Free" || tool.p === "Free Plan" || tool.p === "Free Trial" || tool.p === "Free Credits" || tool.p === "Daily Free" || tool.p === "Monthly Free"
                         ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400"
-                        : tool.p === "Paid"
+                        : tool.p === "Paid" || tool.p === "Paid Plans"
                           ? "bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400"
                           : "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400"
                     }`}>
@@ -192,8 +269,10 @@ function RankingPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
-                    <Button variant="ghost" size="sm" className="text-xs">
-                      Visit <ExternalLink className="size-3" />
+                    <Button variant="ghost" size="sm" className="text-xs" asChild>
+                      <a href={tool.u} target="_blank" rel="noopener noreferrer">
+                        Visit <ExternalLink className="size-3" />
+                      </a>
                     </Button>
                   </td>
                 </tr>

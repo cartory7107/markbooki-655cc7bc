@@ -1046,7 +1046,8 @@ function extractDomain(url: string): string | null {
   }
 }
 
-const logoCache = new Map<string, "logo" | "favicon" | "failed">();
+// Logo source stages: 0=icon.horse, 1=Google favicon, 2=DuckDuckGo, -1=all failed
+const logoCache = new Map<string, number>();
 
 function ToolIcon({ name, url, small = false }: { name: string; url?: string; small?: boolean }) {
   const gradient = getToolGradient(name);
@@ -1054,92 +1055,70 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
   const cacheKey = domain || "";
   const cached = cacheKey ? logoCache.get(cacheKey) : undefined;
 
-  // "logo" = clearbit worked, "favicon" = clearbit failed but google favicon works, "failed" = both failed
-  const [source, setSource] = useState<"loading" | "logo" | "favicon" | "failed">(
-    cached === "logo" ? "logo" : cached === "favicon" ? "favicon" : cached === "failed" ? "failed" : domain ? "loading" : "failed"
-  );
+  const [stage, setStage] = useState<number>(cached !== undefined ? cached : domain ? 0 : -1);
 
-  const logoUrl = domain ? `https://logo.clearbit.com/${domain}` : null;
-  const faviconUrl = domain ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64` : null;
-
-  const handleLogoLoaded = useCallback(() => {
-    if (cacheKey) logoCache.set(cacheKey, "logo");
-    setSource("logo");
-  }, [cacheKey]);
-
-  const handleLogoError = useCallback(() => {
-    // Clearbit logo failed — try Google favicon next
-    if (cacheKey) logoCache.set(cacheKey, "favicon");
-    setSource("favicon");
-  }, [cacheKey]);
-
-  const handleFaviconLoaded = useCallback(() => {
-    setSource("favicon");
+  const getLogoSrc = useCallback((dom: string, s: number): string | null => {
+    if (s === 0) return `https://icon.horse/icon/${dom}`;
+    if (s === 1) return `https://www.google.com/s2/favicons?domain=${dom}&sz=64`;
+    if (s === 2) return `https://icons.duckduckgo.com/ip3/${dom}.ico`;
+    return null;
   }, []);
 
-  const handleFaviconError = useCallback(() => {
-    if (cacheKey) logoCache.set(cacheKey, "failed");
-    setSource("failed");
-  }, [cacheKey]);
+  const handleError = useCallback(() => {
+    const nextStage = stage + 1;
+    if (nextStage <= 2) {
+      if (cacheKey) logoCache.set(cacheKey, nextStage);
+      setStage(nextStage);
+    } else {
+      if (cacheKey) logoCache.set(cacheKey, -1);
+      setStage(-1);
+    }
+  }, [stage, cacheKey]);
+
+  const handleLoad = useCallback(() => {
+    if (cacheKey) logoCache.set(cacheKey, stage);
+  }, [stage, cacheKey]);
 
   const sizeClass = small ? "size-8" : "size-10";
+  const currentSrc = domain ? getLogoSrc(domain, stage) : null;
 
-  // Real brand logo from Clearbit
-  if (logoUrl && (source === "loading" || source === "logo")) {
+  // All sources failed or no domain — show gradient initials
+  if (stage === -1 || !currentSrc) {
     return (
       <span
-        className={`shrink-0 overflow-hidden rounded-lg border border-border/50 ${sizeClass} ${
-          source === "loading" ? `grid place-items-center bg-gradient-to-br ${gradient} border-transparent` : "bg-white dark:bg-zinc-800"
+        className={`grid shrink-0 place-items-center rounded-lg bg-gradient-to-br ${gradient} font-bold text-white shadow-sm ${
+          small ? "size-8 text-[9px]" : "size-10 text-xs"
         }`}
       >
-        <img
-          src={logoUrl}
-          alt={name}
-          width={small ? 32 : 40}
-          height={small ? 32 : 40}
-          loading="lazy"
-          onLoad={handleLogoLoaded}
-          onError={handleLogoError}
-          className="size-full object-contain p-0.5"
-          style={{ display: source === "logo" ? "block" : "none" }}
-        />
-        {source === "loading" && (
-          <span className={`font-bold text-white ${small ? "text-[9px]" : "text-xs"}`}>
-            {initials(name)}
-          </span>
-        )}
+        {initials(name)}
       </span>
     );
   }
 
-  // Fallback: Google favicon (larger, but not a full logo)
-  if (faviconUrl && source === "favicon") {
-    return (
-      <span
-        className={`shrink-0 overflow-hidden rounded-lg border border-border/50 bg-white dark:bg-zinc-800 ${sizeClass}`}
-      >
-        <img
-          src={faviconUrl}
-          alt={name}
-          width={small ? 32 : 40}
-          height={small ? 32 : 40}
-          loading="lazy"
-          onLoad={handleFaviconLoaded}
-          onError={handleFaviconError}
-          className="size-full object-contain p-0.5"
-        />
-      </span>
-    );
-  }
-
-  // Final fallback: gradient initials
+  // Show logo image with gradient initials behind as loading placeholder
   return (
     <span
-      className={`grid shrink-0 place-items-center rounded-lg bg-gradient-to-br ${gradient} font-bold text-white shadow-sm ${
-        small ? "size-8 text-[9px]" : "size-10 text-xs"
-      }`}
+      className={`relative shrink-0 overflow-hidden rounded-lg ${sizeClass}`}
     >
-      {initials(name)}
+      {/* Gradient initials behind — visible while image loads */}
+      <span
+        className={`absolute inset-0 grid place-items-center bg-gradient-to-br ${gradient} font-bold text-white ${
+          small ? "text-[9px]" : "text-xs"
+        }`}
+      >
+        {initials(name)}
+      </span>
+      {/* Real logo image on top — covers initials once loaded */}
+      <img
+        src={currentSrc}
+        alt={name}
+        width={small ? 32 : 40}
+        height={small ? 32 : 40}
+        loading="lazy"
+        onLoad={handleLoad}
+        onError={handleError}
+        className="relative z-10 size-full object-contain rounded-lg bg-white/90 p-0.5 dark:bg-zinc-800/90"
+      />
     </span>
   );
 }
