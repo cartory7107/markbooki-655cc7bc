@@ -92,6 +92,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
       { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "MarkBook — Discover the Best AI Tools" },
       { name: "twitter:description", content: "MarkBook is an AI discovery platform for exploring, comparing, and researching over 20,000 AI tools." },
+      { name: "description", content: "MarkBook is an AI discovery platform for exploring, comparing, and researching over 20,000 AI tools." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a275fbaf-5ddc-4670-af3f-7acd2fb5ba96/id-preview-720f0fb0--8e43dfa5-a610-4d28-8e20-67a5e9c1fb1e.lovable.app-1781479066010.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a275fbaf-5ddc-4670-af3f-7acd2fb5ba96/id-preview-720f0fb0--8e43dfa5-a610-4d28-8e20-67a5e9c1fb1e.lovable.app-1781479066010.png" },
     ],
     links: [
       {
