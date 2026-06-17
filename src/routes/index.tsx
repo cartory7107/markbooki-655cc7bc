@@ -1152,6 +1152,7 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
       setStage(nextStage);
       setLoaded(false);
     } else {
+      // All sources failed — show clean initials fallback immediately
       if (cacheKey) logoCache.set(cacheKey, -1);
       setStage(-1);
     }
@@ -1250,7 +1251,7 @@ function ToolCard({
           <Bookmark className={`size-4 ${saved ? "fill-primary text-primary" : ""}`} />
         </button>
       </div>
-      <p className="my-3 line-clamp-2 min-h-8 text-sm leading-5 text-muted-foreground">{tool.d}</p>
+      <p className="my-3 min-h-8 text-sm leading-5 text-muted-foreground" style={{display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",wordBreak:"break-word",overflowWrap:"break-word"}}>{tool.d}</p>
       <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
         <div className="flex flex-wrap gap-1 min-w-0 max-w-[55%]">
           <span className="truncate rounded-md bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
