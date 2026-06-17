@@ -21,3 +21,28 @@ Stage Summary:
 - Root cause: display:none prevented image load events
 - All 3 issues now fixed and pushed
 - No API key needed for any of the logo services
+
+---
+Task ID: ai-catalog-scaleup
+Agent: main
+Task: Add 5,000-10,000 new AI tools to existing 16k catalog
+
+Work Log:
+- Cloned user's repo and analyzed existing schema (ai-catalog.json, 16,356 tools, 443 categories)
+- Built dedup index: 8,222 unique normalized names, 8,170 unique root domains
+- Scraped candidates from: GitHub awesome-lists, HF Spaces, HF Models, HF Datasets, OpenRouter, FutureTools sitemap, GitHub topic search (28 topics), npm registry, PyPI search
+- Total raw candidates collected: ~16,000
+- After 3-tier dedup (name + root domain + URL): 2,829 NEW unique tools
+- Each new tool has: name (n), description (d), category (c), gradient label (g), pricing (p), URL (u), free-plan label (fl)
+- Categories assigned via keyword matching + HF pipeline mapping (24 categories used)
+- 13 new categories added (total: 458)
+- Backup saved: public/ai-catalog.backup.json
+- Committed and pushed to GitHub (commit 56ab9e2)
+
+Stage Summary:
+- Final count: 19,185 tools (was 16,356, +2,829 new = +17.3%)
+- Total categories: 458 (was 443, +13 new)
+- File size: 4.47 MB
+- All new tools have valid URLs and required schema fields
+- Below original 5k-10k target due to high overlap with existing 16k catalog (most scraped candidates were duplicates)
+- To reach 50k: would need to scrape There's An AI For That, Toolify, Futurepedia (require proxies/JS rendering), or accept lower-quality sources
