@@ -46,3 +46,38 @@ Stage Summary:
 - All new tools have valid URLs and required schema fields
 - Below original 5k-10k target due to high overlap with existing 16k catalog (most scraped candidates were duplicates)
 - To reach 50k: would need to scrape There's An AI For That, Toolify, Futurepedia (require proxies/JS rendering), or accept lower-quality sources
+
+---
+Task ID: ai-catalog-quality-and-supabase
+Agent: main
+Task: Quality pass + logo enrichment + Supabase migration
+
+Work Log:
+- Quality pass:
+  - Removed 8,233 internal duplicates (huge — your original 16k catalog had the same tools listed under different category labels)
+  - Removed 82 spam entries: NSFW (41), bad TLDs (34), generic names (3), localhost (2), URL shortener (1), IP URL (1)
+  - Normalized 807 tool names
+  - Enriched 44 short descriptions
+  - Tools: 19,185 -> 10,870 (clean)
+- Logo enrichment:
+  - Added logo_url field to every tool (https://icon.horse/icon/{domain})
+  - Pre-computed for faster first paint
+  - Frontend ToolIcon component already has runtime fallback chain (icon.horse -> Google favicon -> DuckDuckGo -> initials)
+- Supabase export:
+  - Generated supabase/seed_ai_catalog.sql (7.9 MB, INSERT statements with ON CONFLICT upserts)
+  - Generated supabase/categories.csv (438 rows)
+  - Generated supabase/ai_tools.csv (10,870 rows)
+  - Generated scripts/import_to_supabase.py (REST API importer)
+  - Wrote supabase/README.md with 3 import options
+- Note: Could not auto-import to Supabase because the publishable key has RLS restrictions (correctly blocks anon writes). User needs to either:
+  a) Run seed_ai_catalog.sql in Supabase SQL Editor (easiest)
+  b) Import CSVs via dashboard
+  c) Run import_to_supabase.py with their service_role key
+- Committed (7fbc5e4) and pushed to GitHub main
+
+Stage Summary:
+- Final clean catalog: 10,870 tools (was 16,356 — smaller but cleaner)
+- Catalog file size: 3.17 MB (down from 3.80 MB)
+- Supabase schema compatible: yes (matches ai_tools + categories tables)
+- Logo URLs: pre-computed for all 10,870 tools
+- Backup: public/ai-catalog.backup.json (preserved original 16k catalog)
