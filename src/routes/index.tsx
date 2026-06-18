@@ -268,6 +268,28 @@ function Index() {
         (pricing === "All" || tool.p === pricing) &&
         (activeCategory === "All" || tool.c === activeCategory || tool.g === activeCategory),
     );
+
+    // When searching, sort by relevance so exact matches appear first
+    if (term && filtered.length > 1) {
+      filtered = filtered.slice().sort((a, b) => {
+        const aName = a.n.toLowerCase();
+        const bName = b.n.toLowerCase();
+        // 1) Exact name match — highest priority
+        if (aName === term && bName !== term) return -1;
+        if (bName === term && aName !== term) return 1;
+        // 2) Name starts with search term
+        const aStarts = aName.startsWith(term) ? 0 : 1;
+        const bStarts = bName.startsWith(term) ? 0 : 1;
+        if (aStarts !== bStarts) return aStarts - bStarts;
+        // 3) Name contains search term as a whole word
+        const aWord = aName.includes(` ${term}`) || aName.startsWith(term) ? 0 : 1;
+        const bWord = bName.includes(` ${term}`) || bName.startsWith(term) ? 0 : 1;
+        if (aWord !== bWord) return aWord - bWord;
+        // 4) Shorter name = closer match
+        return aName.length - bName.length;
+      });
+    }
+
     return filtered;
   }, [catalog, query, pricing, activeCategory]);
 
