@@ -1233,7 +1233,7 @@ function ToolCard({
               if (!style) return null;
               return (
                 <span className={`shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-bold ${style.bg} ${style.text}`}>
-                  {tool.fl || style.label}
+                  {tool.fl && !tool.fl.startsWith("http") ? tool.fl : style.label}
                 </span>
               );
             })()}
