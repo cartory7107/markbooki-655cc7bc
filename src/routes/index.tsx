@@ -60,6 +60,13 @@ type Catalog = {
   categoryEmojis?: Record<string, string>;
 };
 
+/**
+ * Verified top pool type — lightweight version of Tool for the curated rotation.
+ * These are pre-vetted: valid links, working logos (icon.horse/favicon fallback),
+ * lesser-known names, spread across all categories.
+ */
+type VerifiedTool = Pick<Tool, 'n' | 'd' | 'c' | 'g' | 'p' | 'u'>;
+
 const aiNews = [
   { title: "OpenAI Launches GPT-5 with Enhanced Reasoning Capabilities", time: "2h ago" },
   { title: "Google DeepMind Unveils AlphaFold 4 for Drug Discovery", time: "3h ago" },
@@ -184,15 +191,25 @@ function Index() {
     Promise.all([
       fetch("/ai-catalog.json").then((r) => r.json()),
       fetch("/category-emojis.json").then((r) => r.json()).catch(() => ({})),
+      fetch("/verified-top-pool.json").then((r) => r.json()).catch(() => []),
     ])
-      .then(([data, emojis]: [Catalog, Record<string, string>]) => {
+      .then(([data, emojis, verifiedPool]: [Catalog, Record<string, string>, VerifiedTool[]]) => {
         data.categoryEmojis = emojis;
-        // Shuffle the tools once on every page load / refresh / revisit so the
-        // order visitors see is always different. The shuffle is applied only
-        // here (not on every render), so the order stays stable as the user
-        // scrolls, searches, paginates, etc.
         if (Array.isArray(data.tools) && data.tools.length > 0) {
-          data.tools = shuffle(data.tools);
+          // Build a set of verified tool names for quick lookup
+          const verifiedNames = new Set(verifiedPool.map((v: VerifiedTool) => v.n));
+
+          // 1) Pick 20 random verified tools from the pool (different on every refresh)
+          const shuffledPool = shuffle(verifiedPool).slice(0, 20);
+
+          // 2) Remove verified pool tools from the main list so they don't duplicate
+          const restTools = data.tools.filter((t: Tool) => !verifiedNames.has(t.n));
+
+          // 3) Shuffle the rest for variety
+          const shuffledRest = shuffle(restTools);
+
+          // 4) Verified top-20 first, then everything else below
+          data.tools = [...shuffledPool, ...shuffledRest];
         }
         setCatalog(data);
         setCatalogLoaded(true);

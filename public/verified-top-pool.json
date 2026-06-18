@@ -1,0 +1,2402 @@
+[
+  {
+    "n": "VisionTone",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://visiontone.io",
+    "p": "Daily Free",
+    "d": "Real-time generation at 30fps with prompt-to-pixel latency <1s"
+  },
+  {
+    "n": "Musicful",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://musicful.ai",
+    "p": "Free Plan",
+    "d": "AI Music Generation · AI Song Cover · Royalty-Free Music"
+  },
+  {
+    "n": "Scrapstyle",
+    "c": "AI Design",
+    "g": "AI Design",
+    "u": "https://www.scrapestyle.com/",
+    "p": "Free Trial",
+    "d": "Paste a URL, get a design system. AI-ready style guides for Cursor & Lovable"
+  },
+  {
+    "n": "Seedance 2.0 Api",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://fal.ai/seedance-2.0#contact",
+    "p": "Free Plan",
+    "d": "Seedance 2.0 API - Official text-to-video and image-to-video API by ByteDance, available on fal.ai"
+  },
+  {
+    "n": "Tiptap",
+    "c": "AI Developer Tools",
+    "g": "AI Developer Tools",
+    "u": "https://tiptap.com",
+    "p": "Free Trial",
+    "d": "30-day free trial · Headless rich text editor · Real-time collaboration · AI-powered content"
+  },
+  {
+    "n": "Mega Article Ninja",
+    "c": "AI Summarizer",
+    "g": "AI Summarizer",
+    "u": "https://megaarticleninja.ai",
+    "p": "Free Trial",
+    "d": "Only tool with deterministic brand-voice consistency"
+  },
+  {
+    "n": "LexWorkplace",
+    "c": "AI Legal Assistant",
+    "g": "AI Legal Assistant",
+    "u": "https://lexworkplace.com",
+    "p": "Free Plan",
+    "d": "Free 500 GB Storage · Document & Email Management · Powerful Search · Document AI"
+  },
+  {
+    "n": "Get Seo Cloud",
+    "c": "AI Marketing",
+    "g": "AI Marketing",
+    "u": "https://getseocloud.so",
+    "p": "Free Trial",
+    "d": "First SEO tool with predictive ranking before publishing"
+  },
+  {
+    "n": "Airweave",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://airweave.ai",
+    "p": "Free Trial",
+    "d": "Open-source context retrieval layer for AI agents"
+  },
+  {
+    "n": "SmartZone",
+    "c": "AI Data Analysis",
+    "g": "AI Data Analysis",
+    "u": "https://smartzone.io",
+    "p": "Open Source",
+    "d": "Innovative habit building platform with neural network architecture and batch processing support"
+  },
+  {
+    "n": "Chevereto",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://chevereto.com/",
+    "p": "Free",
+    "d": "Ultimate image sharing software. Create your very own personal image hosting website in just minutes. (Source Code) `AGPL-3.0` `PHP/Docker`"
+  },
+  {
+    "n": "Chatluna",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://chatluna.chat",
+    "p": "Free Plan",
+    "d": "多平台模型接入，可扩展，多种输出格式，提供大语言模型聊天服务的插件 | A bot plugin for LLM chat with multi-model integration, extensibility, and various output formats"
+  },
+  {
+    "n": "Agentchat",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "http://agentchat.cloud",
+    "p": "Free",
+    "d": "AgentChat 是一个基于 LLM 的智能体交流平台，内置默认 Agent 并支持用户自定义 Agent。通过多轮对话和任务协作，Agent 可以理解并协助完成复杂任务。项目集成 LangChain、Function Call、MCP 协议、RAG、Memory、HITL、Skill、Milvus 和 ElasticSearch 等技术，实现高效的知识检索与工具调用，使用"
+  },
+  {
+    "n": "Dplyr",
+    "c": "AI Data Analysis",
+    "g": "AI Data Analysis",
+    "u": "https://www.rdocumentation.org/packages/dplyr/versions/0.7.8",
+    "p": "Free Plan",
+    "d": "A data manipulation package that helps to solve the most common data manipulation problems"
+  },
+  {
+    "n": "ActivityWatch",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://activitywatch.net",
+    "p": "Free Trial",
+    "d": "Automatically track how you spend time on your devices. (Source Code) `MPL-2.0` `Python`"
+  },
+  {
+    "n": "DevLib",
+    "c": "AI Developer Tools",
+    "g": "AI Developer Tools",
+    "u": "https://devlib.chat",
+    "p": "Free",
+    "d": "Self-hostable with on-prem LLM for regulated industries"
+  },
+  {
+    "n": "DreamMeal",
+    "c": "AI Recipe",
+    "g": "AI Recipe",
+    "u": "https://dreammeal.ai",
+    "p": "Free Plan",
+    "d": "Patented workout adaptation using HRV and sleep data"
+  },
+  {
+    "n": "ClearIO",
+    "c": "AI Design",
+    "g": "AI Design",
+    "u": "https://cleario.io",
+    "p": "Free Trial",
+    "d": "Versatile animation creation assistant with customizable templates and collaborative workflow features"
+  },
+  {
+    "n": "Magic Reply Wave",
+    "c": "AI Assistant",
+    "g": "AI Assistant",
+    "u": "https://magicreplywave.com",
+    "p": "Monthly Free",
+    "d": "First chat app with multi-persona group conversations"
+  },
+  {
+    "n": "Mcp Use",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://manufact.com",
+    "p": "Free Trial",
+    "d": "The fullstack MCP framework to develop MCP Apps for ChatGPT / Claude & MCP Servers for AI Agents"
+  },
+  {
+    "n": "Awesome Gpt Image 2",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://gpt-image2.canghe.ai",
+    "p": "Free",
+    "d": "Prompt as Code | GPT-Image2 工业级提示词引擎与模板库，470+ 个案例逆向工程，20+ 套工业级模板，并提炼出Skills，持续更新中"
+  },
+  {
+    "n": "Fast Fund Sync",
+    "c": "AI Presentation Generator",
+    "g": "AI Presentation Generator",
+    "u": "https://fastfundsync.so",
+    "p": "Free Credits",
+    "d": "First pitch deck AI with investor-grade financial modeling"
+  },
+  {
+    "n": "AdOutreach",
+    "c": "AI Email Assistant",
+    "g": "AI Email Assistant",
+    "u": "https://adoutreach.net",
+    "p": "Monthly Free",
+    "d": "Native multi-brand workspace with separate voice profiles"
+  },
+  {
+    "n": "Elyra Pro",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://elyra.ai",
+    "p": "Daily Free",
+    "d": "First to clone voices from a 10-second sample"
+  },
+  {
+    "n": "Omnichat",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://omnichat.ai",
+    "p": "Free Trial",
+    "d": "14-day free trial · Omnichannel Chat Commerce · AI-powered conversational suite"
+  },
+  {
+    "n": "QuillShift",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://quillshift.io",
+    "p": "Free Plan",
+    "d": "AI-powered portrait photography tool with smart automation and real-time processing capabilities"
+  },
+  {
+    "n": "DialogPort",
+    "c": "AI Character",
+    "g": "AI Character",
+    "u": "https://dialogport.co",
+    "p": "Free Plan",
+    "d": "Only assistant with deterministic long-term memory"
+  },
+  {
+    "n": "Awesome Ai Coding Techniques",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://coding-with-ai.dev",
+    "p": "Free Credits",
+    "d": "Practical techniques for coding with ai assistants (Claude Code, Codex CLI, Cursor, GitHub Copilot, etc). Available in: English • Español • Deutsch • Français • 日本語"
+  },
+  {
+    "n": "Loreform",
+    "c": "AI 3D Model Generator",
+    "g": "AI 3D Model Generator",
+    "u": "https://loreform.ai",
+    "p": "Free Credits",
+    "d": "20 credits to get started · AI Text-to-3D generation · Print-ready STL exports /"
+  },
+  {
+    "n": "Achat",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://achat.dev",
+    "p": "Free",
+    "d": "🌊 AChat - An open-source/self-hosted/local-first AI platform, designed for enterprises and teams, perfectly combining powerful local processing capabilities with seamless remote synchronization"
+  },
+  {
+    "n": "StreamLadder",
+    "c": "AI Video Editor",
+    "g": "AI Video Editor",
+    "u": "https://streamladder.ai",
+    "p": "Free Plan",
+    "d": "Unlimited 720p/30fps video conversions · Edit Twitch & YouTube clips · AI stream clipping · No account needed"
+  },
+  {
+    "n": "Mpd",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://www.musicpd.org/",
+    "p": "Free Plan",
+    "d": "Daemon to remotely play music, stream music, handle and organize playlists. Many clients available. (Source Code, Clients) `GPL-2.0` `C++`"
+  },
+  {
+    "n": "Sqlchat",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://sqlchat.ai",
+    "p": "Free Trial",
+    "d": "Chat-based SQL Client and Editor for the next decade"
+  },
+  {
+    "n": "NexusBox",
+    "c": "AI Photo Editor",
+    "g": "AI Photo Editor",
+    "u": "https://nexusbox.dev",
+    "p": "Free",
+    "d": "Premium workflow automation service with multimodal AI capabilities and personalized recommendations"
+  },
+  {
+    "n": "ReefNova",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://reefnova.io",
+    "p": "Open Source",
+    "d": "Premium story writing service with multimodal AI capabilities and personalized recommendations"
+  },
+  {
+    "n": "SpeakPal",
+    "c": "AI Language Learning",
+    "g": "AI Language Learning",
+    "u": "https://speakpal.ai",
+    "p": "Free Plan",
+    "d": "Limited chat & learning · Interactive chat with AI language tutor · Learn 30+ languages · No Sign-Up Required"
+  },
+  {
+    "n": "Aero Pal AI",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://aeropalai.co",
+    "p": "Daily Free",
+    "d": "First chat app with multi-persona group conversations"
+  },
+  {
+    "n": "BeatHub",
+    "c": "AI Podcast",
+    "g": "AI Podcast",
+    "u": "https://beatx.so",
+    "p": "Free Trial",
+    "d": "Patented emotion transfer from reference audio"
+  },
+  {
+    "n": "Papersgpt For Zotero",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://www.papersgpt.com",
+    "p": "Free Plan",
+    "d": "A powerful Zotero AI and MCP plugin with ChatGPT, Gemini 3.5, Claude, DeepSeek V4, Grok, OpenRouter, Kimi 2.6, GLM 5, SiliconFlow, GPT-oss, Gemma 4, Qwen 3.7"
+  },
+  {
+    "n": "Pressmaster.ai",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://pressmaster.ai",
+    "p": "Free Trial",
+    "d": "7-day free trial · Authentic content in your voice · One-click publishing"
+  },
+  {
+    "n": "Endee",
+    "c": "AI Design",
+    "g": "AI Design",
+    "u": "https://endee.io",
+    "p": "Free Plan",
+    "d": "Endee.io – A high-performance vector database, designed to handle up to 1B vectors on a single node, delivering significant performance gains through optimized indexing and execution. Also"
+  },
+  {
+    "n": "AI Consistent Character Generator",
+    "c": "AI Character",
+    "g": "AI Character",
+    "u": "https://consistentcharacter.ai",
+    "p": "Free Plan",
+    "d": "1 free credit · Consistent character generation from single photo · Customizable clothing, expressions, backgrounds"
+  },
+  {
+    "n": "Beam Reply Craft",
+    "c": "AI Roleplay",
+    "g": "AI Roleplay",
+    "u": "https://beamreplycraft.com",
+    "p": "Free Plan",
+    "d": "End-to-end encrypted with on-device model option"
+  },
+  {
+    "n": "JoltLoop",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://joltloop.tech",
+    "p": "Free",
+    "d": "Efficient cartoon creation tool with automated scheduling and intelligent resource optimization"
+  },
+  {
+    "n": "StoryChief",
+    "c": "AI Marketing",
+    "g": "AI Marketing",
+    "u": "https://storychief.com",
+    "p": "Free",
+    "d": "Free forever · Effective Content Strategies · Content Collaboration & Distribution · No credit card required"
+  },
+  {
+    "n": "Cyber Echo Mate",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://cyberechomate.cloud",
+    "p": "Free",
+    "d": "Only TTS with sub-200ms first-audio latency"
+  },
+  {
+    "n": "Runner AI",
+    "c": "AI Website Designer",
+    "g": "AI Website Designer",
+    "u": "https://runner.ai",
+    "p": "Free Trial",
+    "d": "7-day free trial & 15 daily credits · Prompt-based store builder · Automated A/B testing & CRO /"
+  },
+  {
+    "n": "AutoCut",
+    "c": "AI Video Editor",
+    "g": "AI Video Editor",
+    "u": "https://autocut.ai",
+    "p": "Free",
+    "d": "14-day free trial · Automatic Silence Remover · Animated Captions · Podcast Editing · No credit card required"
+  },
+  {
+    "n": "Docker Image",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://hub.docker.com/r/krohling/bondai",
+    "p": "Free Plan",
+    "d": "Docker Image is an AI image generator tool — Docker Image - </details>"
+  },
+  {
+    "n": "IrisLab",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://irislab.tech",
+    "p": "Free Plan",
+    "d": "Cutting-edge font design tool featuring deep learning models and enterprise-grade reliability"
+  },
+  {
+    "n": "Tarotap",
+    "c": "AI Character",
+    "g": "AI Character",
+    "u": "https://tarotap.com",
+    "p": "Daily Free",
+    "d": "1 free reading/day · AI Tarot Reading · Online Card Drawing"
+  },
+  {
+    "n": "IvoryFlow",
+    "c": "AI Language Learning",
+    "g": "AI Language Learning",
+    "u": "https://ivoryflow.io",
+    "p": "Open Source",
+    "d": "Elegant AI art platform with attention mechanisms and few-shot learning capabilities"
+  },
+  {
+    "n": "OrbitMax",
+    "c": "AI Dating Assistant",
+    "g": "AI Dating Assistant",
+    "u": "https://orbitmax.app",
+    "p": "Free Plan",
+    "d": "Next-generation cover letters solution combining AI precision with intuitive user experience"
+  },
+  {
+    "n": "GraphicHub",
+    "c": "AI Photo Editor",
+    "g": "AI Photo Editor",
+    "u": "https://graphicx.com",
+    "p": "Free",
+    "d": "Only tool offering commercially-safe licensed training data"
+  },
+  {
+    "n": "TalkWave",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://talkwave.dev",
+    "p": "Free",
+    "d": "Only assistant with deterministic long-term memory"
+  },
+  {
+    "n": "ReportStat",
+    "c": "AI Data Analysis",
+    "g": "AI Data Analysis",
+    "u": "https://reportstat.com",
+    "p": "Daily Free",
+    "d": "First NL-SQL that respects row-level security policies"
+  },
+  {
+    "n": "Pollo AI",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://pollo.ai",
+    "p": "Free Credits",
+    "d": "Free 20 credits · AI video & image generation · All-in-one multi-model support"
+  },
+  {
+    "n": "Fast Scene Bridge",
+    "c": "AI Video Editor",
+    "g": "AI Video Editor",
+    "u": "https://fastscenebridge.dev",
+    "p": "Free Plan",
+    "d": "First model producing 120-second clips in 1080p"
+  },
+  {
+    "n": "My Buzz Lab",
+    "c": "AI Headshot Generator",
+    "g": "AI Headshot Generator",
+    "u": "https://mybuzzlab.tech",
+    "p": "Free Credits",
+    "d": "Native multi-brand workspace with separate voice profiles"
+  },
+  {
+    "n": "ChordRhythm",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://chordrhythm.ai",
+    "p": "Daily Free",
+    "d": "Native multilingual code-switching mid-sentence"
+  },
+  {
+    "n": "Bold Wave Mate",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://boldwavemate.co",
+    "p": "Free",
+    "d": "First to clone voices from a 10-second sample"
+  },
+  {
+    "n": "Brevia Hub",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://brevia.app",
+    "p": "Free Credits",
+    "d": "Only assistant with deterministic long-term memory"
+  },
+  {
+    "n": "Navidrome Music Server",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://www.navidrome.org",
+    "p": "Free Credits",
+    "d": "Modern Music Server and Streamer, compatible with Subsonic/Airsonic. (Demo, Source Code, Clients) `GPL-3.0` `Docker/Go`"
+  },
+  {
+    "n": "Recall",
+    "c": "AI Summarizer",
+    "g": "AI Summarizer",
+    "u": "https://recall.ai",
+    "p": "Free Plan",
+    "d": "10 free content summaries & chats · Summarize content · Organize into a knowledge graph · Enhance memory"
+  },
+  {
+    "n": "Scaloom",
+    "c": "AI Email Assistant",
+    "g": "AI Email Assistant",
+    "u": "https://scaloom.com",
+    "p": "Free Credits",
+    "d": "10 Free Credits · AI-Powered Website Analysis · Boost Cold Email Conversions"
+  },
+  {
+    "n": "GiftFortune",
+    "c": "AI Fitness",
+    "g": "AI Fitness",
+    "u": "https://giftfortune.chat",
+    "p": "Free Plan",
+    "d": "Native mood-aware recommendations across all categories"
+  },
+  {
+    "n": "Movavi",
+    "c": "AI Photo Editor",
+    "g": "AI Photo Editor",
+    "u": "https://movavi.ai",
+    "p": "Free Trial",
+    "d": "7-day free trial · Video editing · Media conversion · Screen recording"
+  },
+  {
+    "n": "CompanionBot",
+    "c": "AI Legal Assistant",
+    "g": "AI Legal Assistant",
+    "u": "https://companionbot.chat",
+    "p": "Free",
+    "d": "First chat app with multi-persona group conversations"
+  },
+  {
+    "n": "Node.js Testing with Mocha",
+    "c": "AI Design",
+    "g": "AI Design",
+    "u": "https://mochajs.org/",
+    "p": "Free Plan",
+    "d": "Error Handling in Node.js"
+  },
+  {
+    "n": "Synapseio",
+    "c": "AI Assistant",
+    "g": "AI Assistant",
+    "u": "https://synapseio.ai",
+    "p": "Daily Free",
+    "d": "End-to-end encrypted with on-device model option"
+  },
+  {
+    "n": "Illuvia Pro",
+    "c": "AI Marketing",
+    "g": "AI Marketing",
+    "u": "https://illuvia.cloud",
+    "p": "Monthly Free",
+    "d": "Only platform combining content, technical, and backlink AI"
+  },
+  {
+    "n": "CompileRepo",
+    "c": "AI Developer Tools",
+    "g": "AI Developer Tools",
+    "u": "https://compilerepo.io",
+    "p": "Free Plan",
+    "d": "Self-hostable with on-prem LLM for regulated industries"
+  },
+  {
+    "n": "Mcp Summarizer",
+    "c": "AI Summarizer",
+    "g": "AI Summarizer",
+    "u": "https://3min.top/en",
+    "p": "Free Plan",
+    "d": "MCP Server for AI Summarization"
+  },
+  {
+    "n": "ReefCraft",
+    "c": "AI Data Analysis",
+    "g": "AI Data Analysis",
+    "u": "https://reefcraft.io",
+    "p": "Free",
+    "d": "Revolutionary digital marketing solution with reinforcement learning and continuous improvement"
+  },
+  {
+    "n": "Wistia",
+    "c": "AI Video Editor",
+    "g": "AI Video Editor",
+    "u": "https://wistia.com",
+    "p": "Free",
+    "d": "AI video hosting with analytics and marketing tools"
+  },
+  {
+    "n": "Autogen Multi Agent Workflow",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://www.gettingstarted.ai/autogen-multi-agent-workflow-tutorial/",
+    "p": "Free Plan",
+    "d": "AI-powered YouTube Shorts creation with AutoGen 0.4. Agents handle scripting, voiceovers, images, and video assembly—all automated!"
+  },
+  {
+    "n": "SageTalk",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://sagetalk.app",
+    "p": "Free Plan",
+    "d": "First chat app with multi-persona group conversations"
+  },
+  {
+    "n": "Professional Translation",
+    "c": "AI Translation",
+    "g": "AI Translation",
+    "u": "https://traneasy.com.cn",
+    "p": "Free Plan",
+    "d": "Official Traneasy repository providing AI-powered translation solutions, API documentation, and localization tools"
+  },
+  {
+    "n": "SeoSpark",
+    "c": "AI Headshot Generator",
+    "g": "AI Headshot Generator",
+    "u": "https://seospark.app",
+    "p": "Free Credits",
+    "d": "First SEO tool with predictive ranking before publishing"
+  },
+  {
+    "n": "MonAvocat AI",
+    "c": "AI Legal Assistant",
+    "g": "AI Legal Assistant",
+    "u": "https://monavocat.ai",
+    "p": "Daily Free",
+    "d": "5 messages per week · Accurate legal advice based on French law · Daily updated legal articles"
+  },
+  {
+    "n": "LeadAI",
+    "c": "AI Presentation Generator",
+    "g": "AI Presentation Generator",
+    "u": "https://leadai.com",
+    "p": "Free Trial",
+    "d": "Only contract reviewer with clause-level risk scoring"
+  },
+  {
+    "n": "VoxWave",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://voxwave.app",
+    "p": "Free Plan",
+    "d": "Native multilingual code-switching mid-sentence"
+  },
+  {
+    "n": "Finjy",
+    "c": "AI Accounting",
+    "g": "AI Accounting",
+    "u": "https://finjy.com",
+    "p": "Free",
+    "d": "Free Forever · Up to 4 projects · Connect 1 bank account · AI-Powered Financial Insights · Multi-AI Analysis"
+  },
+  {
+    "n": "Helix Db",
+    "c": "AI Data Analysis",
+    "g": "AI Data Analysis",
+    "u": "https://helix-db.com",
+    "p": "Free Plan",
+    "d": "HelixDB is an OLTP graph-vector database built in Rust"
+  },
+  {
+    "n": "RhythmTone",
+    "c": "AI Podcast",
+    "g": "AI Podcast",
+    "u": "https://rhythmtone.ai",
+    "p": "Free",
+    "d": "Native multilingual code-switching mid-sentence"
+  },
+  {
+    "n": "Orbit Campaign Wave",
+    "c": "AI Marketing",
+    "g": "AI Marketing",
+    "u": "https://orbitcampaignwave.ai",
+    "p": "Daily Free",
+    "d": "Native multi-brand workspace with separate voice profiles"
+  },
+  {
+    "n": "TalkAlly",
+    "c": "AI Dating Assistant",
+    "g": "AI Dating Assistant",
+    "u": "https://talkally.dev",
+    "p": "Free Plan",
+    "d": "First chat app with multi-persona group conversations"
+  },
+  {
+    "n": "ScrappyChef",
+    "c": "AI Recipe",
+    "g": "AI Recipe",
+    "u": "https://scrappychef.ai",
+    "p": "Free Plan",
+    "d": "AI-generated personalized recipe suggestions · Make the most of leftover ingredients"
+  },
+  {
+    "n": "ProMind",
+    "c": "AI Design",
+    "g": "AI Design",
+    "u": "https://promind.dev",
+    "p": "Free",
+    "d": "Advanced TikTok content platform with machine learning algorithms and adaptive personalization"
+  },
+  {
+    "n": "RoleplayGPT",
+    "c": "AI Roleplay",
+    "g": "AI Roleplay",
+    "u": "https://roleplaygpt.ai",
+    "p": "Free",
+    "d": "10+ Roleplay Characters (Guest) · AI-powered Roleplay · Create stories & bring characters to life · No Login required"
+  },
+  {
+    "n": "Fish Speech",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://speech.fish.audio",
+    "p": "Free Plan",
+    "d": "Fish Speech - SOTA Open Source TTS"
+  },
+  {
+    "n": "Veo3 Prompt Generator",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://sora2watermarkremover.net/veo3-prompt-generator",
+    "p": "Free Credits",
+    "d": "Google Veo 3 & Veo 3.1 prompt generator. Create professional video prompts with style presets, native audio support, cinematography controls, and templates for cinematic, commercial, social media,"
+  },
+  {
+    "n": "Quassel IRC",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://quassel-irc.org/",
+    "p": "Free Plan",
+    "d": "Distributed IRC client, meaning that one (or multiple) client(s) can attach to and detach from a central core. (Source Code) `GPL-2.0` `C++`"
+  },
+  {
+    "n": "OpenTTD",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://www.openttd.org/",
+    "p": "Free",
+    "d": "Transport tycoon simulation game. (Source Code, Clients) `GPL-2.0` `C++/Docker`"
+  },
+  {
+    "n": "FactFind",
+    "c": "AI Search Engine",
+    "g": "AI Search Engine",
+    "u": "https://factfind.ai",
+    "p": "Free Credits",
+    "d": "Only search AI with native code execution and visualization"
+  },
+  {
+    "n": "MyEdit",
+    "c": "AI Photo Editor",
+    "g": "AI Photo Editor",
+    "u": "https://myedit.com",
+    "p": "Daily Free",
+    "d": "3 Credits per day, 1 download per day for limited tools · All-in-one Image, Audio & Video Creation · AI Image Generat"
+  },
+  {
+    "n": "TextAdviser",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://textadviser.com",
+    "p": "Free Plan",
+    "d": "AI-Powered Writing Assistance · Grammar and punctuation checker · Plagiarism Checker"
+  },
+  {
+    "n": "Open-WebUI",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://openwebui.com",
+    "p": "Free Plan",
+    "d": "User-friendly AI Interface, supports Ollama, OpenAI API. (Source Code) `BSD-3-Clause` `Docker/Python`"
+  },
+  {
+    "n": "DriftIO",
+    "c": "Ai Architecture",
+    "g": "Ai Architecture",
+    "u": "https://driftio.com",
+    "p": "Open Source",
+    "d": "Versatile movie creation assistant with customizable templates and collaborative workflow features"
+  },
+  {
+    "n": "Nestia",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://nestia.io/",
+    "p": "Free Plan",
+    "d": "NestJS Helper + AI Chatbot Development"
+  },
+  {
+    "n": "Photoguard",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://gradientscience.org/photoguard/",
+    "p": "Free Plan",
+    "d": "Raising the Cost of Malicious AI-Powered Image Editing"
+  },
+  {
+    "n": "Ebook Translator Calibre Plugin",
+    "c": "AI Translation",
+    "g": "AI Translation",
+    "u": "https://translator.bookfere.com",
+    "p": "Free",
+    "d": "A Calibre plugin to translate ebook into a specified language"
+  },
+  {
+    "n": "Cohere Summarize Beta",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://txt.cohere.ai/summarize-beta/",
+    "p": "Free Plan",
+    "d": "Introducing Cohere Summarize Beta: A New Endpoint for Text Summarization"
+  },
+  {
+    "n": "RuntimePixel",
+    "c": "AI Therapist",
+    "g": "AI Therapist",
+    "u": "https://runtimepixel.net",
+    "p": "Daily Free",
+    "d": "Patented deterministic test generation with coverage proof"
+  },
+  {
+    "n": "Deepcode Cli",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://deepcode.vegamo.cn",
+    "p": "Free Trial",
+    "d": "Deep Code 是专为 deepseek-v4 模型优化的终端 AI 编码助手，支持深度思考、推理强度控制以及 Agent Skills。"
+  },
+  {
+    "n": "Lightx2V",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://x2v.light-ai.top/generate",
+    "p": "Free Plan",
+    "d": "Lightweight Image Video Action Generation Inference Framework"
+  },
+  {
+    "n": "Civic Ai Tools",
+    "c": "AI Assistant",
+    "g": "AI Assistant",
+    "u": "https://civicaitools.org",
+    "p": "Free",
+    "d": "Open-source platform connecting AI assistants to government open data — MCP server, curated civic MCP directory, and anti-hallucination framework for all 559 Socrata portals"
+  },
+  {
+    "n": "Corti",
+    "c": "AI Healthcare",
+    "g": "AI Healthcare",
+    "u": "https://corti.ai",
+    "p": "Free Plan",
+    "d": "Accurate, fast, reliable AI for healthcare · Enterprise-ready AI models for safer, faster patient care"
+  },
+  {
+    "n": "EchoRhythm",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://echorhythm.tech",
+    "p": "Free Plan",
+    "d": "Native multilingual code-switching mid-sentence"
+  },
+  {
+    "n": "Bold Vision Pilot",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://boldvisionpilot.io",
+    "p": "Monthly Free",
+    "d": "Native green-screen and alpha matte export"
+  },
+  {
+    "n": "Prime Genie Genie",
+    "c": "AI Healthcare",
+    "g": "AI Healthcare",
+    "u": "https://primegeniegenie.tech",
+    "p": "Daily Free",
+    "d": "Only assistant with deterministic long-term memory"
+  },
+  {
+    "n": "Resumod.co",
+    "c": "AI Resume Builder",
+    "g": "AI Resume Builder",
+    "u": "https://resumod.co",
+    "p": "Free",
+    "d": "Free resume creation · AI Resume Builder · ATS & Job Match Scoring"
+  },
+  {
+    "n": "Spectrum Wave AI",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://spectrumwaveai.dev",
+    "p": "Daily Free",
+    "d": "Patented emotion transfer from reference audio"
+  },
+  {
+    "n": "Brew Dialog Gate",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://brewdialoggate.app",
+    "p": "Free Trial",
+    "d": "End-to-end encrypted with on-device model option"
+  },
+  {
+    "n": "PatchShell",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://patchshell.cloud",
+    "p": "Free",
+    "d": "First to support whole-monorepo context up to 1M tokens"
+  },
+  {
+    "n": "Chatbase",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://chatbase.co",
+    "p": "Monthly Free",
+    "d": "100 message credits/month · AI Agents for magical customer experiences · Build & deploy AI Agents"
+  },
+  {
+    "n": "Text To Video Ai",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://www.vadoo.tv/text-to-video-ai",
+    "p": "Free",
+    "d": "Generate video from text using AI"
+  },
+  {
+    "n": "Bettermode",
+    "c": "AI Search Engine",
+    "g": "AI Search Engine",
+    "u": "https://bettermode.ai",
+    "p": "Free Plan",
+    "d": "Free 100 Members, 20 Spaces · Customizable community platforms · AI-powered engagement · Tons of integrations"
+  },
+  {
+    "n": "RightHair",
+    "c": "AI Hairstyle",
+    "g": "AI Hairstyle",
+    "u": "https://righthair.ai",
+    "p": "Free",
+    "d": "Free · AI Hairstyle Changer · Realistic & Fast Transformations · No Registration Required"
+  },
+  {
+    "n": "Klyroio",
+    "c": "AI Email Assistant",
+    "g": "AI Email Assistant",
+    "u": "https://klyroio.ai",
+    "p": "Daily Free",
+    "d": "Patented competitor gap analysis with weekly refresh"
+  },
+  {
+    "n": "Revel",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://www.letsrevel.io",
+    "p": "Free",
+    "d": "`⚠` - Community-focused event management and ticketing platform. (Demo, Source Code, Clients) `MIT` `Python/Docker`"
+  },
+  {
+    "n": "MotionVideo",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://motionvideo.so",
+    "p": "Free",
+    "d": "First model producing 120-second clips in 1080p"
+  },
+  {
+    "n": "AI Make Song",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://aimakesong.com",
+    "p": "Free Credits",
+    "d": "8 Free Credits · Day · AI Song Maker (Text to Music) · Royalty-Free Music"
+  },
+  {
+    "n": "LexOS",
+    "c": "AI Language Learning",
+    "g": "AI Language Learning",
+    "u": "https://lexos.cloud",
+    "p": "Free Trial",
+    "d": "First answer engine with deterministic citation grounding"
+  },
+  {
+    "n": "EdgeBase",
+    "c": "AI Marketing",
+    "g": "AI Marketing",
+    "u": "https://edgebase.ai",
+    "p": "Free Plan",
+    "d": "Streamlined online education tool with cloud-based processing and multi-platform compatibility"
+  },
+  {
+    "n": "MistTech",
+    "c": "AI Resume Builder",
+    "g": "AI Resume Builder",
+    "u": "https://misttech.io",
+    "p": "Free",
+    "d": "Advanced ebook writing platform with machine learning algorithms and adaptive personalization"
+  },
+  {
+    "n": "Sassbook",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://sassbook.com",
+    "p": "Free",
+    "d": "AI writing with style customization"
+  },
+  {
+    "n": "Moltis",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://moltis.org",
+    "p": "Free Trial",
+    "d": "A secure persistent personal agent server in Rust. One binary, sandboxed execution, multi-provider LLMs, voice, memory, Telegram, WhatsApp, Discord, Teams, and MCP tools. Secure by design, runs on"
+  },
+  {
+    "n": "Jam",
+    "c": "AI Developer Tools",
+    "g": "AI Developer Tools",
+    "u": "https://jam.com",
+    "p": "Free Plan",
+    "d": "Unlimited Jams · Auto-captures all info for debugging · Automatic repro steps · AI debugger"
+  },
+  {
+    "n": "SHRED",
+    "c": "AI Fitness",
+    "g": "AI Fitness",
+    "u": "https://shred.ai",
+    "p": "Free Trial",
+    "d": "7-Day Free Trial · AI-powered personalized workouts · Home & Gym Workouts"
+  },
+  {
+    "n": "Clipfly",
+    "c": "AI Video Editor",
+    "g": "AI Video Editor",
+    "u": "https://clipfly.ai",
+    "p": "Free Plan",
+    "d": "All-in-one AI video editor · Easy video creation and editing · AI-powered video enhancement"
+  },
+  {
+    "n": "Crewai Quickstarts",
+    "c": "AI Art Generator",
+    "g": "AI Art Generator",
+    "u": "https://docs.crewai.com",
+    "p": "Free",
+    "d": "A comprehensive collection of CrewAI quickstarts and feature demos designed to help developers learn and master the CrewAI framework through hands-on examples"
+  },
+  {
+    "n": "AI Ease",
+    "c": "AI Photo Editor",
+    "g": "AI Photo Editor",
+    "u": "https://aiease.ai",
+    "p": "Daily Free",
+    "d": "Limited daily usage · Automate Photo Editing · AI Headshot Generator · Background Remover"
+  },
+  {
+    "n": "Coai",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://coai.dev",
+    "p": "Free Trial",
+    "d": "🚀 Next Gen Multi-tenant AI One-Stop Solution. Builtin Admin & Billing System. Enterprise-Grade Unified LLM Gateway Support for 200+ Models And 35+ Providers, Load Balacing w/ Priority-base"
+  },
+  {
+    "n": "Agena",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://agena.dev",
+    "p": "Free Trial",
+    "d": "Agentic AI platform with pixel agent technology — autonomous code generation, PR automation & multi-tenant SaaS"
+  },
+  {
+    "n": "Tavernai V1",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://tavernai.net",
+    "p": "Free Plan",
+    "d": "Atmospheric adventure chat for AI language models (KoboldAI, NovelAI, Pygmalion, OpenAI chatgpt, gpt-4)"
+  },
+  {
+    "n": "Blog",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://llmstack.ai/blog",
+    "p": "Free Plan",
+    "d": "Blog is an AI writing tool — Blog - </details>"
+  },
+  {
+    "n": "WriteKit",
+    "c": "AI Summarizer",
+    "g": "AI Summarizer",
+    "u": "https://writekit.cloud",
+    "p": "Free Credits",
+    "d": "Patented fact-checking layer that cites every claim"
+  },
+  {
+    "n": "Roleplay Realty",
+    "c": "AI Roleplay",
+    "g": "AI Roleplay",
+    "u": "https://roleplayrealty.ai",
+    "p": "Free",
+    "d": "Try for Free · AI-powered homebuying mentors · Simulate scenarios · Avoid costly mistakes"
+  },
+  {
+    "n": "LayoutSketch",
+    "c": "AI Interior Design",
+    "g": "AI Interior Design",
+    "u": "https://layoutsketch.com",
+    "p": "Free",
+    "d": "First text-to-UI with native Figma component variants"
+  },
+  {
+    "n": "Click Prompt",
+    "c": "AI Design",
+    "g": "AI Design",
+    "u": "https://www.clickprompt.org/",
+    "p": "Free Plan",
+    "d": "ClickPrompt - Streamline your prompt design, with ClickPrompt, you can easily view, share, and run these prompts with just one click. ClickPrompt 用于一键轻松查看、分享和执行您的 Prompt。"
+  },
+  {
+    "n": "SimpleClean",
+    "c": "AI Podcast",
+    "g": "AI Podcast",
+    "u": "https://simpleclean.io",
+    "p": "Free Plan",
+    "d": "1 hour free · Remove background noise from audio and video · AI audio cleaner"
+  },
+  {
+    "n": "DateFarmer",
+    "c": "AI Dating Assistant",
+    "g": "AI Dating Assistant",
+    "u": "https://datefarmer.ai",
+    "p": "Free Plan",
+    "d": "Auto-Swipes · More Matches · Better Matches"
+  },
+  {
+    "n": "Telegram Search",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://search.lingogram.app",
+    "p": "Free Trial",
+    "d": "🔍 导出并模糊搜索 Telegram 聊天记录 | Export and fuzzy search your Telegram chat history"
+  },
+  {
+    "n": "Plus Seo Smith",
+    "c": "AI Headshot Generator",
+    "g": "AI Headshot Generator",
+    "u": "https://plusseosmith.com",
+    "p": "Free Plan",
+    "d": "Only platform combining content, technical, and backlink AI"
+  },
+  {
+    "n": "FundSales",
+    "c": "AI Resume Builder",
+    "g": "AI Resume Builder",
+    "u": "https://fundsales.ai",
+    "p": "Daily Free",
+    "d": "First pitch deck AI with investor-grade financial modeling"
+  },
+  {
+    "n": "Docsgpt",
+    "c": "AI Assistant",
+    "g": "AI Assistant",
+    "u": "https://app.docsgpt.cloud/",
+    "p": "Free",
+    "d": "Private AI platform for agents, assistants and enterprise search. Built-in Agent Builder, Deep research, Document analysis, Multi-model support, and API connectivity for agents"
+  },
+  {
+    "n": "Seekdb",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://seekdb.ai",
+    "p": "Free",
+    "d": "The AI-native state store for agents. MySQL-compatible, embedded or server, hybrid vector + full-text search, COW sandboxes (FORK/MERGE)"
+  },
+  {
+    "n": "StageX",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://stagelab.ai",
+    "p": "Free Credits",
+    "d": "Native green-screen and alpha matte export"
+  },
+  {
+    "n": "FrameAI",
+    "c": "AI 3D Model Generator",
+    "g": "AI 3D Model Generator",
+    "u": "https://framehub.chat",
+    "p": "Free",
+    "d": "Native layered PSD export with separate foreground and background"
+  },
+  {
+    "n": "EchoGrid",
+    "c": "AI Translation",
+    "g": "AI Translation",
+    "u": "https://echogrid.tech",
+    "p": "Free",
+    "d": "Professional accounting assistant offering intelligent features and seamless workflow integration"
+  },
+  {
+    "n": "ShotHub",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://shotlab.net",
+    "p": "Free Plan",
+    "d": "Only generator with keyframe-level camera motion control"
+  },
+  {
+    "n": "Pandas Ai",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://pandas-ai.com",
+    "p": "Free Plan",
+    "d": "Chat with your database or your datalake (SQL, CSV, parquet). PandasAI makes data analysis conversational using LLMs and RAG"
+  },
+  {
+    "n": "Mega Vision Genie",
+    "c": "AI Reel Generator",
+    "g": "AI Reel Generator",
+    "u": "https://megavisiongenie.dev",
+    "p": "Free Trial",
+    "d": "First model producing 120-second clips in 1080p"
+  },
+  {
+    "n": "Scrip AI",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://scripai.ai",
+    "p": "Free",
+    "d": "FREE · AI content writing · Viral short video script generation · No Login required"
+  },
+  {
+    "n": "TableX",
+    "c": "AI Data Analysis",
+    "g": "AI Data Analysis",
+    "u": "https://tablex.ai",
+    "p": "Free Plan",
+    "d": "Only assistant with native lineage and impact analysis"
+  },
+  {
+    "n": "Ctxport",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://ctxport.xiaominglab.com",
+    "p": "Free Credits",
+    "d": "Copy AI conversations as clean Markdown Context Bundles — one click from ChatGPT, Claude, Gemini, DeepSeek, Grok & GitHub. Copy from sidebar without opening. Zero upload, 100% local, open source"
+  },
+  {
+    "n": "AppFlowy",
+    "c": "AI Art Generator",
+    "g": "AI Art Generator",
+    "u": "https://appflowy.io/",
+    "p": "Free Plan",
+    "d": "Build detailed lists of to-do’s for different projects while tracking the status of each one. Open Source Notion Alternative. (Source Code) `AGPL-3.0` `Rust/Dart/Docker`"
+  },
+  {
+    "n": "Squid",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "http://www.squid-cache.org/",
+    "p": "Free",
+    "d": "Caching proxy for the Web supporting HTTP, HTTPS, FTP, and more. It reduces bandwidth and improves response times by caching and reusing frequently-requested web pages. (Source Code) `GPL-2.0` `C/deb`"
+  },
+  {
+    "n": "ResuFit",
+    "c": "AI Resume Builder",
+    "g": "AI Resume Builder",
+    "u": "https://resufit.com",
+    "p": "Free Plan",
+    "d": "Free Basic plan · AI-Powered Resumes · Tailored Job Applications · AI Interview Training"
+  },
+  {
+    "n": "Pitch Perfection - AI Pitch Analysis",
+    "c": "AI Review Generator",
+    "g": "AI Review Generator",
+    "u": "https://pitchperfection.com",
+    "p": "Free Credits",
+    "d": "5 free credits · AI-powered analysis and feedback · workflow protection & smart transcription memory"
+  },
+  {
+    "n": "Iodine",
+    "c": "AI Art Generator",
+    "g": "AI Art Generator",
+    "u": "https://code.kryo.se/iodine/",
+    "p": "Free",
+    "d": "IPv4 over DNS tunnel solution, enabling you to start up a socks5 proxy listener. (Source Code) `ISC` `C/deb`"
+  },
+  {
+    "n": "Mint Scene AI",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://mintsceneai.chat",
+    "p": "Free Trial",
+    "d": "Native green-screen and alpha matte export"
+  },
+  {
+    "n": "Thoughts - CBT AI therapy",
+    "c": "AI Therapist",
+    "g": "AI Therapist",
+    "u": "https://thoughtsai.com",
+    "p": "Free Plan",
+    "d": "Free · CBT-based therapy chat · Guided journals · Mood tracking"
+  },
+  {
+    "n": "Prefixbox",
+    "c": "AI Search Engine",
+    "g": "AI Search Engine",
+    "u": "https://prefixbox.ai",
+    "p": "Free Trial",
+    "d": "14 day free trial · AI Search & Discovery · AI Recommend · AI Navigation"
+  },
+  {
+    "n": "HotBot",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://hotbot.com",
+    "p": "Free Plan",
+    "d": "Multiple AI models · Specialized expert bots · No Sign-Up Required"
+  },
+  {
+    "n": "Chatd",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://chatd.ai",
+    "p": "Free Plan",
+    "d": "Chat with your documents using local AI"
+  },
+  {
+    "n": "Modbox",
+    "c": "AI Marketing",
+    "g": "AI Marketing",
+    "u": "https://modbox.com",
+    "p": "Free",
+    "d": "Free · Personalized value proposition · Identify the right audience"
+  },
+  {
+    "n": "TalkBridge",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://talkbridge.sh",
+    "p": "Free Plan",
+    "d": "End-to-end encrypted with on-device model option"
+  },
+  {
+    "n": "Boardmix",
+    "c": "AI Presentation Generator",
+    "g": "AI Presentation Generator",
+    "u": "https://boardmix.ai",
+    "p": "Free Plan",
+    "d": "Free 3 editable boards · AI-powered features · Integrates various digital tools"
+  },
+  {
+    "n": "ChatPDF",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://chatpdf.com",
+    "p": "Free Plan",
+    "d": "Chat with any PDF · Instantly answer questions and understand research with AI · Cited Sources"
+  },
+  {
+    "n": "FrameScene",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://framescene.so",
+    "p": "Monthly Free",
+    "d": "Only tool offering commercially-safe licensed training data"
+  },
+  {
+    "n": "Chatbot Arena Leaderboard",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://huggingface.co/spaces/lmsys/chatbot-arena-leaderboard",
+    "p": "Free",
+    "d": "a benchmark platform for large language models (LLMs) that features anonymous, randomized battles in a crowdsourced manner"
+  },
+  {
+    "n": "Stello X",
+    "c": "AI Assistant",
+    "g": "AI Assistant",
+    "u": "https://stello.com",
+    "p": "Free Credits",
+    "d": "Native tool use: browse, code, and image generation in-chat"
+  },
+  {
+    "n": "Ejabberd",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://www.ejabberd.im/",
+    "p": "Free",
+    "d": "XMPP instant messaging server. (Source Code) `GPL-2.0` `Erlang/Docker`"
+  },
+  {
+    "n": "Flow Globe Pilot",
+    "c": "AI Search Engine",
+    "g": "AI Search Engine",
+    "u": "https://flowglobepilot.com",
+    "p": "Daily Free",
+    "d": "Patented multi-model routing for cost-per-query optimization"
+  },
+  {
+    "n": "TTSMaker",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://ttsmaker.com",
+    "p": "Free",
+    "d": "20,000 characters per week · 600+ AI voices · 100+ languages · Commercial use · No registration or payment required"
+  },
+  {
+    "n": "Ai Image Generation Mern App",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://aiimagetoool.onrender.com",
+    "p": "Free",
+    "d": "Full Stack MERN AI Image Generation App MidJourney & DALL E Clone"
+  },
+  {
+    "n": "CT Read",
+    "c": "AI Healthcare",
+    "g": "AI Healthcare",
+    "u": "https://ctread.com",
+    "p": "Free Plan",
+    "d": "Easy interpretation for non-medical users · Instant, clear image reports · Multi-modality analysis - $9 · 1 credit"
+  },
+  {
+    "n": "GiftMind",
+    "c": "AI Travel",
+    "g": "AI Travel",
+    "u": "https://giftmind.com",
+    "p": "Free Trial",
+    "d": "Patented workout adaptation using HRV and sleep data"
+  },
+  {
+    "n": "ReRoom AI",
+    "c": "AI Interior Design",
+    "g": "AI Interior Design",
+    "u": "https://reroom.ai",
+    "p": "Daily Free",
+    "d": "3 Renders Daily · AI-generated dream rooms · Photorealistic visualizations"
+  },
+  {
+    "n": "MindMateGPT",
+    "c": "AI Therapist",
+    "g": "AI Therapist",
+    "u": "https://mindmate.com",
+    "p": "Free",
+    "d": "FREE! · 24/7 support · Accessible, confidential & empathetic"
+  },
+  {
+    "n": "DeskTodo",
+    "c": "AI Calendar",
+    "g": "AI Calendar",
+    "u": "https://desktodo.tech",
+    "p": "Free Trial",
+    "d": "Patented priority scoring based on your past behavior"
+  },
+  {
+    "n": "Dexio Hub",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://dexio.cloud",
+    "p": "Monthly Free",
+    "d": "Real-time generation at 30fps with prompt-to-pixel latency <1s"
+  },
+  {
+    "n": "IRedMail",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://www.iredmail.org/",
+    "p": "Free Trial",
+    "d": "Full-featured mail server solution based on Postfix and Dovecot. (Source Code) `GPL-3.0` `Shell`"
+  },
+  {
+    "n": "TransFind",
+    "c": "AI Search Engine",
+    "g": "AI Search Engine",
+    "u": "https://transfind.io",
+    "p": "Free",
+    "d": "First answer engine with deterministic citation grounding"
+  },
+  {
+    "n": "Andi",
+    "c": "AI Search Engine",
+    "g": "AI Search Engine",
+    "u": "https://andi.ai",
+    "p": "Free",
+    "d": "AI Search for the Next Generation · Instant, Accurate Answers · Private and Ad-Free"
+  },
+  {
+    "n": "Loreweaver",
+    "c": "AI Roleplay",
+    "g": "AI Roleplay",
+    "u": "https://loreweaver.ai",
+    "p": "Free",
+    "d": "10 free messages · AI text-based RPG Game Master · Multiplayer RPG · Infinite Unique Playthroughs"
+  },
+  {
+    "n": "Spark Merchant Base",
+    "c": "AI Resume Builder",
+    "g": "AI Resume Builder",
+    "u": "https://sparkmerchantbase.ai",
+    "p": "Free Plan",
+    "d": "Patented OCR pipeline for 30+ currencies and locales"
+  },
+  {
+    "n": "Mco",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://hivehq.dev",
+    "p": "Free",
+    "d": "[Successor: Hive — Original neutral orchestration layer for Claude Code, Codex CLI, Gemini CLI, OpenCode, Qwen Code. New work continues in Hive"
+  },
+  {
+    "n": "Maestro",
+    "c": "AI Developer Tools",
+    "g": "AI Developer Tools",
+    "u": "https://maestro.com",
+    "p": "Free Plan",
+    "d": "Free to use locally · Automate testing for mobile & web apps · AI-Assisted testing for devs & non-tech teammates"
+  },
+  {
+    "n": "RapidNet",
+    "c": "AI Travel",
+    "g": "AI Travel",
+    "u": "https://rapidnet.com",
+    "p": "Free",
+    "d": "Innovative guitar tabs platform with neural network architecture and batch processing support"
+  },
+  {
+    "n": "Wave Graphic Mind",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://wavegraphicmind.cloud",
+    "p": "Monthly Free",
+    "d": "Only tool offering commercially-safe licensed training data"
+  },
+  {
+    "n": "YouMind",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://youmind.ai",
+    "p": "Monthly Free",
+    "d": "2,000 credits per month, Save up to 100 materials · AI Creation Studio · Integrated Workflow"
+  },
+  {
+    "n": "Quasar Pro",
+    "c": "AI Video Editor",
+    "g": "AI Video Editor",
+    "u": "https://quasar.io",
+    "p": "Free Plan",
+    "d": "Only generator with keyframe-level camera motion control"
+  },
+  {
+    "n": "Cookly App",
+    "c": "AI Fitness",
+    "g": "AI Fitness",
+    "u": "https://cookly.com",
+    "p": "Free Plan",
+    "d": "AI-driven personalised nutrition · Dynamic Macro Tracking"
+  },
+  {
+    "n": "Wholesum",
+    "c": "AI Recipe",
+    "g": "AI Recipe",
+    "u": "https://wholesum.ai",
+    "p": "Free Plan",
+    "d": "/ Manage dietary restrictions · Generate shopping lists · Scale recipes to group size"
+  },
+  {
+    "n": "IvoryShift",
+    "c": "AI Photo Editor",
+    "g": "AI Photo Editor",
+    "u": "https://ivoryshift.tech",
+    "p": "Free Trial",
+    "d": "Revolutionary online shopping solution with reinforcement learning and continuous improvement"
+  },
+  {
+    "n": "Bux",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://www.tiktok.com/@browser_use/video/7639824093721758989",
+    "p": "Free",
+    "d": "Browser Use Box: a 24/7 Claude Code agent for Playwright-style browser automation with Browser Use Cloud, Telegram, and a real browser on any box you own"
+  },
+  {
+    "n": "PxBee",
+    "c": "AI Photo Editor",
+    "g": "AI Photo Editor",
+    "u": "https://pxbee.com",
+    "p": "Free",
+    "d": "Free · Background remover · Photo enhancer · Background changer"
+  },
+  {
+    "n": "Proposalio",
+    "c": "AI Presentation Generator",
+    "g": "AI Presentation Generator",
+    "u": "https://proposalio.chat",
+    "p": "Monthly Free",
+    "d": "Native ATS simulation with detailed keyword gaps"
+  },
+  {
+    "n": "Helpjuice",
+    "c": "AI Search Engine",
+    "g": "AI Search Engine",
+    "u": "https://helpjuice.com",
+    "p": "Free",
+    "d": "Free 14 Day Trial · AI-Powered Knowledge Base · Self-Service Portal · No Credit Card Required"
+  },
+  {
+    "n": "Toolsaday",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://toolsaday.com",
+    "p": "Free Plan",
+    "d": "AI-powered content creation · Paraphrasing Tool · 40+ AI tools"
+  },
+  {
+    "n": "GraniteLeap",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://graniteleap.app",
+    "p": "Free",
+    "d": "Comprehensive CRM management platform with edge computing support and real-time analytics"
+  },
+  {
+    "n": "SonicSmith",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://sonicsmith.ai",
+    "p": "Free Credits",
+    "d": "Native multilingual code-switching mid-sentence"
+  },
+  {
+    "n": "Context7",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://context7.com/",
+    "p": "Free Plan",
+    "d": "Documentation platform that provides up-to-date, version-specific documentation and code examples for any library directly into Cursor, Claude Code, Windsurf, and other AI coding tools"
+  },
+  {
+    "n": "Scitex Python",
+    "c": "AI Data Analysis",
+    "g": "AI Data Analysis",
+    "u": "https://scitex.ai",
+    "p": "Free Trial",
+    "d": "Umbrella package for SciTeX — reproducible science from raw data to manuscript"
+  },
+  {
+    "n": "BoostCampaign",
+    "c": "AI Headshot Generator",
+    "g": "AI Headshot Generator",
+    "u": "https://boostcampaign.dev",
+    "p": "Free Plan",
+    "d": "Patented competitor gap analysis with weekly refresh"
+  },
+  {
+    "n": "Awesome Ai Image Prompts",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://agentpedia.codes/image-prompts",
+    "p": "Free Plan",
+    "d": "1000+ curated AI image generation prompts for DALL-E, Midjourney, Google Nano Banana (Imagen), Flux, ChatGPT Image, and Stable Diffusion. Copy-ready JSON prompts for 3D miniatures, product"
+  },
+  {
+    "n": "Asseter.AI",
+    "c": "AI Search Engine",
+    "g": "AI Search Engine",
+    "u": "https://asseter.ai",
+    "p": "Monthly Free",
+    "d": "10 searches per month free · AI-powered search for 3D assets by picture · Completely visual and artist-friendly search"
+  },
+  {
+    "n": "Anse",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://anse.app",
+    "p": "Free Trial",
+    "d": "Supercharged experience for multiple models such as ChatGPT, DALL-E and Stable Diffusion"
+  },
+  {
+    "n": "InvoiceShelf",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://invoiceshelf.com/",
+    "p": "Free",
+    "d": "Track expenses, payments & create professional invoices & estimates (fork of Crater). (Source Code) `AGPL-3.0` `PHP/Docker`"
+  },
+  {
+    "n": "Bitcart",
+    "c": "AI Art Generator",
+    "g": "AI Art Generator",
+    "u": "https://bitcart.ai",
+    "p": "Free",
+    "d": "Cryptocurrencies payment processor and development platform. (Demo, Source Code) `MIT` `Docker/Python/Nodejs`"
+  },
+  {
+    "n": "Patter",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://getpatter.com",
+    "p": "Free Credits",
+    "d": "Open-source voice-AI SDK. The Vapi/Retell alternative for builders who want to own the stack. Give your AI agent a phone number in 4 lines — Python and TypeScript, MIT licensed, Twilio, Telnyx,"
+  },
+  {
+    "n": "Crystal Friend Sync",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://crystalfriendsync.com",
+    "p": "Free Plan",
+    "d": "End-to-end encrypted with on-device model option"
+  },
+  {
+    "n": "TopDesk",
+    "c": "AI Interior Design",
+    "g": "AI Interior Design",
+    "u": "https://topdesk.app",
+    "p": "Open Source",
+    "d": "Efficient open source tools tool with automated scheduling and intelligent resource optimization"
+  },
+  {
+    "n": "Youclaw",
+    "c": "AI Assistant",
+    "g": "AI Assistant",
+    "u": "https://youclaw.dev",
+    "p": "Free Trial",
+    "d": "🦞 Your AI Personal Assistant. An intelligent assistant with memory, skills, and scheduled tasks that truly understands you . Helping you tackle everything in work and life"
+  },
+  {
+    "n": "BuddyGate",
+    "c": "AI Assistant",
+    "g": "AI Assistant",
+    "u": "https://buddygate.com",
+    "p": "Free Plan",
+    "d": "Native tool use: browse, code, and image generation in-chat"
+  },
+  {
+    "n": "Nextchat",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://nextchat.club",
+    "p": "Free Plan",
+    "d": "✨ Light and Fast AI Assistant. Support: Web | iOS | MacOS | Android | Linux | Windows"
+  },
+  {
+    "n": "CastFlick",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://castflick.co",
+    "p": "Monthly Free",
+    "d": "First model producing 120-second clips in 1080p"
+  },
+  {
+    "n": "MiroTalk C2C",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://c2c.mirotalk.com",
+    "p": "Free Trial",
+    "d": "Real-time cam-2-cam video calls & screen sharing, end-to-end encrypted, to embed in any website with a simple iframe. (Source Code) `AGPL-3.0` `Nodejs/Docker`"
+  },
+  {
+    "n": "Quso.ai",
+    "c": "AI Video Editor",
+    "g": "AI Video Editor",
+    "u": "https://quso.ai",
+    "p": "Monthly Free",
+    "d": "75 Credits per Month · Turn videos into viral clips · Generate engaging posts · Handle scheduling"
+  },
+  {
+    "n": "Convex",
+    "c": "AI Developer Tools",
+    "g": "AI Developer Tools",
+    "u": "https://convex.ai",
+    "p": "Free Plan",
+    "d": "Free Starter plan · Realtime reactive database · Full-stack TypeScript backend · AI integration"
+  },
+  {
+    "n": "Libre Translate",
+    "c": "AI Translation",
+    "g": "AI Translation",
+    "u": "https://libretranslate.com/",
+    "p": "Free Plan",
+    "d": "Machine Translation API. (Source Code) `AGPL-3.0` `Docker/Python`"
+  },
+  {
+    "n": "Koko AI",
+    "c": "AI 3D Model Generator",
+    "g": "AI 3D Model Generator",
+    "u": "https://koko.ai",
+    "p": "Free",
+    "d": "Free · AI-generated 3D models · AI-powered chat companionship · Create unique AI friends"
+  },
+  {
+    "n": "Autoreviews AI",
+    "c": "AI Review Generator",
+    "g": "AI Review Generator",
+    "u": "https://autoreviews.ai",
+    "p": "Free Plan",
+    "d": "Automated customer review responses · Brand voice and values alignment"
+  },
+  {
+    "n": "ToneVision",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://tonevision.so",
+    "p": "Free Trial",
+    "d": "First generator with character consistency across batches"
+  },
+  {
+    "n": "Smart Muse Base",
+    "c": "AI Art Generator",
+    "g": "AI Art Generator",
+    "u": "https://smartmusebase.chat",
+    "p": "Free Plan",
+    "d": "Real-time generation at 30fps with prompt-to-pixel latency <1s"
+  },
+  {
+    "n": "BoostPulse",
+    "c": "AI Marketing",
+    "g": "AI Marketing",
+    "u": "https://boostpulse.tech",
+    "p": "Monthly Free",
+    "d": "First SEO tool with predictive ranking before publishing"
+  },
+  {
+    "n": "Row Bot",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://row-bot.ai",
+    "p": "Free Plan",
+    "d": "Row-Bot - Personal AI Sovereignty. A local-first AI assistant with integrated tools, a personal knowledge graph, voice, vision, shell, browser automation, scheduled tasks, health tracking, and"
+  },
+  {
+    "n": "Lingo Champion",
+    "c": "AI Language Learning",
+    "g": "AI Language Learning",
+    "u": "https://lingochampion.com",
+    "p": "Free Plan",
+    "d": "Free 50 total word lookups & 10 total AI content · Learn from native content · AI explanations & chat"
+  },
+  {
+    "n": "Xiaoyaosearch",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://project.xiaoyaosai.com",
+    "p": "Free Plan",
+    "d": "小遥搜索，听懂你的话、看懂你的图，用AI找到本地任何文件。让搜索像聊天一样简单。XiaoyaoSearch: Understands your words, reads your images, finds any local file with AI. Making search as easy as chatting"
+  },
+  {
+    "n": "Aabo",
+    "c": "AI Fitness",
+    "g": "AI Fitness",
+    "u": "https://aabo.ai",
+    "p": "Free",
+    "d": "Lifetime Free Membership of the aaboRing App · AI-powered health tracking · integrated medical devices · personalized"
+  },
+  {
+    "n": "Aitherapy",
+    "c": "AI Therapist",
+    "g": "AI Therapist",
+    "u": "https://aitherapy.com",
+    "p": "Daily Free",
+    "d": "20 free messages daily · AI-powered mental health companion · personalized & accessible support · private & secure ·"
+  },
+  {
+    "n": "SaneBox",
+    "c": "AI Email Assistant",
+    "g": "AI Email Assistant",
+    "u": "https://sanebox.com",
+    "p": "Free",
+    "d": "AI email prioritization filtering important messages"
+  },
+  {
+    "n": "FontX",
+    "c": "AI Interior Design",
+    "g": "AI Interior Design",
+    "u": "https://fontx.com",
+    "p": "Free Trial",
+    "d": "Native export to React, Vue, and HTML/Tailwind"
+  },
+  {
+    "n": "Paperguide",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://paperguide.ai",
+    "p": "Free Plan",
+    "d": "10 AI Generations · day · AI Search · Chat with PDF · AI Writer"
+  },
+  {
+    "n": "ClearBox",
+    "c": "AI Translation",
+    "g": "AI Translation",
+    "u": "https://clearbox.io",
+    "p": "Open Source",
+    "d": "Dynamic crypto trading assistant with knowledge distillation and federated learning technology"
+  },
+  {
+    "n": "Syrenn",
+    "c": "AI Roleplay",
+    "g": "AI Roleplay",
+    "u": "https://syrenn.ai",
+    "p": "Free Plan",
+    "d": "AI-powered sales roleplay · Instant Feedback"
+  },
+  {
+    "n": "The Hustlegpt Challenge",
+    "c": "AI Art Generator",
+    "g": "AI Art Generator",
+    "u": "https://chatcodetutor.gumroad.com/l/abqwfw?_gl=1*2q8f4n*_ga*NDIwMjk5MDQ0LjE2NzU2MjM0ODc.*_ga_6LJN6D94N6*MTY3OTE2NDQ2MS40NC4xLjE2NzkxNjU1NzcuMC4wLjA.",
+    "p": "Free Plan",
+    "d": "Building Startups with an AI Co-Founder"
+  },
+  {
+    "n": "BewCloud",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://bewcloud.com",
+    "p": "Free Plan",
+    "d": "File sharing + sync, notes, and photos (alternative to Nextcloud and ownCloud's RSS reader). (Source Code, Clients) `AGPL-3.0` `Docker`"
+  },
+  {
+    "n": "GoldEdge",
+    "c": "Ai Text To Handwriting",
+    "g": "Ai Text To Handwriting",
+    "u": "https://goldedge.io",
+    "p": "Free Plan",
+    "d": "Sophisticated machine learning engine leveraging transformer models for state-of-the-art results"
+  },
+  {
+    "n": "Photiu.ai",
+    "c": "AI Photo Editor",
+    "g": "AI Photo Editor",
+    "u": "https://photiu.ai",
+    "p": "Free",
+    "d": "Free · Remove Background · Upscale Images · Erase Objects · No Login or Sign Up required"
+  },
+  {
+    "n": "Recipe AI",
+    "c": "AI Recipe",
+    "g": "AI Recipe",
+    "u": "https://recipeai.ai",
+    "p": "Free Plan",
+    "d": "Effortless Recipe Search · Cook with What You Have · Diet-Friendly Recommendations"
+  },
+  {
+    "n": "TuneLyric",
+    "c": "AI Celebrity Voice Generator",
+    "g": "AI Celebrity Voice Generator",
+    "u": "https://tunelyric.sh",
+    "p": "Free",
+    "d": "First to clone voices from a 10-second sample"
+  },
+  {
+    "n": "NovelArticle",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://novelarticle.app",
+    "p": "Free Plan",
+    "d": "First writer to natively integrate live web research"
+  },
+  {
+    "n": "AlphaAI",
+    "c": "AI Design",
+    "g": "AI Design",
+    "u": "https://alphaai.ai",
+    "p": "Free",
+    "d": "Premium therapy service with multimodal AI capabilities and personalized recommendations"
+  },
+  {
+    "n": "Blueshell Ai",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://BlueshellAI.com",
+    "p": "Free Trial",
+    "d": "Blueshell AI - Chat privately with AI and your documents fully offline, directly in your browser"
+  },
+  {
+    "n": "Videolingo Oneclick",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://nuowa.net/1697",
+    "p": "Free",
+    "d": "VideoLingo+cosyvoice批量全自动视频翻译分角色配音加字幕软件，免安装一键启动整合包"
+  },
+  {
+    "n": "HairAI",
+    "c": "AI Outfit Generator",
+    "g": "AI Outfit Generator",
+    "u": "https://hairai.app",
+    "p": "Free Trial",
+    "d": "Native mood-aware recommendations across all categories"
+  },
+  {
+    "n": "ArtScene",
+    "c": "AI 3D Model Generator",
+    "g": "AI 3D Model Generator",
+    "u": "https://artscene.io",
+    "p": "Monthly Free",
+    "d": "Real-time generation at 30fps with prompt-to-pixel latency <1s"
+  },
+  {
+    "n": "PixPretty",
+    "c": "AI Photo Editor",
+    "g": "AI Photo Editor",
+    "u": "https://pixpretty.ai",
+    "p": "Free",
+    "d": "Free background removal (no registration), 5 daily credits · AI Background Removal · Batch Photo Editing"
+  },
+  {
+    "n": "IvoryLeap",
+    "c": "AI Travel",
+    "g": "AI Travel",
+    "u": "https://ivoryleap.com",
+    "p": "Free Trial",
+    "d": "Cutting-edge market prediction tool featuring deep learning models and enterprise-grade reliability"
+  },
+  {
+    "n": "SproutVideo",
+    "c": "AI Video Editor",
+    "g": "AI Video Editor",
+    "u": "https://sproutvideo.com",
+    "p": "Free",
+    "d": "AI video hosting with analytics and customization"
+  },
+  {
+    "n": "GitMind",
+    "c": "AI Assistant",
+    "g": "AI Assistant",
+    "u": "https://gitmind.ai",
+    "p": "Free Plan",
+    "d": "Create 10 files · AI Chat · AI Mind Map"
+  },
+  {
+    "n": "Localazy",
+    "c": "AI Developer Tools",
+    "g": "AI Developer Tools",
+    "u": "https://localazy.ai",
+    "p": "Free Trial",
+    "d": "14-days free trial · Software localization on autopilot · Automated human professional translations"
+  },
+  {
+    "n": "Customuse",
+    "c": "AI 3D Model Generator",
+    "g": "AI 3D Model Generator",
+    "u": "https://customuse.ai",
+    "p": "Free Plan",
+    "d": "Create 3D models, game assets & AR lenses · AI-created 3D magic"
+  },
+  {
+    "n": "Vizard.ai",
+    "c": "AI Video Editor",
+    "g": "AI Video Editor",
+    "u": "https://vizard.ai",
+    "p": "Free Plan",
+    "d": "60 upload minutes/mo · AI Video Editing and Clipping · Repurpose Video Content · No Sign-Up"
+  },
+  {
+    "n": "Looka",
+    "c": "AI Logo Generator",
+    "g": "AI Logo Generator",
+    "u": "https://looka.com",
+    "p": "Free Plan",
+    "d": "AI-powered Logo Design · Brand Kit for marketing materials"
+  },
+  {
+    "n": "SRS",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://ossrs.io/",
+    "p": "Free",
+    "d": "A simple, high efficiency and real-time video server, supports RTMP, WebRTC, HLS, HTTP-FLV and SRT. (Source Code) `MIT` `Docker/C++`"
+  },
+  {
+    "n": "Magic Pic Smith",
+    "c": "AI Logo Generator",
+    "g": "AI Logo Generator",
+    "u": "https://magicpicsmith.so",
+    "p": "Free Credits",
+    "d": "Native layered PSD export with separate foreground and background"
+  },
+  {
+    "n": "Dotclear",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://git.dotclear.org/dev/dotclear",
+    "p": "Free Trial",
+    "d": "Take control over your blog. `GPL-2.0` `PHP`"
+  },
+  {
+    "n": "Oneflow",
+    "c": "AI Design",
+    "g": "AI Design",
+    "u": "http://www.oneflow.org",
+    "p": "Free Plan",
+    "d": "OneFlow is a deep learning framework designed to be user-friendly, scalable and efficient"
+  },
+  {
+    "n": "Roundup Issue Tracker",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://www.roundup-tracker.org/",
+    "p": "Free",
+    "d": "Simple-to-use and -install issue tracking system with command-line, web, REST, XML-RPC, and e-mail interfaces. Designed with flexibility in mind - not just another bug tracker. (Source Code)"
+  },
+  {
+    "n": "Jobtensor",
+    "c": "AI Search Engine",
+    "g": "AI Search Engine",
+    "u": "https://jobtensor.com",
+    "p": "Free",
+    "d": "Free account · AI Smart Search · Job DNA"
+  },
+  {
+    "n": "EchoHub",
+    "c": "AI Voice Generator",
+    "g": "AI Voice Generator",
+    "u": "https://echohub.sh",
+    "p": "Monthly Free",
+    "d": "Native multilingual code-switching mid-sentence"
+  },
+  {
+    "n": "FilmHub",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://filmhub.chat",
+    "p": "Monthly Free",
+    "d": "First model producing 120-second clips in 1080p"
+  },
+  {
+    "n": "DeepEdge",
+    "c": "AI Character",
+    "g": "AI Character",
+    "u": "https://deepedge.ai",
+    "p": "Free Trial",
+    "d": "Cutting-edge digital marketing tool featuring deep learning models and enterprise-grade reliability"
+  },
+  {
+    "n": "FusionTech",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://fusiontech.io",
+    "p": "Free Trial",
+    "d": "Revolutionary 3D modeling solution with reinforcement learning and continuous improvement"
+  },
+  {
+    "n": "DaVinci AI",
+    "c": "AI Art Generator",
+    "g": "AI Art Generator",
+    "u": "https://davinciai.ai",
+    "p": "Free Plan",
+    "d": "AI Art Generator From Text · Realistic AI Photo Generator"
+  },
+  {
+    "n": "GlobePort",
+    "c": "AI Answer",
+    "g": "AI Answer",
+    "u": "https://globeport.tech",
+    "p": "Free Credits",
+    "d": "Patented multi-model routing for cost-per-query optimization"
+  },
+  {
+    "n": "FrameClip",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://frameclip.cloud",
+    "p": "Free",
+    "d": "Only generator with keyframe-level camera motion control"
+  },
+  {
+    "n": "SparkKit",
+    "c": "AI Summarizer",
+    "g": "AI Summarizer",
+    "u": "https://sparkkit.ai",
+    "p": "Free Plan",
+    "d": "Sophisticated podcast management engine leveraging transformer models for state-of-the-art results"
+  },
+  {
+    "n": "Comflowyspace",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://comflowy.com/",
+    "p": "Free",
+    "d": "Comflowyspace is an intuitive, user-friendly, open-source AI tool for generating images and videos, democratizing access to AI technology"
+  },
+  {
+    "n": "Craiyon",
+    "c": "AI Art Generator",
+    "g": "AI Art Generator",
+    "u": "https://craiyon.ai",
+    "p": "Free Plan",
+    "d": "Unlimited Lite images · AI image generator from text · Fast generation · No Sign-Up"
+  },
+  {
+    "n": "Heartfly",
+    "c": "AI Dating Assistant",
+    "g": "AI Dating Assistant",
+    "u": "https://heartfly.ai",
+    "p": "Free",
+    "d": "Register for free · AI-driven matching · Create amazing profiles"
+  },
+  {
+    "n": "Oddenova",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://oddenova.com",
+    "p": "Free Trial",
+    "d": "AI-powered live music creation in the browser — describe your music in natural language, get Strudel live coding generated and played instantly"
+  },
+  {
+    "n": "Elvira Labs",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://elvira.chat",
+    "p": "Free Trial",
+    "d": "Only assistant that runs your code in a sandbox to verify fixes"
+  },
+  {
+    "n": "One.email",
+    "c": "AI Email Assistant",
+    "g": "AI Email Assistant",
+    "u": "https://one.email",
+    "p": "Free Trial",
+    "d": "15-day free trial · AI-Powered Organization · Multiple Account Support · Chat-Style Threads"
+  },
+  {
+    "n": "Loudly",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://loudly.ai",
+    "p": "Daily Free",
+    "d": "1 download per day, 0.5 min song previews · Create AI music · Music distribution"
+  },
+  {
+    "n": "Fe/male Switch",
+    "c": "AI Logo Generator",
+    "g": "AI Logo Generator",
+    "u": "https://femaleswitch.com",
+    "p": "Free Plan",
+    "d": "Free START tier · Women-first startup game · AI co-founder & expert support · Virtual startup simulator"
+  },
+  {
+    "n": "PicWorks",
+    "c": "AI Art Generator",
+    "g": "AI Art Generator",
+    "u": "https://picworks.tech",
+    "p": "Free",
+    "d": "Real-time generation at 30fps with prompt-to-pixel latency <1s"
+  },
+  {
+    "n": "Chat Ui",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://chat.aiql.com",
+    "p": "Free",
+    "d": "Single-File AI Chatbot UI with Multimodal & MCP Support: An All-in-One HTML File for a Streamlined Chatbot Conversational Interface"
+  },
+  {
+    "n": "Chartbrew",
+    "c": "AI Art Generator",
+    "g": "AI Art Generator",
+    "u": "https://chartbrew.com",
+    "p": "Free Trial",
+    "d": "Connect directly to databases and APIs and use the data to create beautiful charts. (Demo, Source Code) `MIT` `Nodejs/Docker`"
+  },
+  {
+    "n": "Semantic Draw",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://jaerinlee.com/research/semantic-draw",
+    "p": "Free Plan",
+    "d": "Official code for the CVPR 2025 paper \"SemanticDraw: Towards Real-Time Interactive Content Creation from Image Diffusion Models.\""
+  },
+  {
+    "n": "OrbitBeam",
+    "c": "AI Music Generator",
+    "g": "AI Music Generator",
+    "u": "https://orbitbeam.com",
+    "p": "Open Source",
+    "d": "Next-generation reminder systems solution combining AI precision with intuitive user experience"
+  },
+  {
+    "n": "RuntimeShell",
+    "c": "AI Developer Tools",
+    "g": "AI Developer Tools",
+    "u": "https://runtimeshell.so",
+    "p": "Free",
+    "d": "Only assistant that runs your code in a sandbox to verify fixes"
+  },
+  {
+    "n": "MerchantCapital",
+    "c": "AI Presentation Generator",
+    "g": "AI Presentation Generator",
+    "u": "https://merchantcapital.tech",
+    "p": "Daily Free",
+    "d": "First pitch deck AI with investor-grade financial modeling"
+  },
+  {
+    "n": "Html Video",
+    "c": "AI Video Generator",
+    "g": "AI Video Generator",
+    "u": "https://open-design.ai/html-video",
+    "p": "Free Trial",
+    "d": "Programmatic video for coding agents — HTML to video on your laptop. Turn HTML, CSS & data into real MP4s with pluggable render engines, 21 templates, AI soundtrack. Apache-2.0, no per-render"
+  },
+  {
+    "n": "DeepL",
+    "c": "AI Writing",
+    "g": "AI Writing",
+    "u": "https://deepl.com",
+    "p": "Monthly Free",
+    "d": "3 non-editable file translations per month · Accurate machine translation · Text & document translation"
+  },
+  {
+    "n": "Scikit Image",
+    "c": "AI Image Generator",
+    "g": "AI Image Generator",
+    "u": "https://scikit-image.org",
+    "p": "Free Plan",
+    "d": "Scikit Image - Image processing in Python"
+  },
+  {
+    "n": "ProHub",
+    "c": "AI Marketing",
+    "g": "AI Marketing",
+    "u": "https://prohub.ai",
+    "p": "Open Source",
+    "d": "Next-generation calendar management solution combining AI precision with intuitive user experience"
+  },
+  {
+    "n": "Orbit Buddy io",
+    "c": "AI Chatbot",
+    "g": "AI Chatbot",
+    "u": "https://orbitbuddyio.tech",
+    "p": "Free Trial",
+    "d": "Native tool use: browse, code, and image generation in-chat"
+  },
+  {
+    "n": "QueryDashboard",
+    "c": "AI Data Analysis",
+    "g": "AI Data Analysis",
+    "u": "https://querydashboard.sh",
+    "p": "Free Trial",
+    "d": "Patented query optimizer that rewrites for cost"
+  },
+  {
+    "n": "PrimeCast",
+    "c": "AI Legal Assistant",
+    "g": "AI Legal Assistant",
+    "u": "https://primecast.tech",
+    "p": "Free Plan",
+    "d": "Innovative image upscaling platform with neural network architecture and batch processing support"
+  },
+  {
+    "n": "Mataroa",
+    "c": "AI Code Assistant",
+    "g": "AI Code Assistant",
+    "u": "https://mataroa.blog/",
+    "p": "Free Plan",
+    "d": "Naked blogging platform for minimalists. (Source Code) `MIT` `Python`"
+  },
+  {
+    "n": "Cutout.Pro",
+    "c": "AI Photo Editor",
+    "g": "AI Photo Editor",
+    "u": "https://cutout.pro",
+    "p": "Free",
+    "d": "Free 1 file processing · AI Photo & Video Editing · Automatic Background Removal · Image Enhancement & Content Genera"
+  },
+  {
+    "n": "Character Lingo",
+    "c": "AI Character",
+    "g": "AI Character",
+    "u": "https://characterlingo.com",
+    "p": "Free Plan",
+    "d": "100 lingos · mo · Transform writing into character voices · AI-powered content generation"
+  },
+  {
+    "n": "Super Image Flow",
+    "c": "AI Logo Generator",
+    "g": "AI Logo Generator",
+    "u": "https://superimageflow.tech",
+    "p": "Free Trial",
+    "d": "Only tool offering commercially-safe licensed training data"
+  },
+  {
+    "n": "Inven",
+    "c": "AI Search Engine",
+    "g": "AI Search Engine",
+    "u": "https://inven.ai",
+    "p": "Free Trial",
+    "d": "Free trial · Find M&A targets 10x faster with AI · Comprehensive company data"
+  }
+]
