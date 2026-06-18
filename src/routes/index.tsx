@@ -269,23 +269,28 @@ function Index() {
         (activeCategory === "All" || tool.c === activeCategory || tool.g === activeCategory),
     );
 
-    // When searching, sort by relevance so exact matches appear first
+    // When searching, sort by relevance so name matches always appear first
     if (term && filtered.length > 1) {
       filtered = filtered.slice().sort((a, b) => {
         const aName = a.n.toLowerCase();
         const bName = b.n.toLowerCase();
-        // 1) Exact name match — highest priority
-        if (aName === term && bName !== term) return -1;
-        if (bName === term && aName !== term) return 1;
-        // 2) Name starts with search term
-        const aStarts = aName.startsWith(term) ? 0 : 1;
-        const bStarts = bName.startsWith(term) ? 0 : 1;
-        if (aStarts !== bStarts) return aStarts - bStarts;
-        // 3) Name contains search term as a whole word
-        const aWord = aName.includes(` ${term}`) || aName.startsWith(term) ? 0 : 1;
-        const bWord = bName.includes(` ${term}`) || bName.startsWith(term) ? 0 : 1;
-        if (aWord !== bWord) return aWord - bWord;
-        // 4) Shorter name = closer match
+
+        // Score helper: lower = better match
+        const score = (name: string) => {
+          if (name === term) return 0;                          // exact match
+          if (name.startsWith(term)) return 1;                   // "chatgpt" matches "ChatGPT Free"
+          // Name contains term as a word boundary
+          const words = name.split(/[\s\-_.]+/);
+          if (words.some(w => w === term)) return 2;            // "gemini" in "Google Gemini"
+          if (name.includes(term)) return 3;                    // term anywhere in name
+          return 9;                                              // only in description/category
+        };
+
+        const aScore = score(aName);
+        const bScore = score(bName);
+        if (aScore !== bScore) return aScore - bScore;
+
+        // Same score tier — prefer shorter names (more relevant)
         return aName.length - bName.length;
       });
     }
