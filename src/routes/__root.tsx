@@ -151,6 +151,13 @@ function RootComponent() {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).__mbHideLoader) {
+      (window as any).__mbHideLoader();
+    }
+  }, []);
+
+  useEffect(() => {
+
     supabase.auth.getUser().then(({ data, error }) => {
       if (!error) setUser(data.user);
     });
