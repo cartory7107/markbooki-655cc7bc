@@ -125,46 +125,9 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {/* Initial loading splash — shows immediately on first paint, before React hydrates.
-            Removed automatically by the inline script once React mounts OR after a max 4s safety timeout. */}
-        <div id="mb-initial-loader" aria-hidden="true">
-          <div className="mb-loader-logo">
-            Mark<span className="mb-accent">Book</span>
-          </div>
-          <div className="mb-loader-bars" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
-          <div className="mb-loader-text">Loading your AI discovery engine…</div>
-        </div>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var loader = document.getElementById('mb-initial-loader');
-                if (!loader) return;
-                function hideLoader() {
-                  if (!loader) return;
-                  loader.classList.add('mb-hide');
-                  setTimeout(function() { if (loader && loader.parentNode) loader.parentNode.removeChild(loader); }, 500);
-                }
-                // Hide once React has had a chance to paint real content
-                if (document.readyState === 'complete') {
-                  setTimeout(hideLoader, 600);
-                } else {
-                  window.addEventListener('load', function() { setTimeout(hideLoader, 600); });
-                }
-                // Safety: never show splash longer than 4 seconds
-                setTimeout(hideLoader, 4000);
-              })();
-            `,
-          }}
-        />
         {children}
         <Scripts />
+
       </body>
     </html>
   );
