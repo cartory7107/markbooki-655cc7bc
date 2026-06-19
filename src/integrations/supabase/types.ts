@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_tool_edits: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          original_name: string | null
+          tool_data: Json
+          updated_at: string
+        }
+        Insert: {
+          action: string
+          created_at?: string
+          id?: string
+          original_name?: string | null
+          tool_data?: Json
+          updated_at?: string
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          original_name?: string | null
+          tool_data?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       advertisements: {
         Row: {
           created_at: string
@@ -227,6 +254,63 @@ export type Database = {
         }
         Relationships: []
       }
+      tool_submissions: {
+        Row: {
+          admin_notes: string | null
+          category: string
+          created_at: string
+          description: string
+          full_description: string | null
+          id: string
+          logo_url: string | null
+          pricing: string
+          status: string
+          submitter_email: string | null
+          submitter_name: string | null
+          submitter_user_id: string | null
+          tags: string[]
+          tool_name: string
+          tool_url: string
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          category?: string
+          created_at?: string
+          description: string
+          full_description?: string | null
+          id?: string
+          logo_url?: string | null
+          pricing?: string
+          status?: string
+          submitter_email?: string | null
+          submitter_name?: string | null
+          submitter_user_id?: string | null
+          tags?: string[]
+          tool_name: string
+          tool_url: string
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          category?: string
+          created_at?: string
+          description?: string
+          full_description?: string | null
+          id?: string
+          logo_url?: string | null
+          pricing?: string
+          status?: string
+          submitter_email?: string | null
+          submitter_name?: string | null
+          submitter_user_id?: string | null
+          tags?: string[]
+          tool_name?: string
+          tool_url?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
@@ -245,87 +329,6 @@ export type Database = {
           id?: string
           role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
-        }
-        Relationships: []
-      }
-      admin_tool_edits: {
-        Row: {
-          id: string
-          original_name: string | null
-          tool_data: Json
-          action: string
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          original_name?: string | null
-          tool_data?: Json
-          action: string
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          original_name?: string | null
-          tool_data?: Json
-          action?: string
-          created_at?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      tool_submissions: {
-        Row: {
-          id: string
-          tool_name: string
-          tool_url: string
-          description: string
-          full_description: string | null
-          category: string
-          pricing: string
-          submitter_name: string | null
-          submitter_email: string | null
-          logo_url: string | null
-          tags: string[]
-          status: string
-          admin_notes: string | null
-          created_at: string
-          updated_at: string
-        }
-        Insert: {
-          id?: string
-          tool_name: string
-          tool_url: string
-          description?: string
-          full_description?: string | null
-          category?: string
-          pricing?: string
-          submitter_name?: string | null
-          submitter_email?: string | null
-          logo_url?: string | null
-          tags?: string[]
-          status?: string
-          admin_notes?: string | null
-          created_at?: string
-          updated_at?: string
-        }
-        Update: {
-          id?: string
-          tool_name?: string
-          tool_url?: string
-          description?: string
-          full_description?: string | null
-          category?: string
-          pricing?: string
-          submitter_name?: string | null
-          submitter_email?: string | null
-          logo_url?: string | null
-          tags?: string[]
-          status?: string
-          admin_notes?: string | null
-          created_at?: string
-          updated_at?: string
         }
         Relationships: []
       }
