@@ -13,6 +13,8 @@ import {
   Flame,
   Globe,
   Image,
+  LogIn,
+  LogOut,
   Menu,
   Moon,
   Newspaper,
@@ -23,6 +25,7 @@ import {
   Sun,
   Trophy,
   TrendingUp,
+  User,
   Video,
   WandSparkles,
   X,
@@ -166,6 +169,8 @@ function Index() {
   const [savedTools, setSavedTools] = useState<Set<string>>(new Set());
   const [showSponsor, setShowSponsor] = useState(true);
   const [activeFilter, setActiveFilter] = useState<"today" | "new" | "saved" | "popular">("today");
+  const [authUser, setAuthUser] = useState<{ email: string; name?: string } | null>(null);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -247,6 +252,40 @@ function Index() {
       });
     });
   }, [catalogLoaded, catalog.tools.length]);
+
+  // Track auth state for navbar login/signup button
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user) {
+        setAuthUser({
+          email: data.user.email ?? "",
+          name: data.user.user_metadata?.full_name || data.user.user_metadata?.name || data.user.email?.split("@")[0],
+        });
+      }
+    });
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setAuthUser({
+          email: session.user.email ?? "",
+          name: session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split("@")[0],
+        });
+      } else {
+        setAuthUser(null);
+      }
+    });
+    return () => { listener.subscription.unsubscribe(); };
+  }, []);
+
+  const handleSignIn = async () => {
+    const { lovable } = await import("@/integrations/lovable/index");
+    await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+  };
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    setAuthUser(null);
+    setShowUserMenu(false);
+  };
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
@@ -458,6 +497,70 @@ function Index() {
             >
               <Plus className="size-3.5" /> Submit
             </Link>
+
+            {/* Sign In / User Menu */}
+            {authUser ? (
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center gap-2 rounded-lg border border-border px-2.5 py-1.5 text-sm font-medium transition-colors hover:bg-accent"
+                >
+                  <span className="grid size-7 place-items-center rounded-full bg-primary/10 text-primary text-xs font-bold">
+                    {authUser.name?.[0]?.toUpperCase() || "U"}
+                  </span>
+                  <span className="hidden max-w-[120px] truncate text-foreground/80 sm:inline">{authUser.name}</span>
+                  <ChevronDown className="size-3 text-muted-foreground" />
+                </button>
+                {showUserMenu && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
+                    <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-xl border border-border bg-popover shadow-xl">
+                      <div className="border-b border-border px-4 py-3">
+                        <p className="text-sm font-semibold truncate">{authUser.name}</p>
+                        <p className="text-xs text-muted-foreground truncate">{authUser.email}</p>
+                      </div>
+                      <div className="p-1.5">
+                        <Link
+                          to="/submit"
+                          onClick={() => setShowUserMenu(false)}
+                          className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+                        >
+                          <Plus className="size-4" /> Submit AI Tool
+                        </Link>
+                        {authUser.email === "cartory7107@gmail.com" && (
+                          <Link
+                            to="/admin"
+                            onClick={() => setShowUserMenu(false)}
+                            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+                          >
+                            <Star className="size-4" /> Admin Panel
+                          </Link>
+                        )}
+                      </div>
+                      <div className="border-t border-border p-1.5">
+                        <button
+                          onClick={handleSignOut}
+                          className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-950/30"
+                        >
+                          <LogOut className="size-4" /> Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSignIn}
+                className="gap-1.5 text-xs sm:text-sm"
+              >
+                <LogIn className="size-3.5" />
+                <span className="hidden sm:inline">Sign In</span>
+              </Button>
+            )}
+
             <Button
               variant="ghost"
               size="icon"
@@ -506,6 +609,30 @@ function Index() {
                     {item.label}
                   </button>
                 ),
+              )}
+            </div>
+            <div className="mt-3 flex gap-2">
+              <Link
+                to="/submit"
+                onClick={() => setMobileMenu(false)}
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2.5 text-sm font-semibold text-primary-foreground"
+              >
+                <Plus className="size-3.5" /> Submit
+              </Link>
+              {authUser ? (
+                <button
+                  onClick={() => { handleSignOut(); setMobileMenu(false); }}
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2.5 text-sm font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30"
+                >
+                  <LogOut className="size-3.5" /> Sign Out
+                </button>
+              ) : (
+                <button
+                  onClick={() => { handleSignIn(); setMobileMenu(false); }}
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2.5 text-sm font-medium"
+                >
+                  <LogIn className="size-3.5" /> Sign In
+                </button>
               )}
             </div>
           </div>

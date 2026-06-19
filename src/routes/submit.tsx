@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, BadgeCheck, Check, Loader2, Plus, Rocket, Sparkles } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, BadgeCheck, Check, Loader2, LogIn, Plus, Rocket, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -19,12 +19,49 @@ function SubmitPage() {
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
+  const [authChecked, setAuthChecked] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user?.email) setUserEmail(data.user.email);
+      if (data.user) {
+        setUserEmail(data.user.email ?? null);
+        setUserName(data.user.user_metadata?.full_name || data.user.user_metadata?.name || null);
+      }
+      setAuthChecked(true);
     });
   }, []);
+
+  const handleSignIn = async () => {
+    const { lovable } = await import("@/integrations/lovable/index");
+    await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/submit" });
+  };
+
+  // Require login to submit
+  if (authChecked && !userEmail) {
+    return (
+      <main className="grid min-h-screen place-items-center bg-background p-6">
+        <div className="max-w-md rounded-2xl border border-border bg-card p-10 text-center shadow-lg">
+          <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-primary/10 text-primary">
+            <LogIn className="size-7" />
+          </span>
+          <h1 className="mt-5 text-2xl font-extrabold">Sign In Required</h1>
+          <p className="mt-3 text-sm text-muted-foreground">
+            You need to sign in with your Google account to submit an AI tool to MarkBook.
+          </p>
+          <Button variant="brand" className="mt-7 gap-2" onClick={handleSignIn}>
+            <LogIn className="size-4" /> Sign In with Google
+          </Button>
+          <div className="mt-4">
+            <Button variant="ghost" size="sm" asChild>
+              <Link to="/"><ArrowLeft className="size-4" /> Back to MarkBook</Link>
+            </Button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   if (submitted)
     return (
@@ -158,7 +195,7 @@ function SubmitPage() {
                   className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/15"
                 />
               </div>
-              <Field label="Your name" name="submitter_name" required />
+              <Field label="Your name" name="submitter_name" required placeholder={userName || ""} />
               <Field label="Your email" name="submitter_email" type="email" required placeholder={userEmail || ""} />
               <Field label="Logo URL (optional)" name="logo_url" type="url" placeholder="https://example.com/logo.png" />
               <Field label="Tags (optional)" name="tags" placeholder="e.g. video, image, writing" />
