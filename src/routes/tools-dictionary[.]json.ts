@@ -25,7 +25,7 @@ export const Route = createFileRoute("/tools-dictionary.json")({
           "@context": "https://schema.org",
           "@type": "ItemList",
           name: "MarkBook AI Tools Dictionary",
-          description: "A comprehensive machine-readable directory of AI tools. Contains over 16,000 AI tools across 300+ categories including AI chatbots, AI image generators, AI video generators, AI code assistants, AI writing tools, AI music generators, AI voice generators, AI search engines, and more.",
+          description: "A comprehensive machine-readable directory of AI tools. Contains over 51,000 AI tools across 497+ categories including AI chatbots, AI image generators, AI video generators, AI code assistants, AI writing tools, AI music generators, AI voice generators, AI search engines, and more.",
           url: "https://markbookai.com",
           numberOfItems: catalog.tools.length,
           version: "2.0",
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/tools-dictionary.json")({
             slug: name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""),
             url: `https://markbookai.com/category/${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`,
           })),
-          itemListElement: catalog.tools.slice(0, 2000).map((tool, i) => ({
+          itemListElement: catalog.tools.slice(0, 5000).map((tool, i) => ({
             "@type": "ListItem",
             position: i + 1,
             item: {
@@ -89,7 +89,7 @@ function generateKeywords(catalog: { tools: { n: string; c: string; g: string; d
   }
 
   // Tool-based keywords
-  for (const tool of catalog.tools.slice(0, 500)) {
+  for (const tool of catalog.tools.slice(0, 2000)) {
     kw.add(`${tool.n.toLowerCase()}`);
     kw.add(`${tool.n.toLowerCase()} ai`);
     kw.add(`${tool.n.toLowerCase()} review`);

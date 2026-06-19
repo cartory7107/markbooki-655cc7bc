@@ -176,7 +176,7 @@ a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
     <p>Each tool in our ${matchedCategory} directory has been verified for quality with direct links to official websites. We update our ${matchedCategory.toLowerCase()} listings daily to ensure you always have access to the newest and most relevant AI tools.</p>
     <p>Looking for the best ${matchedCategory.toLowerCase()}? MarkBook includes tools for every use case, from beginners to professionals. Filter by pricing and find exactly what you need.</p>
   </div>
-  <div class="cta"><h2>Explore 16,000+ AI Tools</h2><p>Discover the full MarkBook AI tools directory</p><a href="/">Browse All AI Tools \u2192</a></div>
+  <div class="cta"><h2>Explore 51,000+ AI Tools</h2><p>Discover the full MarkBook AI tools directory</p><a href="/">Browse All AI Tools \u2192</a></div>
 </div>
 </body></html>`, {
           status: 200,

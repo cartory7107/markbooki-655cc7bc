@@ -39,11 +39,11 @@ export const Route = createFileRoute("/sitemap.xml")({
           urls.push(`  <url>\n    <loc>${BASE_URL}/category/${slug}</loc>\n    <lastmod>${now}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>`);
         }
 
-        // ── Individual tool pages (top 500 by category popularity) ──
+        // ── Individual tool pages (ALL unique tools) ──
         const seenTools = new Set<string>();
         let toolCount = 0;
         for (const tool of catalog.tools) {
-          if (seenTools.has(tool.n) || toolCount >= 500) continue;
+          if (seenTools.has(tool.n)) continue;
           seenTools.add(tool.n);
           toolCount++;
           const slug = tool.n.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
