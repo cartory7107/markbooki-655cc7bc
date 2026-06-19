@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, BadgeCheck, Check, Plus, Rocket, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { ArrowLeft, BadgeCheck, Check, Loader2, Plus, Rocket, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/submit")({
   head: () => ({
@@ -15,6 +17,14 @@ export const Route = createFileRoute("/submit")({
 
 function SubmitPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data }) => {
+      if (data.user?.email) setUserEmail(data.user.email);
+    });
+  }, []);
 
   if (submitted)
     return (
@@ -76,9 +86,48 @@ function SubmitPage() {
 
           {/* Form */}
           <form
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
-              setSubmitted(true);
+              setSubmitting(true);
+
+              const fd = new FormData(e.currentTarget);
+              const toolName = (fd.get("tool_name") as string) || "";
+              const toolUrl = (fd.get("tool_url") as string) || "";
+              const category = (fd.get("category") as string) || "Other";
+              const pricing = (fd.get("pricing") as string) || "Free";
+              const description = (fd.get("description") as string) || "";
+              const fullDescription = (fd.get("full_description") as string) || "";
+              const submitterName = (fd.get("submitter_name") as string) || null;
+              const submitterEmail = (fd.get("submitter_email") as string) || userEmail || null;
+              const logoUrl = (fd.get("logo_url") as string) || null;
+              const tagsStr = (fd.get("tags") as string) || "";
+              const tags = tagsStr ? tagsStr.split(",").map((t) => t.trim()).filter(Boolean) : [];
+
+              try {
+                const { error } = await supabase.from("tool_submissions").insert({
+                  tool_name: toolName,
+                  tool_url: toolUrl,
+                  category,
+                  pricing,
+                  description,
+                  full_description: fullDescription || null,
+                  submitter_name: submitterName,
+                  submitter_email: submitterEmail,
+                  logo_url: logoUrl,
+                  tags,
+                  status: "pending",
+                });
+
+                if (error) {
+                  toast.error("Failed to submit: " + error.message);
+                } else {
+                  setSubmitted(true);
+                }
+              } catch {
+                toast.error("Something went wrong. Please try again.");
+              } finally {
+                setSubmitting(false);
+              }
             }}
             className="rounded-2xl border border-border bg-card p-6 shadow-lg sm:p-10"
           >
@@ -90,31 +139,33 @@ function SubmitPage() {
               Fill in the details below. All submissions are manually reviewed for quality.
             </p>
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Tool name" required />
-              <Field label="Website URL" type="url" required />
-              <Field label="Category" required placeholder="e.g. AI Image Generator" />
-              <Field label="Pricing model" required placeholder="Free, Paid, or Freemium" />
+              <Field label="Tool name" name="tool_name" required />
+              <Field label="Website URL" name="tool_url" type="url" required />
+              <Field label="Category" name="category" required placeholder="e.g. AI Image Generator" />
+              <Field label="Pricing model" name="pricing" required placeholder="Free, Paid, or Freemium" />
               <div className="sm:col-span-2">
-                <Field label="Short description" required placeholder="One-line description of your tool" />
+                <Field label="Short description" name="description" required placeholder="One-line description of your tool" />
               </div>
               <div className="sm:col-span-2">
                 <label className="mb-1.5 block text-sm font-semibold">
                   Full description
                 </label>
                 <textarea
+                  name="full_description"
                   required
                   rows={4}
                   placeholder="Tell users what makes your tool special..."
                   className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-4 focus:ring-primary/15"
                 />
               </div>
-              <Field label="Your name" required />
-              <Field label="Your email" type="email" required />
-              <Field label="Logo URL (optional)" type="url" placeholder="https://example.com/logo.png" />
-              <Field label="Tags (optional)" placeholder="e.g. video, image, writing" />
+              <Field label="Your name" name="submitter_name" required />
+              <Field label="Your email" name="submitter_email" type="email" required placeholder={userEmail || ""} />
+              <Field label="Logo URL (optional)" name="logo_url" type="url" placeholder="https://example.com/logo.png" />
+              <Field label="Tags (optional)" name="tags" placeholder="e.g. video, image, writing" />
             </div>
-            <Button type="submit" variant="brand" size="lg" className="mt-6 w-full">
-              <Sparkles className="size-4" /> Submit for review
+            <Button type="submit" variant="brand" size="lg" className="mt-6 w-full" disabled={submitting}>
+              {submitting ? <Loader2 className="size-4 animate-spin" /> : <Sparkles className="size-4" />}
+              {submitting ? "Submitting..." : "Submit for review"}
             </Button>
           </form>
         </div>
@@ -125,11 +176,13 @@ function SubmitPage() {
 
 function Field({
   label,
+  name,
   type = "text",
   required = false,
   placeholder,
 }: {
   label: string;
+  name: string;
   type?: string;
   required?: boolean;
   placeholder?: string;
@@ -138,6 +191,7 @@ function Field({
     <label className="block">
       <span className="mb-1.5 block text-sm font-semibold">{label}</span>
       <input
+        name={name}
         type={type}
         required={required}
         placeholder={placeholder}

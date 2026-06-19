@@ -33,6 +33,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoAsset from "@/assets/markbook-symbol.png.asset.json";
+import { supabase } from "@/integrations/supabase/client";
 
 type Tool = {
   n: string;
@@ -220,6 +221,33 @@ function Index() {
       });
   }, []);
 
+  // Merge admin edits from Supabase into the catalog
+  useEffect(() => {
+    if (!catalogLoaded || catalog.tools.length === 0) return;
+    supabase.from("admin_tool_edits").select("*").then(({ data: adminEdits }) => {
+      if (!adminEdits || adminEdits.length === 0) return;
+      setCatalog((prev) => {
+        let tools = [...prev.tools];
+        // Apply deletes
+        const deletes = new Set(adminEdits.filter((e) => e.action === "delete").map((e) => e.original_name as string));
+        tools = tools.filter((t) => !deletes.has(t.n));
+        // Apply edits (update matching tools by original_name)
+        const edits = adminEdits.filter((e) => e.action === "edit");
+        const editMap = new Map(edits.map((e) => [e.original_name, e.tool_data as Tool]));
+        tools = tools.map((t) => (editMap.has(t.n) ? { ...t, ...editMap.get(t.n) } : t));
+        // Apply adds (append new tools)
+        const adds = adminEdits.filter((e) => e.action === "add");
+        for (const add of adds) {
+          const toolData = add.tool_data as Tool;
+          if (!tools.some((t) => t.n === toolData.n)) {
+            tools.unshift(toolData);
+          }
+        }
+        return { ...prev, tools };
+      });
+    });
+  }, [catalogLoaded, catalog.tools.length]);
+
   useEffect(() => {
     document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
@@ -279,10 +307,10 @@ function Index() {
         const score = (name: string) => {
           if (name === term) return 0;                          // exact match
           if (name.startsWith(term)) return 1;                   // "chatgpt" matches "ChatGPT Free"
-          // Name contains term as a word boundary
           const words = name.split(/[\s\-_.]+/);
-          if (words.some(w => w === term)) return 2;            // "gemini" in "Google Gemini"
-          if (name.includes(term)) return 3;                    // term anywhere in name
+          if (words[words.length - 1] === term) return 2;      // "Google Gemini" ends with "gemini"
+          if (words.some(w => w === term)) return 3;            // term as any word in name
+          if (name.includes(term)) return 4;                    // substring anywhere in name
           return 9;                                              // only in description/category
         };
 
