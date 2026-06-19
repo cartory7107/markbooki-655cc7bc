@@ -141,6 +141,7 @@ function SubmitPage() {
               const tags = tagsStr ? tagsStr.split(",").map((t) => t.trim()).filter(Boolean) : [];
 
               try {
+                const { data: userData } = await supabase.auth.getUser();
                 const { error } = await supabase.from("tool_submissions").insert({
                   tool_name: toolName,
                   tool_url: toolUrl,
@@ -150,10 +151,12 @@ function SubmitPage() {
                   full_description: fullDescription || null,
                   submitter_name: submitterName,
                   submitter_email: submitterEmail,
+                  submitter_user_id: userData.user?.id ?? null,
                   logo_url: logoUrl,
                   tags,
                   status: "pending",
                 });
+
 
                 if (error) {
                   toast.error("Failed to submit: " + error.message);
