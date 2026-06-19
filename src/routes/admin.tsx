@@ -149,7 +149,8 @@ function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("dashboard");
   const [dbReady, setDbReady] = useState<boolean | null>(null);
   const [catalog, setCatalog] = useState<CatalogData>({ tools: [], categories: {} });
-  const [catalogLoading, setCatalogLoading] = useState(true);
+  const [totalToolCount, setTotalToolCount] = useState(0);
+  const [catalogLoading, setCatalogLoading] = useState(false);
   const [submissions, setSubmissions] = useState<SubmissionRow[]>([]);
   const [adminEdits, setAdminEdits] = useState<AdminEditRow[]>([]);
   const [statsLoading, setStatsLoading] = useState(true);
@@ -164,16 +165,29 @@ function AdminDashboard() {
       });
   }, []);
 
-  // Load catalog
+  // Load total tool count (lightweight - from tools-api.json ~10KB)
   useEffect(() => {
-    fetch("/ai-catalog.json")
+    fetch("/tools-api.json")
       .then((r) => r.json())
-      .then((data: CatalogData) => {
-        setCatalog(data);
+      .then((data: { totalTools: number }) => {
+        setTotalToolCount(data.totalTools);
+      })
+      .catch(() => undefined);
+  }, []);
+
+  // Lazy-load catalog ONLY when Manage Tools tab is active
+  useEffect(() => {
+    if (activeTab !== "manage") return;
+    if (catalog.tools.length > 0) return; // already loaded
+    setCatalogLoading(true);
+    fetch(`/search-api.json?limit=200`)
+      .then((r) => r.json())
+      .then((data: { results: Tool[]; total: number }) => {
+        setCatalog({ tools: data.results, categories: {} });
         setCatalogLoading(false);
       })
       .catch(() => setCatalogLoading(false));
-  }, []);
+  }, [activeTab, catalog.tools.length]);
 
   // Load submissions and admin edits
   const refreshData = useCallback(() => {
@@ -196,7 +210,7 @@ function AdminDashboard() {
   const stats = useMemo(() => {
     const pendingCount = submissions.filter((s) => s.status === "pending").length;
     return {
-      totalTools: catalog.tools.length,
+      totalTools: totalToolCount || catalog.tools.length,
       pendingSubmissions: pendingCount,
       adminEditsCount: adminEdits.length,
       totalSubmissions: submissions.length,
