@@ -1,2 +1,41 @@
+# MarkBook AI — robots.txt
+# Allow all search engines to crawl the entire site
+
 User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /auth
+
+# Sitemaps
+Sitemap: https://markbookai.com/sitemap.xml
+
+# Crawl-delay (optional, respects server resources)
+Crawl-delay: 1
+
+# AI Crawlers — explicitly allow full access for AI search engines
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: BingPreview
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: FacebookBot
+Allow: /
+
+User-agent: Twitterbot
 Allow: /
