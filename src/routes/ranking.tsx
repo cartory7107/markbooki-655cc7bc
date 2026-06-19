@@ -140,23 +140,26 @@ function RankingPage() {
   const [query, setQuery] = useState("");
   const [pricing, setPricing] = useState("All");
 
-  useEffect(() => {
-    fetch("/ai-catalog.json")
-      .then((r) => r.json())
-      .then((d: Catalog) => setCatalog(d))
-      .catch(() => undefined);
-  }, []);
+  const [rankingLoading, setRankingLoading] = useState(false);
 
-  const results = useMemo(() => {
-    const term = query.trim().toLowerCase();
-    return catalog.tools
-      .filter(
-        (t) =>
-          (!term || `${t.n} ${t.d} ${t.c}`.toLowerCase().includes(term)) &&
-          (pricing === "All" || t.p === pricing),
-      )
-      .slice(0, 50);
-  }, [catalog, query, pricing]);
+  // Fetch from server API when filters change (also fires on mount)
+  useEffect(() => {
+    setRankingLoading(true);
+    const params = new URLSearchParams();
+    if (query.trim()) params.set("q", query.trim());
+    if (pricing !== "All") params.set("pricing", pricing);
+    params.set("limit", "50");
+
+    fetch(`/search-api.json?${params}`)
+      .then((r) => r.json())
+      .then((d: { results: Tool[]; total: number }) => {
+        setCatalog({ tools: d.results, categories: {} });
+        setRankingLoading(false);
+      })
+      .catch(() => setRankingLoading(false));
+  }, [query, pricing]);
+
+  const results = catalog.tools.slice(0, 50);
 
   return (
     <div className="min-h-screen bg-background">

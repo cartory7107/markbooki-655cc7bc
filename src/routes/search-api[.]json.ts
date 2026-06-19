@@ -1,0 +1,34 @@
+import { createFileRoute } from "@tanstack/react-router";
+import type {} from "@tanstack/react-start";
+import { searchTools } from "@/lib/catalog-server";
+
+/**
+ * Server-side search endpoint with pagination.
+ * Searches the full 16K+ catalog on the server and returns paginated results.
+ * Response is ~5-50 KB per request instead of downloading 11 MB.
+ *
+ * Usage: GET /search-api.json?q=chatgpt&category=All&pricing=All&offset=0&limit=20
+ */
+export const Route = createFileRoute("/search-api.json")({
+  server: {
+    handlers: {
+      GET: async ({ request }) => {
+        const url = new URL(request.url);
+        const q = url.searchParams.get("q") || "";
+        const category = url.searchParams.get("category") || "All";
+        const pricing = url.searchParams.get("pricing") || "All";
+        const offset = parseInt(url.searchParams.get("offset") || "0", 10);
+        const limit = parseInt(url.searchParams.get("limit") || "20", 10);
+
+        const data = searchTools({ q, category, pricing, offset, limit });
+
+        return new Response(JSON.stringify(data), {
+          headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "public, max-age=30, s-maxage=120",
+          },
+        });
+      },
+    },
+  },
+});

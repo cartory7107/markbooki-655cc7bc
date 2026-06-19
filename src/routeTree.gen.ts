@@ -9,14 +9,21 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ToolsApiDotjsonRouteImport } from './routes/tools-api[.]json'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SearchApiDotjsonRouteImport } from './routes/search-api[.]json'
 import { Route as RankingRouteImport } from './routes/ranking'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 
+const ToolsApiDotjsonRoute = ToolsApiDotjsonRouteImport.update({
+  id: '/tools-api.json',
+  path: '/tools-api.json',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubmitRoute = SubmitRouteImport.update({
   id: '/submit',
   path: '/submit',
@@ -25,6 +32,11 @@ const SubmitRoute = SubmitRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchApiDotjsonRoute = SearchApiDotjsonRouteImport.update({
+  id: '/search-api.json',
+  path: '/search-api.json',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RankingRoute = RankingRouteImport.update({
@@ -59,8 +71,10 @@ export interface FileRoutesByFullPath {
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
   '/ranking': typeof RankingRoute
+  '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
+  '/tools-api.json': typeof ToolsApiDotjsonRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -68,8 +82,10 @@ export interface FileRoutesByTo {
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
   '/ranking': typeof RankingRoute
+  '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
+  '/tools-api.json': typeof ToolsApiDotjsonRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -78,8 +94,10 @@ export interface FileRoutesById {
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
   '/ranking': typeof RankingRoute
+  '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
+  '/tools-api.json': typeof ToolsApiDotjsonRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -89,8 +107,10 @@ export interface FileRouteTypes {
     | '/advertise'
     | '/auth'
     | '/ranking'
+    | '/search-api.json'
     | '/sitemap.xml'
     | '/submit'
+    | '/tools-api.json'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -98,8 +118,10 @@ export interface FileRouteTypes {
     | '/advertise'
     | '/auth'
     | '/ranking'
+    | '/search-api.json'
     | '/sitemap.xml'
     | '/submit'
+    | '/tools-api.json'
   id:
     | '__root__'
     | '/'
@@ -107,8 +129,10 @@ export interface FileRouteTypes {
     | '/advertise'
     | '/auth'
     | '/ranking'
+    | '/search-api.json'
     | '/sitemap.xml'
     | '/submit'
+    | '/tools-api.json'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -117,12 +141,21 @@ export interface RootRouteChildren {
   AdvertiseRoute: typeof AdvertiseRoute
   AuthRoute: typeof AuthRoute
   RankingRoute: typeof RankingRoute
+  SearchApiDotjsonRoute: typeof SearchApiDotjsonRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubmitRoute: typeof SubmitRoute
+  ToolsApiDotjsonRoute: typeof ToolsApiDotjsonRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tools-api.json': {
+      id: '/tools-api.json'
+      path: '/tools-api.json'
+      fullPath: '/tools-api.json'
+      preLoaderRoute: typeof ToolsApiDotjsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/submit': {
       id: '/submit'
       path: '/submit'
@@ -135,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search-api.json': {
+      id: '/search-api.json'
+      path: '/search-api.json'
+      fullPath: '/search-api.json'
+      preLoaderRoute: typeof SearchApiDotjsonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ranking': {
@@ -181,8 +221,10 @@ const rootRouteChildren: RootRouteChildren = {
   AdvertiseRoute: AdvertiseRoute,
   AuthRoute: AuthRoute,
   RankingRoute: RankingRoute,
+  SearchApiDotjsonRoute: SearchApiDotjsonRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubmitRoute: SubmitRoute,
+  ToolsApiDotjsonRoute: ToolsApiDotjsonRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -61,15 +61,8 @@ const PRICING_STYLES: Record<Tool["p"], { bg: string; text: string; label: strin
 type Catalog = {
   tools: Tool[];
   categories: Record<string, number>;
-  categoryEmojis?: Record<string, string>;
+  categoryEmojis: Record<string, string>;
 };
-
-/**
- * Verified top pool type — lightweight version of Tool for the curated rotation.
- * These are pre-vetted: valid links, working logos (icon.horse/favicon fallback),
- * lesser-known names, spread across all categories.
- */
-type VerifiedTool = Pick<Tool, 'n' | 'd' | 'c' | 'g' | 'p' | 'u'>;
 
 const aiNews = [
   { title: "OpenAI Launches GPT-5 with Enhanced Reasoning Capabilities", time: "2h ago" },
@@ -123,20 +116,6 @@ function getToolGradient(name: string) {
   return gradients[Math.abs(hash) % gradients.length];
 }
 
-/**
- * Fisher-Yates shuffle — returns a NEW shuffled array, does not mutate the input.
- * Used to randomize tool order on every page load / refresh / revisit so visitors
- * always discover different tools near the top of the feed.
- */
-function shuffle<T>(arr: T[]): T[] {
-  const out = arr.slice();
-  for (let i = out.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [out[i], out[j]] = [out[j], out[i]];
-  }
-  return out;
-}
-
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -162,6 +141,9 @@ function Index() {
   const [pricing, setPricing] = useState("All");
   const [activeCategory, setActiveCategory] = useState("All");
   const [visible, setVisible] = useState(20);
+  const [totalResults, setTotalResults] = useState(0);
+  const [totalTools, setTotalTools] = useState(0);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [dark, setDark] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
   const [mobileSidebar, setMobileSidebar] = useState(false);
@@ -193,65 +175,50 @@ function Index() {
     }
   }, [scrollToResults]);
 
+  // ── Load lightweight homepage data from server API (~10KB instead of 11MB) ──
   useEffect(() => {
-    Promise.all([
-      fetch("/ai-catalog.json").then((r) => r.json()),
-      fetch("/category-emojis.json").then((r) => r.json()).catch(() => ({})),
-      fetch("/verified-top-pool.json").then((r) => r.json()).catch(() => []),
-    ])
-      .then(([data, emojis, verifiedPool]: [Catalog, Record<string, string>, VerifiedTool[]]) => {
-        data.categoryEmojis = emojis;
-        if (Array.isArray(data.tools) && data.tools.length > 0) {
-          // Build a set of verified tool names for quick lookup
-          const verifiedNames = new Set(verifiedPool.map((v: VerifiedTool) => v.n));
-
-          // 1) Pick 20 random verified tools from the pool (different on every refresh)
-          const shuffledPool = shuffle(verifiedPool).slice(0, 20);
-
-          // 2) Remove verified pool tools from the main list so they don't duplicate
-          const restTools = data.tools.filter((t: Tool) => !verifiedNames.has(t.n));
-
-          // 3) Shuffle the rest for variety
-          const shuffledRest = shuffle(restTools);
-
-          // 4) Verified top-20 first, then everything else below
-          data.tools = [...shuffledPool, ...shuffledRest];
-        }
-        setCatalog(data);
+    fetch("/tools-api.json")
+      .then((r) => r.json())
+      .then((data: { topTools: Tool[]; categories: Record<string, number>; categoryEmojis: Record<string, string>; totalTools: number; gems: Tool[] }) => {
+        setCatalog({
+          tools: data.topTools,
+          categories: data.categories,
+          categoryEmojis: data.categoryEmojis,
+        });
+        setTotalTools(data.totalTools);
         setCatalogLoaded(true);
       })
-      .catch(() => {
-        // Even on error, mark as loaded so skeletons stop shimmering
-        setCatalogLoaded(true);
-      });
+      .catch(() => setCatalogLoaded(true));
   }, []);
 
-  // Merge admin edits from Supabase into the catalog
+  // ── Server-side search: triggered when query/category/pricing changes ──
   useEffect(() => {
-    if (!catalogLoaded || catalog.tools.length === 0) return;
-    supabase.from("admin_tool_edits").select("*").then(({ data: adminEdits }) => {
-      if (!adminEdits || adminEdits.length === 0) return;
-      setCatalog((prev) => {
-        let tools = [...prev.tools];
-        // Apply deletes
-        const deletes = new Set(adminEdits.filter((e) => e.action === "delete").map((e) => e.original_name as string));
-        tools = tools.filter((t) => !deletes.has(t.n));
-        // Apply edits (update matching tools by original_name)
-        const edits = adminEdits.filter((e) => e.action === "edit");
-        const editMap = new Map(edits.map((e) => [e.original_name, e.tool_data as Tool]));
-        tools = tools.map((t) => (editMap.has(t.n) ? { ...t, ...editMap.get(t.n) } : t));
-        // Apply adds (append new tools)
-        const adds = adminEdits.filter((e) => e.action === "add");
-        for (const add of adds) {
-          const toolData = add.tool_data as Tool;
-          if (!tools.some((t) => t.n === toolData.n)) {
-            tools.unshift(toolData);
-          }
-        }
-        return { ...prev, tools };
-      });
-    });
-  }, [catalogLoaded, catalog.tools.length]);
+    if (!catalogLoaded) return;
+    const isBrowsing = !query.trim() && activeCategory === "All" && pricing === "All";
+
+    if (isBrowsing) {
+      // Browsing mode: use the top-20 tools from the initial load (no API call needed)
+      return;
+    }
+
+    // Searching/filtering: call server-side search API
+    setSearchLoading(true);
+    const params = new URLSearchParams();
+    if (query.trim()) params.set("q", query.trim());
+    if (activeCategory !== "All") params.set("category", activeCategory);
+    if (pricing !== "All") params.set("pricing", pricing);
+    params.set("offset", "0");
+    params.set("limit", "200");
+
+    fetch(`/search-api.json?${params}`)
+      .then((r) => r.json())
+      .then((data: { results: Tool[]; total: number }) => {
+        setCatalog((prev) => ({ ...prev, tools: data.results }));
+        setTotalResults(data.total);
+        setSearchLoading(false);
+      })
+      .catch(() => setSearchLoading(false));
+  }, [query, activeCategory, pricing, catalogLoaded]);
 
   // Track auth state for navbar login/signup button
   useEffect(() => {
@@ -327,43 +294,15 @@ function Index() {
     });
   }, [catalog]);
 
+  // Results are now served from the server (already filtered & sorted)
+  // In browsing mode, use the top-20 from tools-api; in search mode, use search-api results
   const results = useMemo(() => {
-    const term = query.trim().toLowerCase();
-    let filtered = catalog.tools.filter(
-      (tool) =>
-        (!term || `${tool.n} ${tool.d} ${tool.c} ${tool.g}`.toLowerCase().includes(term)) &&
-        (pricing === "All" || tool.p === pricing) &&
-        (activeCategory === "All" || tool.c === activeCategory || tool.g === activeCategory),
-    );
+    return catalog.tools;
+  }, [catalog.tools]);
 
-    // When searching, sort by relevance so name matches always appear first
-    if (term && filtered.length > 1) {
-      filtered = filtered.slice().sort((a, b) => {
-        const aName = a.n.toLowerCase();
-        const bName = b.n.toLowerCase();
-
-        // Score helper: lower = better match
-        const score = (name: string) => {
-          if (name === term) return 0;                          // exact match
-          if (name.startsWith(term)) return 1;                   // "chatgpt" matches "ChatGPT Free"
-          const words = name.split(/[\s\-_.]+/);
-          if (words[words.length - 1] === term) return 2;      // "Google Gemini" ends with "gemini"
-          if (words.some(w => w === term)) return 3;            // term as any word in name
-          if (name.includes(term)) return 4;                    // substring anywhere in name
-          return 9;                                              // only in description/category
-        };
-
-        const aScore = score(aName);
-        const bScore = score(bName);
-        if (aScore !== bScore) return aScore - bScore;
-
-        // Same score tier — prefer shorter names (more relevant)
-        return aName.length - bName.length;
-      });
-    }
-
-    return filtered;
-  }, [catalog, query, pricing, activeCategory]);
+  const displayedCount = query.trim() || activeCategory !== "All" || pricing !== "All"
+    ? totalResults || results.length
+    : catalog.tools.length;
 
   const suggestions = searchFocused && query.length > 1 ? results.slice(0, 8) : [];
 
@@ -376,7 +315,7 @@ function Index() {
     });
   }, []);
 
-  const totalTools = catalog.tools.length;
+
 
   return (
     <div ref={topRef} className="min-h-screen bg-background text-foreground moving-grid-bg">
