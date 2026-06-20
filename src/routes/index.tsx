@@ -144,7 +144,7 @@ function Index() {
   const [query, setQuery] = useState("");
   const [pricing, setPricing] = useState("All");
   const [activeCategory, setActiveCategory] = useState("All");
-  const [visible, setVisible] = useState(20);
+  const [visible, setVisible] = useState(1000);
   const [totalResults, setTotalResults] = useState(0);
   const [totalTools, setTotalTools] = useState(0);
   const [searchLoading, setSearchLoading] = useState(false);
@@ -195,53 +195,49 @@ function Index() {
       .catch(() => setCatalogLoaded(true));
   }, []);
 
-  // ── Server-side search: triggered when query/category/pricing changes ──
+  // ── Server-side search/browsing: triggered when query/category/pricing changes ──
   const [searchOffset, setSearchOffset] = useState(0);
   const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     if (!catalogLoaded) return;
-    const isBrowsing = !query.trim() && activeCategory === "All" && pricing === "All";
 
-    if (isBrowsing) {
-      // Browsing mode: use the top-20 tools from the initial load (no API call needed)
-      setSearchOffset(0);
-      return;
-    }
-
-    // Searching/filtering: call server-side search API
+    // ALL modes now fetch from server API — browsing, searching, filtering
     setSearchLoading(true);
     setSearchOffset(0);
     const params = new URLSearchParams();
     if (query.trim()) params.set("q", query.trim());
     if (activeCategory !== "All") params.set("category", activeCategory);
     if (pricing !== "All") params.set("pricing", pricing);
+    if (activeFilter && activeFilter !== "saved") params.set("sort", activeFilter);
     params.set("offset", "0");
     params.set("limit", "50");
 
     fetch(`/search-api.json?${params}`)
       .then((r) => r.json())
       .then((data: { results: Tool[]; total: number }) => {
-        setCatalog((prev) => ({ ...prev, tools: data.results }));
+        // In browsing mode, prepend the verified top-20 tools first
+        const initialTools = (!query.trim() && activeCategory === "All" && pricing === "All" && (!activeFilter || activeFilter === "today"))
+          ? catalog.tools.slice(0, 20) : [];
+        setCatalog((prev) => ({
+          ...prev,
+          tools: [...initialTools, ...data.results.filter((t: Tool) => !initialTools.some((it: Tool) => it.n === t.n))],
+        }));
         setTotalResults(data.total);
         setSearchLoading(false);
       })
       .catch(() => setSearchLoading(false));
-  }, [query, activeCategory, pricing, catalogLoaded]);
+  }, [query, activeCategory, pricing, activeFilter, catalogLoaded]);
 
   // ── Load more tools from server API ──
   const loadMore = useCallback(() => {
-    const isBrowsing = !query.trim() && activeCategory === "All" && pricing === "All";
-    if (isBrowsing) {
-      setVisible((v) => v + 20);
-      return;
-    }
     setLoadingMore(true);
     const newOffset = searchOffset + 50;
     const params = new URLSearchParams();
     if (query.trim()) params.set("q", query.trim());
     if (activeCategory !== "All") params.set("category", activeCategory);
     if (pricing !== "All") params.set("pricing", pricing);
+    if (activeFilter && activeFilter !== "saved") params.set("sort", activeFilter);
     params.set("offset", String(newOffset));
     params.set("limit", "50");
 
@@ -255,7 +251,7 @@ function Index() {
         setLoadingMore(false);
       })
       .catch(() => setLoadingMore(false));
-  }, [query, activeCategory, pricing, searchOffset, catalogLoaded]);
+  }, [query, activeCategory, pricing, activeFilter, searchOffset, catalogLoaded]);
 
   // Track auth state for navbar login/signup button
   useEffect(() => {
@@ -337,9 +333,7 @@ function Index() {
     return catalog.tools;
   }, [catalog.tools]);
 
-  const displayedCount = query.trim() || activeCategory !== "All" || pricing !== "All"
-    ? totalResults || results.length
-    : catalog.tools.length;
+  const displayedCount = totalResults > 0 ? totalResults : totalTools;
 
   const suggestions = searchFocused && query.length > 1 ? results.slice(0, 8) : [];
 
@@ -984,7 +978,7 @@ function Index() {
             <ToolCardSkeletons />
           ) : results.length ? (
             <div className="grid gap-3 sm:grid-cols-2">
-              {results.slice(0, visible).map((tool, index) => (
+              {results.map((tool, index) => (
                 <ToolCard
                   key={`${tool.n}-${tool.c}-${index}`}
                   tool={tool}
@@ -1003,7 +997,7 @@ function Index() {
             />
           )}
 
-          {visible < results.length && (
+          {results.length < displayedCount && (
             <Button
               variant="outline"
               size="lg"
@@ -1011,7 +1005,7 @@ function Index() {
               onClick={loadMore}
               disabled={loadingMore}
             >
-              {loadingMore ? "Loading..." : `Show more tools (${results.length} of ${displayedCount.toLocaleString()})`} <ChevronRight className="size-4" />
+              {loadingMore ? "Loading..." : `Show more tools (${results.length.toLocaleString()} of ${displayedCount.toLocaleString()})`} <ChevronRight className="size-4" />
             </Button>
           )}
 

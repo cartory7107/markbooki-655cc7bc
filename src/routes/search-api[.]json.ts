@@ -17,10 +17,11 @@ export const Route = createFileRoute("/search-api.json")({
         const q = url.searchParams.get("q") || "";
         const category = url.searchParams.get("category") || "All";
         const pricing = url.searchParams.get("pricing") || "All";
+        const sort = url.searchParams.get("sort") || "";
         const offset = parseInt(url.searchParams.get("offset") || "0", 10);
         const limit = parseInt(url.searchParams.get("limit") || "20", 10);
 
-        const data = searchTools({ q, category, pricing, offset, limit });
+        const data = searchTools({ q, category, pricing, sort, offset, limit });
 
         return new Response(JSON.stringify(data), {
           headers: {

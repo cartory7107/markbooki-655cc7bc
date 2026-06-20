@@ -88,10 +88,11 @@ export function searchTools(opts: {
   q?: string;
   category?: string;
   pricing?: string;
+  sort?: string;
   offset?: number;
   limit?: number;
 }) {
-  const { q = "", category = "All", pricing = "All", offset = 0, limit = 20 } = opts;
+  const { q = "", category = "All", pricing = "All", sort = "", offset = 0, limit = 20 } = opts;
   const catalog = getCatalog();
 
   const term = q.trim().toLowerCase();
@@ -134,13 +135,27 @@ export function searchTools(opts: {
       return a.n.length - b.n.length;
     });
   } else if (!term && filtered.length > 1) {
-    // When browsing/filtering without search query: free tools first, then paid
-    filtered = filtered.slice().sort((a, b) => {
-      const aFree = isFree(a.p) ? 0 : 1;
-      const bFree = isFree(b.p) ? 0 : 1;
-      if (aFree !== bFree) return aFree - bFree;
-      return 0;
-    });
+    // When browsing/filtering without search query: sort by requested mode
+    if (sort === "popular") {
+      // "Popular": shuffle (simulates popularity since we don't have view counts)
+      const out = filtered.slice();
+      for (let i = out.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [out[i], out[j]] = [out[j], out[i]];
+      }
+      filtered = out;
+    } else if (sort === "new") {
+      // "New": reverse order (tools at end of array are newer additions)
+      filtered = filtered.slice().reverse();
+    } else {
+      // "today" / default: free tools first, then paid
+      filtered = filtered.slice().sort((a, b) => {
+        const aFree = isFree(a.p) ? 0 : 1;
+        const bFree = isFree(b.p) ? 0 : 1;
+        if (aFree !== bFree) return aFree - bFree;
+        return 0;
+      });
+    }
   }
 
   const total = filtered.length;
