@@ -99,8 +99,8 @@ export const Route = createFileRoute("/category/$slug")({
           "@type": "CollectionPage",
           name: title,
           description: desc,
-          url: `https://markbookai.com/category/${slug}`,
-          isPartOf: { "@type": "WebSite", name: "MarkBook AI", url: "https://markbookai.com" },
+          url: `https://markbook.cartory.top/category/${slug}`,
+          isPartOf: { "@type": "WebSite", name: "MarkBook AI", url: "https://markbook.cartory.top" },
           mainEntity: {
             "@type": "ItemList",
             numberOfItems: categoryTools.length,
@@ -126,9 +126,9 @@ ${kws}
 <meta property="og:title" content="${title}">
 <meta property="og:description" content="${desc}">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://markbookai.com/category/${slug}">
+<meta property="og:url" content="https://markbook.cartory.top/category/${slug}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="https://markbookai.com/category/${slug}">
+<link rel="canonical" href="https://markbook.cartory.top/category/${slug}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -176,7 +176,7 @@ a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
     <p>Each tool in our ${matchedCategory} directory has been verified for quality with direct links to official websites. We update our ${matchedCategory.toLowerCase()} listings daily to ensure you always have access to the newest and most relevant AI tools.</p>
     <p>Looking for the best ${matchedCategory.toLowerCase()}? MarkBook includes tools for every use case, from beginners to professionals. Filter by pricing and find exactly what you need.</p>
   </div>
-  <div class="cta"><h2>Explore 51,000+ AI Tools</h2><p>Discover the full MarkBook AI tools directory</p><a href="/">Browse All AI Tools \u2192</a></div>
+  <div class="cta"><h2>Explore 56,000+ AI Tools</h2><p>Discover the full MarkBook AI tools directory</p><a href="/">Browse All AI Tools \u2192</a></div>
 </div>
 </body></html>`, {
           status: 200,

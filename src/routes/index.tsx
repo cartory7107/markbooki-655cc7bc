@@ -119,7 +119,7 @@ function getToolGradient(name: string) {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MarkBook — Discover 51,000+ AI Tools | Best AI Tools Directory" },
+      { title: "MarkBook — Discover 56,000+ AI Tools | Best AI Tools Directory" },
       {
         name: "description",
         content:

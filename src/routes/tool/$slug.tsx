@@ -96,9 +96,9 @@ ${kws}
 <meta property="og:title" content="${title}">
 <meta property="og:description" content="${desc}">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://markbookai.com/tool/${slug}">
+<meta property="og:url" content="https://markbook.cartory.top/tool/${slug}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="https://markbookai.com/tool/${slug}">
+<link rel="canonical" href="https://markbook.cartory.top/tool/${slug}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -150,7 +150,7 @@ a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
     <h2>Related ${tool.c} Tools</h2>
     <div class="rg">${relatedHtml}</div>
   </div>
-  <div class="cta"><h2>Explore 51,000+ AI Tools</h2><p>Discover the full MarkBook AI directory</p><a href="/">Browse All AI Tools \u2192</a></div>
+  <div class="cta"><h2>Explore 56,000+ AI Tools</h2><p>Discover the full MarkBook AI directory</p><a href="/">Browse All AI Tools \u2192</a></div>
 </div>
 </body></html>`, {
           status: 200,
