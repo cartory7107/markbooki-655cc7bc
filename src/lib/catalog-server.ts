@@ -1,10 +1,11 @@
 /**
- * Server-side catalog loader & cache.
- * Reads the 11 MB ai-catalog.json from disk ONCE and keeps it in memory.
- * Every subsequent request serves from the in-memory cache — zero disk I/O.
+ * Server-side catalog loader.
+ * JSON data is bundled at build time via Vite imports so it works on
+ * Cloudflare Workers (no filesystem access at runtime).
  */
-import { readFileSync } from "fs";
-import { join } from "path";
+import catalogJson from "../../public/ai-catalog.json";
+import verifiedPoolJson from "../../public/verified-top-pool.json";
+import categoryEmojisJson from "../../public/category-emojis.json";
 
 export type Tool = {
   n: string;
@@ -23,32 +24,16 @@ type CatalogData = {
   categories: Record<string, number>;
 };
 
-// ── In-memory cache ( survives for the lifetime of the server process ) ──
-let _catalog: CatalogData | null = null;
-let _verifiedPool: VerifiedTool[] | null = null;
-let _categoryEmojis: Record<string, string> | null = null;
-
-function loadJSON<T>(filename: string): T {
-  return JSON.parse(readFileSync(join(process.cwd(), "public", filename), "utf-8")) as T;
-}
-
 export function getCatalog(): CatalogData {
-  if (!_catalog) _catalog = loadJSON<CatalogData>("ai-catalog.json");
-  return _catalog;
+  return catalogJson as unknown as CatalogData;
 }
 
 export function getVerifiedPool(): VerifiedTool[] {
-  if (!_verifiedPool) {
-    try { _verifiedPool = loadJSON<VerifiedTool[]>("verified-top-pool.json"); } catch { _verifiedPool = []; }
-  }
-  return _verifiedPool;
+  return verifiedPoolJson as unknown as VerifiedTool[];
 }
 
 export function getCategoryEmojis(): Record<string, string> {
-  if (!_categoryEmojis) {
-    try { _categoryEmojis = loadJSON<Record<string, string>>("category-emojis.json"); } catch { _categoryEmojis = {}; }
-  }
-  return _categoryEmojis;
+  return categoryEmojisJson as unknown as Record<string, string>;
 }
 
 /** Fisher-Yates shuffle — returns a NEW array. */
