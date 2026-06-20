@@ -12,7 +12,7 @@ export type Tool = {
   d: string;
   c: string;
   g: string;
-  p: "Free" | "Free Plan" | "Free Trial" | "Free Credits" | "Daily Free" | "Monthly Free" | "Paid" | "Paid Plans";
+  p: string;
   u: string;
   fl?: string;
 };
@@ -96,10 +96,22 @@ export function searchTools(opts: {
 
   const term = q.trim().toLowerCase();
 
+  const FREE_PRICINGS = new Set(["Free", "Free Plan", "Free Trial", "Free Credits", "Daily Free", "Monthly Free", "Open Source", "open_source", "freemium"]);
+  const PAID_PRICINGS = new Set(["Paid", "Paid Plans", "paid"]);
+
+  function isFree(p: string) { return FREE_PRICINGS.has(p); }
+  function isPaid(p: string) { return PAID_PRICINGS.has(p); }
+  function matchPricing(p: string) {
+    if (pricing === "All") return true;
+    if (pricing === "Free") return isFree(p);
+    if (pricing === "Paid") return isPaid(p);
+    return p === pricing;
+  }
+
   let filtered = catalog.tools.filter(
     (tool) =>
       (!term || `${tool.n} ${tool.d} ${tool.c} ${tool.g}`.toLowerCase().includes(term)) &&
-      (pricing === "All" || tool.p === pricing) &&
+      matchPricing(tool.p) &&
       (category === "All" || tool.c === category || tool.g === category),
   );
 
@@ -120,6 +132,14 @@ export function searchTools(opts: {
       const bScore = score(b.n.toLowerCase());
       if (aScore !== bScore) return aScore - bScore;
       return a.n.length - b.n.length;
+    });
+  } else if (!term && filtered.length > 1) {
+    // When browsing/filtering without search query: free tools first, then paid
+    filtered = filtered.slice().sort((a, b) => {
+      const aFree = isFree(a.p) ? 0 : 1;
+      const bFree = isFree(b.p) ? 0 : 1;
+      if (aFree !== bFree) return aFree - bFree;
+      return 0;
     });
   }
 

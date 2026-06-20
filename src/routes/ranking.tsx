@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-type Tool = { n: string; d: string; c: string; g: string; p: "Free" | "Free Plan" | "Free Trial" | "Free Credits" | "Daily Free" | "Monthly Free" | "Paid" | "Paid Plans"; u: string; v?: number; fl?: string };
+type Tool = { n: string; d: string; c: string; g: string; p: string; u: string; v?: number; fl?: string };
 type Catalog = { tools: Tool[]; categories: Record<string, number> };
 
 function initials(name: string) {

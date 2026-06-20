@@ -43,12 +43,12 @@ type Tool = {
   d: string;
   c: string;
   g: string;
-  p: "Free" | "Free Plan" | "Free Trial" | "Free Credits" | "Daily Free" | "Monthly Free" | "Paid" | "Paid Plans";
+  p: string;
   u: string;
   fl?: string;
 };
 
-const PRICING_STYLES: Record<Tool["p"], { bg: string; text: string; label: string }> = {
+const PRICING_STYLES: Record<string, { bg: string; text: string; label: string }> = {
   Free: { bg: "bg-emerald-50 dark:bg-emerald-950/50", text: "text-emerald-600 dark:text-emerald-400", label: "Free" },
   "Free Plan": { bg: "bg-green-50 dark:bg-green-950/50", text: "text-green-600 dark:text-green-400", label: "Free Plan" },
   "Free Trial": { bg: "bg-sky-50 dark:bg-sky-950/50", text: "text-sky-600 dark:text-sky-400", label: "Free Trial" },
@@ -56,7 +56,11 @@ const PRICING_STYLES: Record<Tool["p"], { bg: string; text: string; label: strin
   "Daily Free": { bg: "bg-cyan-50 dark:bg-cyan-950/50", text: "text-cyan-600 dark:text-cyan-400", label: "Daily Free" },
   "Monthly Free": { bg: "bg-teal-50 dark:bg-teal-950/50", text: "text-teal-600 dark:text-teal-400", label: "Monthly Free" },
   Paid: { bg: "bg-amber-50 dark:bg-amber-950/50", text: "text-amber-600 dark:text-amber-400", label: "Paid" },
-  "Paid Plans": { bg: "bg-orange-50 dark:bg-orange-950/50", text: "text-orange-600 dark:text-orange-400", label: "Paid" },
+  "Paid Plans": { bg: "bg-orange-50 dark:bg-orange-950/50", text: "text-orange-600 dark:text-orange-400", label: "Paid Plans" },
+  "Open Source": { bg: "bg-blue-50 dark:bg-blue-950/50", text: "text-blue-600 dark:text-blue-400", label: "Open Source" },
+  unknown: { bg: "bg-zinc-50 dark:bg-zinc-950/50", text: "text-zinc-600 dark:text-zinc-400", label: "Unknown" },
+  Unknown: { bg: "bg-zinc-50 dark:bg-zinc-950/50", text: "text-zinc-600 dark:text-zinc-400", label: "Unknown" },
+  freemium: { bg: "bg-indigo-50 dark:bg-indigo-950/50", text: "text-indigo-600 dark:text-indigo-400", label: "Freemium" },
 };
 type Catalog = {
   tools: Tool[];
@@ -192,23 +196,28 @@ function Index() {
   }, []);
 
   // ── Server-side search: triggered when query/category/pricing changes ──
+  const [searchOffset, setSearchOffset] = useState(0);
+  const [loadingMore, setLoadingMore] = useState(false);
+
   useEffect(() => {
     if (!catalogLoaded) return;
     const isBrowsing = !query.trim() && activeCategory === "All" && pricing === "All";
 
     if (isBrowsing) {
       // Browsing mode: use the top-20 tools from the initial load (no API call needed)
+      setSearchOffset(0);
       return;
     }
 
     // Searching/filtering: call server-side search API
     setSearchLoading(true);
+    setSearchOffset(0);
     const params = new URLSearchParams();
     if (query.trim()) params.set("q", query.trim());
     if (activeCategory !== "All") params.set("category", activeCategory);
     if (pricing !== "All") params.set("pricing", pricing);
     params.set("offset", "0");
-    params.set("limit", "200");
+    params.set("limit", "50");
 
     fetch(`/search-api.json?${params}`)
       .then((r) => r.json())
@@ -219,6 +228,34 @@ function Index() {
       })
       .catch(() => setSearchLoading(false));
   }, [query, activeCategory, pricing, catalogLoaded]);
+
+  // ── Load more tools from server API ──
+  const loadMore = useCallback(() => {
+    const isBrowsing = !query.trim() && activeCategory === "All" && pricing === "All";
+    if (isBrowsing) {
+      setVisible((v) => v + 20);
+      return;
+    }
+    setLoadingMore(true);
+    const newOffset = searchOffset + 50;
+    const params = new URLSearchParams();
+    if (query.trim()) params.set("q", query.trim());
+    if (activeCategory !== "All") params.set("category", activeCategory);
+    if (pricing !== "All") params.set("pricing", pricing);
+    params.set("offset", String(newOffset));
+    params.set("limit", "50");
+
+    fetch(`/search-api.json?${params}`)
+      .then((r) => r.json())
+      .then((data: { results: Tool[]; total: number }) => {
+        if (data.results.length > 0) {
+          setCatalog((prev) => ({ ...prev, tools: [...prev.tools, ...data.results] }));
+          setSearchOffset(newOffset);
+        }
+        setLoadingMore(false);
+      })
+      .catch(() => setLoadingMore(false));
+  }, [query, activeCategory, pricing, searchOffset, catalogLoaded]);
 
   // Track auth state for navbar login/signup button
   useEffect(() => {
@@ -971,9 +1008,10 @@ function Index() {
               variant="outline"
               size="lg"
               className="mt-5 w-full"
-              onClick={() => setVisible(visible + 20)}
+              onClick={loadMore}
+              disabled={loadingMore}
             >
-              Show more tools <ChevronRight className="size-4" />
+              {loadingMore ? "Loading..." : `Show more tools (${results.length} of ${displayedCount.toLocaleString()})`} <ChevronRight className="size-4" />
             </Button>
           )}
 
