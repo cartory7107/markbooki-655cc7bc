@@ -999,10 +999,10 @@ function Index() {
           )}
 
           {/* Tool Cards Grid */}
-          {!catalogLoaded ? (
+          {!catalogLoaded || searchLoading ? (
             <ToolCardSkeletons />
           ) : results.length ? (
-            <div className={`grid gap-3 sm:grid-cols-2 transition-opacity duration-200 ${searchLoading ? "opacity-30 pointer-events-none" : ""}`}>
+            <div className="grid gap-3 sm:grid-cols-2">
               {results.map((tool, index) => (
                 <ToolCard
                   key={`${tool.n}-${tool.c}-${index}`}
