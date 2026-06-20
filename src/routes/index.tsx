@@ -159,6 +159,7 @@ function Index() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const topRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to search results when user types
   const scrollToResults = useCallback(() => {
@@ -334,6 +335,22 @@ function Index() {
   }, [catalog.tools]);
 
   const displayedCount = totalResults > 0 ? totalResults : totalTools;
+
+  // ── Auto infinite scroll via IntersectionObserver ──
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el || !catalogLoaded) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !loadingMore && results.length < displayedCount) {
+          loadMore();
+        }
+      },
+      { rootMargin: "500px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [catalogLoaded, loadingMore, results.length, displayedCount, loadMore]);
 
   const suggestions = searchFocused && query.length > 1 ? results.slice(0, 8) : [];
 
@@ -973,11 +990,19 @@ function Index() {
             </p>
           </div>
 
+          {/* Loading indicator when filters change */}
+          {searchLoading && catalogLoaded && (
+            <div className="mb-4 flex items-center justify-center gap-3 rounded-xl border border-primary/20 bg-primary/5 py-5">
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+              <span className="text-sm font-medium text-primary">Updating tools...</span>
+            </div>
+          )}
+
           {/* Tool Cards Grid */}
           {!catalogLoaded ? (
             <ToolCardSkeletons />
           ) : results.length ? (
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className={`grid gap-3 sm:grid-cols-2 transition-opacity duration-200 ${searchLoading ? "opacity-30 pointer-events-none" : ""}`}>
               {results.map((tool, index) => (
                 <ToolCard
                   key={`${tool.n}-${tool.c}-${index}`}
@@ -998,16 +1023,29 @@ function Index() {
           )}
 
           {results.length < displayedCount && (
-            <Button
-              variant="outline"
-              size="lg"
-              className="mt-5 w-full"
-              onClick={loadMore}
-              disabled={loadingMore}
-            >
-              {loadingMore ? "Loading..." : `Show more tools (${results.length.toLocaleString()} of ${displayedCount.toLocaleString()})`} <ChevronRight className="size-4" />
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                size="lg"
+                className="mt-5 w-full"
+                onClick={loadMore}
+                disabled={loadingMore}
+              >
+                {loadingMore ? "Loading..." : `Show more tools (${results.length.toLocaleString()} of ${displayedCount.toLocaleString()})`} <ChevronRight className="size-4" />
+              </Button>
+              {/* Infinite scroll sentinel */}
+              <div ref={sentinelRef} className="h-1" />
+              {/* Loading more indicator */}
+              {loadingMore && (
+                <div className="mt-3 flex items-center justify-center gap-3 py-4">
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+                  <span className="text-sm text-muted-foreground">Loading more tools...</span>
+                </div>
+              )}
+            </>
           )}
+          {/* Always render sentinel for IntersectionObserver even when all loaded */}
+          {results.length >= displayedCount && <div ref={sentinelRef} className="h-1" />}
 
           {/* ─── Hidden Gems Section ─── */}
           {!query && activeCategory === "All" && (

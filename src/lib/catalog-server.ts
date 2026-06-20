@@ -137,13 +137,13 @@ export function searchTools(opts: {
   } else if (!term && filtered.length > 1) {
     // When browsing/filtering without search query: sort by requested mode
     if (sort === "popular") {
-      // "Popular": shuffle (simulates popularity since we don't have view counts)
-      const out = filtered.slice();
-      for (let i = out.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [out[i], out[j]] = [out[j], out[i]];
-      }
-      filtered = out;
+      // "Popular": deterministic shuffle based on name hash (stable across paginated requests)
+      filtered = filtered.slice().sort((a, b) => {
+        let ha = 0, hb = 0;
+        for (let i = 0; i < a.n.length; i++) ha = a.n.charCodeAt(i) + ((ha << 5) - ha);
+        for (let i = 0; i < b.n.length; i++) hb = b.n.charCodeAt(i) + ((hb << 5) - hb);
+        return ha - hb;
+      });
     } else if (sort === "new") {
       // "New": reverse order (tools at end of array are newer additions)
       filtered = filtered.slice().reverse();
