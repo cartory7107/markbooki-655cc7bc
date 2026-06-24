@@ -107,7 +107,7 @@ const PRICING_OPTIONS = [
   "Paid Plans",
 ];
 
-const ITEMS_PER_PAGE = 20;
+const ITEMS_PER_PAGE = 50;
 
 /* ---------- Component ---------- */
 function AdminPage() {
@@ -177,13 +177,19 @@ function AdminDashboard() {
 
   // Lazy-load catalog ONLY when Manage Tools tab is active
   useEffect(() => {
-    if (activeTab !== "manage") return;
+    if (activeTab !== "tools") return;
     if (catalog.tools.length > 0) return; // already loaded
     setCatalogLoading(true);
-    fetch(`/search-api.json?limit=200`)
+    // Fetch ALL tools (16K+) — admin needs the full catalog
+    fetch(`/search-api.json?limit=50000`)
       .then((r) => r.json())
       .then((data: { results: Tool[]; total: number }) => {
-        setCatalog({ tools: data.results, categories: {} });
+        // Build categories map from the tools themselves
+        const cats: Record<string, number> = {};
+        for (const t of data.results) {
+          cats[t.c] = (cats[t.c] || 0) + 1;
+        }
+        setCatalog({ tools: data.results, categories: cats });
         setCatalogLoading(false);
       })
       .catch(() => setCatalogLoading(false));
@@ -217,7 +223,9 @@ function AdminDashboard() {
     };
   }, [catalog.tools.length, submissions, adminEdits]);
 
-  const categoryList = useMemo(() => Object.keys(catalog.categories), [catalog.categories]);
+  const categoryList = useMemo(() => {
+    return Object.keys(catalog.categories).sort();
+  }, [catalog.categories]);
 
   if (dbReady === null || dbReady === false) {
     return (
@@ -422,11 +430,20 @@ function ToolsTab({
   onRefresh: () => void;
 }) {
   const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("All");
+  const [pricingFilter, setPricingFilter] = useState("All");
   const [page, setPage] = useState(1);
   const [editTool, setEditTool] = useState<Tool | null>(null);
   const [deleteTool, setDeleteTool] = useState<Tool | null>(null);
   const [editForm, setEditForm] = useState<Partial<Tool>>({});
   const [saving, setSaving] = useState(false);
+
+  // Build sorted category list from catalog
+  const sortedCategories = useMemo(() => {
+    return Object.keys(catalog.categories).sort((a, b) =>
+      catalog.categories[b] - catalog.categories[a]
+    );
+  }, [catalog.categories]);
 
   // Apply admin edits to catalog for display
   const mergedTools = useMemo(() => {
@@ -454,15 +471,30 @@ function ToolsTab({
   }, [catalog.tools, adminEdits]);
 
   const filtered = useMemo(() => {
-    if (!search.trim()) return mergedTools;
-    const q = search.toLowerCase();
-    return mergedTools.filter(
-      (t) =>
-        t.n.toLowerCase().includes(q) ||
-        t.d.toLowerCase().includes(q) ||
-        t.c.toLowerCase().includes(q)
-    );
-  }, [mergedTools, search]);
+    let result = mergedTools;
+    if (categoryFilter !== "All") {
+      result = result.filter((t) => t.c === categoryFilter);
+    }
+    if (pricingFilter !== "All") {
+      if (pricingFilter === "Free") {
+        result = result.filter((t) => ["Free", "Free Plan", "Free Trial", "Free Credits", "Daily Free", "Monthly Free", "Open Source", "open_source", "freemium"].includes(t.p));
+      } else if (pricingFilter === "Paid") {
+        result = result.filter((t) => ["Paid", "Paid Plans", "paid"].includes(t.p));
+      } else {
+        result = result.filter((t) => t.p === pricingFilter);
+      }
+    }
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (t) =>
+          t.n.toLowerCase().includes(q) ||
+          t.d.toLowerCase().includes(q) ||
+          t.c.toLowerCase().includes(q)
+      );
+    }
+    return result;
+  }, [mergedTools, search, categoryFilter, pricingFilter]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
   const currentPage = Math.min(page, totalPages);
@@ -470,7 +502,7 @@ function ToolsTab({
 
   useEffect(() => {
     setPage(1);
-  }, [search]);
+  }, [search, categoryFilter, pricingFilter]);
 
   const openEdit = (tool: Tool) => {
     setEditTool(tool);
@@ -532,14 +564,39 @@ function ToolsTab({
         Browse, edit, and remove tools from the catalog. {mergedTools.length.toLocaleString()} tools total.
       </p>
 
-      <div className="mt-4 relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
-        <Input
-          placeholder="Search tools by name, description, or category..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="pl-9 h-11"
-        />
+      <div className="mt-4 flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+          <Input
+            placeholder="Search tools by name, description, or category..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="pl-9 h-11"
+          />
+        </div>
+        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+          <SelectTrigger className="h-11 w-full sm:w-56">
+            <SelectValue placeholder="All Categories" />
+          </SelectTrigger>
+          <SelectContent className="max-h-64">
+            <SelectItem value="All">All Categories</SelectItem>
+            {sortedCategories.map((cat) => (
+              <SelectItem key={cat} value={cat}>
+                {cat} ({catalog.categories[cat]})
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select value={pricingFilter} onValueChange={setPricingFilter}>
+          <SelectTrigger className="h-11 w-full sm:w-40">
+            <SelectValue placeholder="All Pricing" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="All">All Pricing</SelectItem>
+            <SelectItem value="Free">Free</SelectItem>
+            <SelectItem value="Paid">Paid</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {loading ? (
@@ -638,8 +695,8 @@ function ToolsTab({
                 <label className="mb-1 block text-sm font-medium">Category</label>
                 <Select value={editForm.c || ""} onValueChange={(v) => setEditForm({ ...editForm, c: v })}>
                   <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
-                  <SelectContent>
-                    {categories.map((cat) => (
+                  <SelectContent className="max-h-64">
+                    {sortedCategories.map((cat) => (
                       <SelectItem key={cat} value={cat}>{cat}</SelectItem>
                     ))}
                   </SelectContent>
