@@ -626,17 +626,16 @@ function ToolsTab({
                   <p className="mt-1 text-xs text-muted-foreground truncate">{tool.d}</p>
                   <div className="mt-1.5 flex items-center gap-3 text-[11px] text-muted-foreground">
                     <span>{tool.p}</span>
-                    <a
-                      href={tool.u}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-0.5 text-primary hover:underline"
-                    >
-                      Visit <ExternalLink className="size-2.5" />
-                    </a>
+                    <span className="truncate text-[11px] text-muted-foreground max-w-xs">{tool.u}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-2 shrink-0">
+                  <a href={tool.u} target="_blank" rel="noopener noreferrer">
+                    <Button size="sm" variant="outline" className="gap-1.5">
+                      <ExternalLink className="size-3.5" />
+                      <span className="hidden sm:inline">Visit</span>
+                    </Button>
+                  </a>
                   <Button size="sm" variant="outline" onClick={() => openEdit(tool)}>
                     <Edit3 className="size-3.5" />
                   </Button>
