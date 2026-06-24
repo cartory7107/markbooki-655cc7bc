@@ -198,13 +198,13 @@
   border-color: color-mix(in oklab, oklch(0.65 0.22 290) 45%, var(--border));
   position: relative;
   overflow: hidden;
-}
-@utility holographic-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 30%, color-mix(in oklab, white 18%, transparent) 50%, transparent 70%);
-  pointer-events: none;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(115deg, transparent 30%, color-mix(in oklab, white 18%, transparent) 50%, transparent 70%);
+    pointer-events: none;
+  }
 }
 
 /* Scrollbar styling */
