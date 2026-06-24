@@ -189,22 +189,13 @@
 }
 
 @utility holographic-bg {
-  background:
-    linear-gradient(135deg,
-      color-mix(in oklab, oklch(0.72 0.18 320) 18%, var(--card)) 0%,
-      color-mix(in oklab, oklch(0.74 0.17 200) 16%, var(--card)) 35%,
-      color-mix(in oklab, oklch(0.78 0.16 90) 16%, var(--card)) 70%,
-      color-mix(in oklab, oklch(0.70 0.20 280) 18%, var(--card)) 100%);
+  background-image: url('/holographic-card.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   border-color: color-mix(in oklab, oklch(0.65 0.22 290) 45%, var(--border));
   position: relative;
   overflow: hidden;
-  &::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(115deg, transparent 30%, color-mix(in oklab, white 18%, transparent) 50%, transparent 70%);
-    pointer-events: none;
-  }
 }
 
 /* Scrollbar styling */
