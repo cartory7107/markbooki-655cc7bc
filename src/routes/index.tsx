@@ -1420,22 +1420,36 @@ function ToolCard({
   tool,
   saved,
   onToggleSave,
+  exclusive = false,
+  trending = false,
 }: {
   tool: Tool;
   saved: boolean;
   onToggleSave: () => void;
+  exclusive?: boolean;
+  trending?: boolean;
 }) {
   return (
-    <article className="tool-lift flex min-w-0 flex-col rounded-xl border border-border bg-card p-4">
+    <article className={`tool-lift flex min-w-0 flex-col rounded-xl border p-4 ${exclusive ? "holographic-bg border-border" : "border-border bg-card"}`}>
       <div className="flex min-w-0 items-start gap-3">
         <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
           <ToolIcon name={tool.n} url={tool.u} />
         </a>
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline">
               <h3 className="truncate font-semibold text-sm">{tool.n}</h3>
             </a>
+            {exclusive && (
+              <span className="shrink-0 rounded-md bg-gradient-to-r from-fuchsia-500 to-violet-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                ✨ Exclusive
+              </span>
+            )}
+            {trending && (
+              <span className="shrink-0 rounded-md bg-orange-500/15 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:text-orange-400">
+                🔥 Trending
+              </span>
+            )}
             {(() => {
               const style = PRICING_STYLES[tool.p];
               if (!style) return null;
