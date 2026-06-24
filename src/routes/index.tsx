@@ -1084,6 +1084,30 @@ function Index() {
             </section>
           )}
 
+          {/* ─── Exclusive AI Tools ─── */}
+          {!query && activeCategory === "All" && catalogLoaded && (
+            <section className="mt-10">
+              <div className="mb-4 flex items-center gap-2">
+                <Sparkles className="size-5 text-fuchsia-500" />
+                <h2 className="text-lg font-bold">Exclusive AI Tools</h2>
+                <span className="ml-2 text-xs text-muted-foreground">Hand-picked top-tier picks</span>
+              </div>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {catalog.tools.slice(0, 6).map((tool, i) => (
+                  <ToolCard
+                    key={`excl-${tool.n}-${i}`}
+                    tool={tool}
+                    saved={savedTools.has(tool.n)}
+                    onToggleSave={() => toggleSave(tool.n)}
+                    exclusive
+                    trending
+                  />
+                ))}
+              </div>
+            </section>
+          )}
+
+
           {/* ─── Free AI Collections ─── */}
           {!query && activeCategory === "All" && (
             <section className="mt-10">
