@@ -1009,6 +1009,7 @@ function Index() {
                   tool={tool}
                   saved={savedTools.has(tool.n)}
                   onToggleSave={() => toggleSave(tool.n)}
+                  exclusive={index % 4 === 0}
                 />
               ))}
             </div>
