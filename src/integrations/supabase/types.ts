@@ -48,6 +48,7 @@ export type Database = {
           email: string
           full_name: string
           id: string
+          payment_method: string
           payment_status: string
           placement: string
           status: Database["public"]["Enums"]["review_status"]
@@ -64,6 +65,7 @@ export type Database = {
           email: string
           full_name: string
           id?: string
+          payment_method?: string
           payment_status?: string
           placement: string
           status?: Database["public"]["Enums"]["review_status"]
@@ -80,6 +82,7 @@ export type Database = {
           email?: string
           full_name?: string
           id?: string
+          payment_method?: string
           payment_status?: string
           placement?: string
           status?: Database["public"]["Enums"]["review_status"]
@@ -99,6 +102,7 @@ export type Database = {
           created_at: string
           date_added: string
           discovery_source: string | null
+          favicon_url: string | null
           features: Json
           has_free_plan: boolean
           id: string
@@ -127,6 +131,7 @@ export type Database = {
           created_at?: string
           date_added?: string
           discovery_source?: string | null
+          favicon_url?: string | null
           features?: Json
           has_free_plan?: boolean
           id?: string
@@ -155,6 +160,7 @@ export type Database = {
           created_at?: string
           date_added?: string
           discovery_source?: string | null
+          favicon_url?: string | null
           features?: Json
           has_free_plan?: boolean
           id?: string
@@ -259,9 +265,11 @@ export type Database = {
           admin_notes: string | null
           category: string
           created_at: string
+          decline_reason: string | null
           description: string
           full_description: string | null
           id: string
+          linked_tool_id: string | null
           logo_url: string | null
           pricing: string
           status: string
@@ -277,9 +285,11 @@ export type Database = {
           admin_notes?: string | null
           category?: string
           created_at?: string
+          decline_reason?: string | null
           description: string
           full_description?: string | null
           id?: string
+          linked_tool_id?: string | null
           logo_url?: string | null
           pricing?: string
           status?: string
@@ -295,9 +305,11 @@ export type Database = {
           admin_notes?: string | null
           category?: string
           created_at?: string
+          decline_reason?: string | null
           description?: string
           full_description?: string | null
           id?: string
+          linked_tool_id?: string | null
           logo_url?: string | null
           pricing?: string
           status?: string
@@ -309,7 +321,15 @@ export type Database = {
           tool_url?: string
           updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tool_submissions_linked_tool_id_fkey"
+            columns: ["linked_tool_id"]
+            isOneToOne: false
+            referencedRelation: "ai_tools"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
