@@ -1,16 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowLeft,
   Crown,
   ExternalLink,
   Filter,
+  GitCompare,
+  Loader2,
   Medal,
   Search,
+  Sparkles,
   Trophy,
-  TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { aiRankTools } from "@/lib/ai-research.functions";
 
 type Tool = { n: string; d: string; c: string; g: string; p: string; u: string; v?: number; fl?: string };
 type Catalog = { tools: Tool[]; categories: Record<string, number> };

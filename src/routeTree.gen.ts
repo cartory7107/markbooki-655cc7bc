@@ -16,6 +16,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SearchApiDotjsonRouteImport } from './routes/search-api[.]json'
 import { Route as RankingRouteImport } from './routes/ranking'
 import { Route as ExclusiveApiDotjsonRouteImport } from './routes/exclusive-api[.]json'
+import { Route as CompareRouteImport } from './routes/compare'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -58,6 +59,11 @@ const ExclusiveApiDotjsonRoute = ExclusiveApiDotjsonRouteImport.update({
   path: '/exclusive-api.json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CompareRoute = CompareRouteImport.update({
+  id: '/compare',
+  path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -94,6 +100,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
+  '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
+  '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
+  '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/advertise'
     | '/auth'
+    | '/compare'
     | '/exclusive-api.json'
     | '/ranking'
     | '/search-api.json'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/advertise'
     | '/auth'
+    | '/compare'
     | '/exclusive-api.json'
     | '/ranking'
     | '/search-api.json'
@@ -172,6 +183,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/advertise'
     | '/auth'
+    | '/compare'
     | '/exclusive-api.json'
     | '/ranking'
     | '/search-api.json'
@@ -188,6 +200,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AdvertiseRoute: typeof AdvertiseRoute
   AuthRoute: typeof AuthRoute
+  CompareRoute: typeof CompareRoute
   ExclusiveApiDotjsonRoute: typeof ExclusiveApiDotjsonRoute
   RankingRoute: typeof RankingRoute
   SearchApiDotjsonRoute: typeof SearchApiDotjsonRoute
@@ -250,6 +263,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExclusiveApiDotjsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/compare': {
+      id: '/compare'
+      path: '/compare'
+      fullPath: '/compare'
+      preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -300,6 +320,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AdvertiseRoute: AdvertiseRoute,
   AuthRoute: AuthRoute,
+  CompareRoute: CompareRoute,
   ExclusiveApiDotjsonRoute: ExclusiveApiDotjsonRoute,
   RankingRoute: RankingRoute,
   SearchApiDotjsonRoute: SearchApiDotjsonRoute,
