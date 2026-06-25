@@ -146,6 +146,36 @@ function RankingPage() {
 
   const [rankingLoading, setRankingLoading] = useState(false);
 
+  // AI verdict state
+  type AiRank = {
+    topic: string;
+    summary: string;
+    ranking: Array<{ rank: number; name: string; reason: string; strengths: string[]; bestFor: string }>;
+  };
+  const [aiTopic, setAiTopic] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+  const [aiResult, setAiResult] = useState<AiRank | null>(null);
+  const runAiRank = useServerFn(aiRankTools);
+
+  async function onAiRank() {
+    const topic = aiTopic.trim() || query.trim() || "best AI tools overall";
+    setAiLoading(true);
+    setAiError(null);
+    setAiResult(null);
+    try {
+      const out = await runAiRank({
+        data: { topic, candidates: catalog.tools.slice(0, 20).map((t) => t.n) },
+      });
+      setAiResult(out as AiRank);
+    } catch (e: unknown) {
+      setAiError(e instanceof Error ? e.message : "AI ranking failed.");
+    } finally {
+      setAiLoading(false);
+    }
+  }
+
+
   // Fetch from server API when filters change (also fires on mount)
   useEffect(() => {
     setRankingLoading(true);
