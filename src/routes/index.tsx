@@ -1460,17 +1460,17 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
       className="shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm"
       style={{ display: "inline-flex", position: "relative", width: pxSize, height: pxSize }}
     >
-      {/* MarkBook logo placeholder — visible while image loads, fades out when loaded */}
+      {/* Loading placeholder — muted, pulsing so it doesn't look like the real logo is already loaded */}
       <span
-        className={`absolute inset-0 grid place-items-center rounded-lg bg-white dark:bg-zinc-800 transition-opacity duration-300 ${
-          loaded ? "opacity-0" : "opacity-100"
+        className={`absolute inset-0 grid place-items-center rounded-lg bg-muted/30 dark:bg-muted/20 transition-opacity duration-300 ${
+          loaded ? "opacity-0" : "opacity-100 animate-pulse"
         }`}
       >
         <img
           src={logoAsset.url}
           alt=""
           aria-hidden="true"
-          className="size-full object-contain"
+          className="size-full object-contain opacity-40 grayscale"
         />
       </span>
       {/* Real logo image — fills the square cleanly */}
