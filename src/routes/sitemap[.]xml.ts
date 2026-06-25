@@ -15,7 +15,7 @@ export const Route = createFileRoute("/sitemap.xml")({
     handlers: {
       GET: async () => {
         const catalog = getCatalog();
-        const BASE_URL = "https://markbook.cartory.top";
+        const BASE_URL = "https://markbook.top";
         const now = new Date().toISOString().split("T")[0];
 
         const urls: string[] = [];
