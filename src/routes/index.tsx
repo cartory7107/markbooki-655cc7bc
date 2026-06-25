@@ -35,7 +35,7 @@ import {
   Share2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import logoAsset from "@/assets/markbook-symbol.png.asset.json";
+import logoAsset from "@/assets/markbook-symbol-clean.png.asset.json";
 import { supabase } from "@/integrations/supabase/client";
 
 type Tool = {
@@ -146,11 +146,11 @@ function getToolGradientColors(name: string) {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MarkBook — Discover 56,000+ AI Tools | Best AI Tools Directory" },
+      { title: "MarkBook — 100,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
       {
         name: "description",
         content:
-          "Search, compare, and discover the best AI tools for any task with MarkBook's trusted AI research platform.",
+          "MarkBook is the world's largest AI tools directory. Search, compare, and discover 100,000+ AI tools — chatbots, image, video, code, and writing — across 500+ categories.",
       },
     ],
   }),

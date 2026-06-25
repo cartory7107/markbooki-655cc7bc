@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/use-auth";
-import logoAsset from "@/assets/markbook-symbol.png.asset.json";
+import logoAsset from "@/assets/markbook-symbol-clean.png.asset.json";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({

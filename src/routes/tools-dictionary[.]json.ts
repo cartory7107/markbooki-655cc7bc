@@ -25,7 +25,7 @@ export const Route = createFileRoute("/tools-dictionary.json")({
           "@context": "https://schema.org",
           "@type": "ItemList",
           name: "MarkBook AI Tools Dictionary",
-          description: "A comprehensive machine-readable directory of AI tools. Contains over 56,000 AI tools across 500+ categories including AI chatbots, AI image generators, AI video generators, AI code assistants, AI writing tools, AI music generators, AI voice generators, AI search engines, and more.",
+          description: "A comprehensive machine-readable directory of AI tools. Contains over 100,000 AI tools across 500+ categories including AI chatbots, AI image generators, AI video generators, AI code assistants, AI writing tools, AI music generators, AI voice generators, AI search engines, and more.",
           url: "https://markbook.top",
           numberOfItems: catalog.tools.length,
           version: "2.0",

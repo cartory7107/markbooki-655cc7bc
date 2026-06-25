@@ -79,29 +79,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "MarkBook — Discover 56,000+ AI Tools | Best AI Tools Directory 2025" },
+      { title: "MarkBook — 100,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
       {
         name: "description",
         content:
-          "MarkBook is the largest AI tools directory with 56,000+ AI tools across 500+ categories. Compare AI chatbots, image generators, video generators, code assistants, writing tools, and more. Free and paid options. Updated daily.",
+          "MarkBook is the world's largest AI tools directory with 100,000+ AI tools across 500+ categories. Search, compare, and discover the best AI chatbots, image generators, video tools, code assistants, writing tools, and more. Free & paid. Updated daily.",
       },
       {
         name: "keywords",
         content:
-          "AI tools, AI tools directory, best AI tools 2025, free AI tools, AI chatbot, AI image generator, AI video generator, AI code assistant, AI writing tool, AI music generator, AI voice generator, AI search engine, AI assistant, AI directory, MarkBook, AI tools list, AI tools comparison, AI software, AI applications, ChatGPT alternatives, Midjourney alternatives, Claude alternatives, Gemini alternatives, AI tools for students, AI tools for business, AI tools for developers, AI tools for content creators, AI tools for designers, generative AI tools, machine learning tools, artificial intelligence tools, AI dictionary, AI encyclopedia",
+          "MarkBook, MarkBook AI, markbook.top, MarkBook AI tools, MarkBook directory, AI tools, AI tools directory, best AI tools 2026, free AI tools, AI chatbot, AI image generator, AI video generator, AI code assistant, AI writing tool, AI music generator, AI voice generator, AI search engine, AI assistant, AI directory, AI tools list, AI tools comparison, AI software, ChatGPT alternatives, Midjourney alternatives, Claude alternatives, Gemini alternatives, generative AI tools, artificial intelligence tools, AI dictionary, AI encyclopedia",
       },
+      { name: "application-name", content: "MarkBook" },
+      { name: "apple-mobile-web-app-title", content: "MarkBook" },
       { name: "author", content: "MarkBook" },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
-      { property: "og:title", content: "MarkBook — Discover 56,000+ AI Tools | Best AI Tools Directory" },
-      { property: "og:description", content: "The largest AI tools directory with 56,000+ tools. Compare AI chatbots, image generators, video tools, code assistants, and more. Updated daily." },
+      { property: "og:title", content: "MarkBook — 100,000+ AI Tools Directory | Discover & Compare the Best AI" },
+      { property: "og:description", content: "MarkBook: the world's largest AI tools directory with 100,000+ tools. Compare AI chatbots, image, video, code, and writing tools. Updated daily." },
       { property: "og:type", content: "website" },
-      { property: "og:site_name", content: "MarkBook AI" },
+      { property: "og:site_name", content: "MarkBook" },
       { property: "og:url", content: "https://markbook.top" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "MarkBook — Discover 56,000+ AI Tools | Best AI Directory 2025" },
-      { name: "twitter:description", content: "The largest AI tools directory with 56,000+ tools. Compare AI chatbots, image generators, video tools, code assistants, and more." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a275fbaf-5ddc-4670-af3f-7acd2fb5ba96/id-preview-720f0fb0--8e43dfa5-a610-4d28-8e20-67a5e9c1fb1e.lovable.app-1781479066010.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a275fbaf-5ddc-4670-af3f-7acd2fb5ba96/id-preview-720f0fb0--8e43dfa5-a610-4d28-8e20-67a5e9c1fb1e.lovable.app-1781479066010.png" },
+      { name: "twitter:site", content: "@markbook" },
+      { name: "twitter:title", content: "MarkBook — 100,000+ AI Tools Directory" },
+      { name: "twitter:description", content: "MarkBook: the world's largest AI tools directory. 100,000+ AI tools — search, compare, and discover the best." },
+      { property: "og:image", content: "https://markbook.top/og-image.png" },
+      { name: "twitter:image", content: "https://markbook.top/og-image.png" },
     ],
     links: [
       {
@@ -109,6 +112,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
         href: appCss,
       },
       { rel: "canonical", href: "https://markbook.top" },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "shortcut icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "preconnect", href: "https://icon.horse" },
@@ -122,12 +128,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
     scripts: [
       {
         type: "application/ld+json",
-        innerHTML: JSON.stringify({
+        children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
-          "name": "MarkBook AI",
+          "name": "MarkBook",
+          "alternateName": ["MarkBook AI", "MarkBook AI Tools Directory", "markbook.top"],
           "url": "https://markbook.top",
-          "description": "The largest AI tools directory with 56,000+ AI tools across 500+ categories.",
+          "description": "MarkBook is the world's largest AI tools directory with 100,000+ AI tools across 500+ categories.",
           "potentialAction": {
             "@type": "SearchAction",
             "target": "https://markbook.top/?q={search_term_string}",
@@ -136,21 +143,35 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
           "publisher": {
             "@type": "Organization",
             "name": "MarkBook",
-            "logo": { "@type": "ImageObject", "url": "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a275fbaf-5ddc-4670-af3f-7acd2fb5ba96/id-preview-720f0fb0--8e43dfa5-a610-4d28-8e20-67a5e9c1fb1e.lovable.app-1781479066010.png" }
+            "url": "https://markbook.top",
+            "logo": { "@type": "ImageObject", "url": "https://markbook.top/favicon.png" }
           }
         }),
       },
       {
         type: "application/ld+json",
-        innerHTML: JSON.stringify({
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "MarkBook",
+          "alternateName": "MarkBook AI",
+          "url": "https://markbook.top",
+          "logo": "https://markbook.top/favicon.png",
+          "description": "MarkBook — the world's largest AI tools directory. Discover, compare, and search 100,000+ AI tools.",
+          "sameAs": ["https://markbook.top"]
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Dataset",
           "name": "MarkBook AI Tools Directory",
-          "description": "A comprehensive directory of 56,000+ AI tools spanning 500+ categories, including pricing, descriptions, categories, and direct links.",
+          "description": "A comprehensive directory of 100,000+ AI tools spanning 500+ categories, including pricing, descriptions, categories, and direct links.",
           "url": "https://markbook.top/tools-dictionary.json",
           "creator": { "@type": "Organization", "name": "MarkBook" },
           "distribution": { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://markbook.top/tools-dictionary.json" },
-          "temporalCoverage": "2024/2025",
+          "temporalCoverage": "2024/2026",
           "spatialCoverage": "Worldwide"
         }),
       },
