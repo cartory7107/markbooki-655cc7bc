@@ -3,7 +3,7 @@ import { generateText, Output } from "ai";
 import { z } from "zod";
 import { createLovableAiGatewayProvider } from "./ai-gateway.server";
 
-const MODEL = "google/gemini-3-flash-preview";
+const MODEL = "google/gemini-2.5-flash-lite";
 
 // ── Compare tools ──────────────────────────────────────────────────────────
 const CompareInput = z.object({
