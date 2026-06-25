@@ -82,7 +82,25 @@ export function getTopToolsBundle() {
 }
 
 /**
- * Server-side search & filter with relevance scoring and pagination.
+ * Generates organic-looking exclusive insertion positions.
+ * Returns a Set of indices where exclusives should be placed.
+ * Pattern: roughly every 3-6 tools (avg ~4), with variation to look human-curated.
+ */
+function generateExclusivePositions(totalSlots: number, seed: number): Set<number> {
+  const positions = new Set<number>();
+  let pos = 2 + (seed % 3); // Start at position 2-4
+  while (pos < totalSlots) {
+    positions.add(pos);
+    // Vary gap: 3, 4, 5, or 6 — uses simple hash-like variation
+    const gap = 3 + (((pos * 7 + seed * 13) % 4));
+    pos += gap;
+  }
+  return positions;
+}
+
+/**
+ * Server-side search & filter with relevance scoring, pagination,
+ * and organic exclusive tool injection.
  */
 export function searchTools(opts: {
   q?: string;
@@ -92,8 +110,9 @@ export function searchTools(opts: {
   offset?: number;
   limit?: number;
 }) {
-  const { q = "", category = "All", pricing = "All", sort = "", offset = 0, limit = 20 } = opts;
+  const { q = "", category = "All", pricing = "All", sort = "", offset = 0, limit = 50 } = opts;
   const catalog = getCatalog();
+  const exclusivePool = getVerifiedPool();
 
   const term = q.trim().toLowerCase();
 
@@ -108,6 +127,24 @@ export function searchTools(opts: {
     if (pricing === "Paid") return isPaid(p);
     return p === pricing;
   }
+
+  // Build a Set of exclusive names for O(1) lookup
+  const exclusiveNames = new Set(exclusivePool.map((e) => e.n.toLowerCase()));
+  // Build category-matched exclusive pool for contextual injection
+  const categoryExclusives = category !== "All"
+    ? exclusivePool.filter((e) => e.c === category || e.g === category)
+    : exclusivePool;
+  // Shuffle exclusives deterministically by offset so pagination is stable
+  const seededShuffle = (arr: typeof exclusivePool, seed: number) => {
+    const out = arr.slice();
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.abs((seed * 31 + i * 17) % (i + 1));
+      [out[i], out[j]] = [out[j], out[i]];
+    }
+    return out;
+  };
+  const shuffledExclusives = seededShuffle(categoryExclusives, offset);
+  let exclusiveIndex = 0;
 
   let filtered = catalog.tools.filter(
     (tool) =>
@@ -137,7 +174,6 @@ export function searchTools(opts: {
   } else if (!term && filtered.length > 1) {
     // When browsing/filtering without search query: sort by requested mode
     if (sort === "popular") {
-      // "Popular": deterministic shuffle based on name hash (stable across paginated requests)
       filtered = filtered.slice().sort((a, b) => {
         let ha = 0, hb = 0;
         for (let i = 0; i < a.n.length; i++) ha = a.n.charCodeAt(i) + ((ha << 5) - ha);
@@ -145,10 +181,8 @@ export function searchTools(opts: {
         return ha - hb;
       });
     } else if (sort === "new") {
-      // "New": reverse order (tools at end of array are newer additions)
       filtered = filtered.slice().reverse();
     } else {
-      // "today" / default: free tools first, then paid
       filtered = filtered.slice().sort((a, b) => {
         const aFree = isFree(a.p) ? 0 : 1;
         const bFree = isFree(b.p) ? 0 : 1;
@@ -159,7 +193,39 @@ export function searchTools(opts: {
   }
 
   const total = filtered.length;
-  const results = filtered.slice(offset, offset + limit);
+
+  // Get the page of results
+  let results = filtered.slice(offset, offset + limit);
+
+  // Inject exclusive tools every ~4th position (organic spacing)
+  // Only when browsing (no search query) and not on specific category filter
+  if (!term && results.length > 8) {
+    const positions = generateExclusivePositions(results.length, offset);
+    const injected: typeof results = [];
+    const resultNames = new Set(results.map((r) => r.n.toLowerCase()));
+
+    for (let i = 0; i < results.length; i++) {
+      // Check if an exclusive should be inserted before this position
+      if (positions.has(i)) {
+        // Find next exclusive that's not already in results
+        let inserted = false;
+        let attempts = 0;
+        while (exclusiveIndex < shuffledExclusives.length && attempts < 20) {
+          const ex = shuffledExclusives[exclusiveIndex];
+          exclusiveIndex++;
+          attempts++;
+          if (!resultNames.has(ex.n.toLowerCase()) && matchPricing(ex.p)) {
+            injected.push(ex as (typeof results)[0]);
+            inserted = true;
+            break;
+          }
+        }
+        // If no exclusive found, just skip this position
+      }
+      injected.push(results[i]);
+    }
+    results = injected;
+  }
 
   return { results, total };
 }

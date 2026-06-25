@@ -79,33 +79,33 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "MarkBook — 100,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
+      { title: "MarkBook — 116,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
       {
         name: "description",
         content:
-          "MarkBook is the world's largest AI tools directory with 100,000+ AI tools across 500+ categories. Search, compare, and discover the best AI chatbots, image generators, video tools, code assistants, writing tools, and more. Free & paid. Updated daily.",
+          "MarkBook is the world's largest AI tools directory with 116,000+ AI tools across 500+ categories. Search, compare, and discover the best AI chatbots, image generators, video tools, code assistants, writing tools, and more. Free & paid. Updated daily.",
       },
       {
         name: "keywords",
         content:
-          "MarkBook, MarkBook AI, markbook.top, MarkBook AI tools, MarkBook directory, AI tools, AI tools directory, best AI tools 2026, free AI tools, AI chatbot, AI image generator, AI video generator, AI code assistant, AI writing tool, AI music generator, AI voice generator, AI search engine, AI assistant, AI directory, AI tools list, AI tools comparison, AI software, ChatGPT alternatives, Midjourney alternatives, Claude alternatives, Gemini alternatives, generative AI tools, artificial intelligence tools, AI dictionary, AI encyclopedia, AI research, AI research tools, AI tool list, ai directory, ai research, ai tool, ai tool list, best AI directory, top AI tools 2026, AI finder, discover AI tools, AI catalog, comprehensive AI directory, AI search platform, all AI tools in one place, AI tools review, AI tools comparison site",
+          "MarkBook, MarkBook AI, markbook.top, MarkBook AI tools, MarkBook directory, AI tools, AI tools directory, best AI tools 2026, free AI tools, AI chatbot, AI image generator, AI video generator, AI code assistant, AI writing tool, AI music generator, AI voice generator, AI search engine, AI assistant, AI directory, AI tools list, AI tools comparison, AI software, ChatGPT alternatives, Midjourney alternatives, Claude alternatives, Gemini alternatives, generative AI tools, artificial intelligence tools, AI dictionary, AI encyclopedia, AI research, AI research tools, AI tool list, ai directory, ai research, ai tool, ai tool list, best AI directory, top AI tools 2026, 116000 AI tools, 116K AI tools, AI finder, discover AI tools, AI catalog, comprehensive AI directory, AI search platform, all AI tools in one place, AI tools review, AI tools comparison site, markbook",
       },
       { name: "application-name", content: "MarkBook" },
       { name: "apple-mobile-web-app-title", content: "MarkBook" },
       { name: "author", content: "MarkBook" },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
-      { property: "og:title", content: "MarkBook — 100,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
-      { property: "og:description", content: "MarkBook — 100,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
+      { property: "og:title", content: "MarkBook — 116,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
+      { property: "og:description", content: "MarkBook is the world's largest AI tools directory with 116,000+ AI tools across 500+ categories. Search, compare, and discover the best AI tools. Updated daily." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "MarkBook" },
       { property: "og:url", content: "https://markbook.top" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@markbook" },
-      { name: "twitter:title", content: "MarkBook — 100,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
-      { name: "twitter:description", content: "MarkBook — 100,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
+      { name: "twitter:title", content: "MarkBook — 116,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
+      { name: "twitter:description", content: "MarkBook is the world's largest AI tools directory with 116,000+ AI tools across 500+ categories. Updated daily." },
       { property: "og:image", content: "https://markbook.top/og-image.png" },
       { name: "twitter:image", content: "https://markbook.top/og-image.png" },
-      { name: "description", content: "MarkBook — 100,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
+      { name: "description", content: "MarkBook — 116,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
     ],
     links: [
       {
@@ -135,7 +135,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
           "name": "MarkBook",
           "alternateName": ["MarkBook AI", "MarkBook AI Tools Directory", "markbook.top"],
           "url": "https://markbook.top",
-          "description": "MarkBook is the world's largest AI tools directory with 100,000+ AI tools across 500+ categories.",
+          "description": "MarkBook is the world's largest AI tools directory with 116,000+ AI tools across 500+ categories.",
           "potentialAction": {
             "@type": "SearchAction",
             "target": "https://markbook.top/?q={search_term_string}",
@@ -158,7 +158,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
           "alternateName": "MarkBook AI",
           "url": "https://markbook.top",
           "logo": "https://markbook.top/favicon.png",
-          "description": "MarkBook — the world's largest AI tools directory. Discover, compare, and search 100,000+ AI tools.",
+          "description": "MarkBook — the world's largest AI tools directory. Discover, compare, and search 116,000+ AI tools.",
           "sameAs": ["https://markbook.top"]
         }),
       },
@@ -168,7 +168,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
           "@context": "https://schema.org",
           "@type": "Dataset",
           "name": "MarkBook AI Tools Directory",
-          "description": "A comprehensive directory of 100,000+ AI tools spanning 500+ categories, including pricing, descriptions, categories, and direct links.",
+          "description": "A comprehensive directory of 116,000+ AI tools spanning 500+ categories, including pricing, descriptions, categories, and direct links.",
           "url": "https://markbook.top/tools-dictionary.json",
           "creator": { "@type": "Organization", "name": "MarkBook" },
           "distribution": { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://markbook.top/tools-dictionary.json" },
@@ -187,7 +187,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
               "name": "What is MarkBook?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "MarkBook is the world's largest AI tools directory with 100,000+ AI tools across 500+ categories. It helps users discover, compare, and choose the best AI tools for any task."
+                "text": "MarkBook is the world's largest AI tools directory with 116,000+ AI tools across 500+ categories. It helps users discover, compare, and choose the best AI tools for any task."
               }
             },
             {
@@ -203,7 +203,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
               "name": "How many AI tools are on MarkBook?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "MarkBook features over 100,000 AI tools spanning 500+ categories. New tools are added daily."
+                "text": "MarkBook features over 116,000 AI tools spanning 500+ categories. New tools are added daily."}
               }
             },
             {

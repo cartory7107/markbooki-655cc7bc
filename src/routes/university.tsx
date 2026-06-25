@@ -156,7 +156,7 @@ function UniversityPage() {
 
         {/* CTA */}
         <div className="mt-12 rounded-xl border border-border bg-card p-8 text-center">
-          <h2 className="text-xl font-bold">Explore 100,000+ AI Tools</h2>
+          <h2 className="text-xl font-bold">Explore 116,000+ AI Tools</h2>
           <p className="mt-2 text-sm text-muted-foreground">
             Put your knowledge into practice — discover the best AI tools on MarkBook.
           </p>

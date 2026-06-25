@@ -180,7 +180,7 @@ function AdminDashboard() {
     if (activeTab !== "tools") return;
     if (catalog.tools.length > 0) return; // already loaded
     setCatalogLoading(true);
-    // Fetch ALL tools (16K+) — admin needs the full catalog
+    // Fetch ALL tools (116K+) — admin needs the full catalog
     fetch(`/search-api.json?limit=50000`)
       .then((r) => r.json())
       .then((data: { results: Tool[]; total: number }) => {

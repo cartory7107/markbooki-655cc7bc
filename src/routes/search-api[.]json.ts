@@ -4,8 +4,8 @@ import { searchTools } from "@/lib/catalog-server";
 
 /**
  * Server-side search endpoint with pagination.
- * Searches the full 16K+ catalog on the server and returns paginated results.
- * Response is ~5-50 KB per request instead of downloading 11 MB.
+ * Searches the full 116K+ catalog on the server and returns paginated results.
+ * Response is ~5-50 KB per request instead of downloading the full catalog.
  *
  * Usage: GET /search-api.json?q=chatgpt&category=All&pricing=All&offset=0&limit=20
  */

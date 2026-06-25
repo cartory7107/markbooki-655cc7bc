@@ -146,11 +146,11 @@ function getToolGradientColors(name: string) {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "MarkBook — 100,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
+      { title: "MarkBook — 116,000+ AI Tools Directory | Discover, Compare & Search the Best AI" },
       {
         name: "description",
         content:
-          "MarkBook is the world's largest AI tools directory. Search, compare, and discover 100,000+ AI tools — chatbots, image, video, code, and writing — across 500+ categories.",
+          "MarkBook is the world's largest AI tools directory. Search, compare, and discover 116,000+ AI tools — chatbots, image, video, code, and writing — across 500+ categories.",
       },
     ],
   }),
@@ -1489,6 +1489,61 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
   );
 }
 
+/** Generate hashtags from tool data for the algorithm feature. */
+const HASHTAG_KEYWORDS = [
+  "chatbot", "image", "video", "audio", "music", "voice", "code", "writing", "design",
+  "photo", "art", "3d", "animation", "seo", "marketing", "email", "productivity", "automation",
+  "translation", "transcription", "resume", "presentation", "social media", "chat", "assistant",
+  "generator", "editor", "analyzer", "detector", "classifier", "summarizer", "rephraser",
+  "robotics", "healthcare", "finance", "education", "gaming", "fashion", "interior",
+  "ecommerce", "customer support", "data", "machine learning", "deep learning", "nlp",
+  "computer vision", "speech", "text to speech", "ocr", "pdf", "excel", "spreadsheet",
+  "database", "api", "cloud", "devops", "security", "privacy", "compliance",
+  "free", "open source", "no code", "low code", "plugin", "extension", "mobile",
+  "desktop", "web app", "saas", "enterprise", "startup", "freelance",
+];
+
+function generateHashtags(tool: Tool): string[] {
+  const tags: string[] = [];
+  const seen = new Set<string>();
+  const lower = tool.d.toLowerCase();
+
+  // Extract matching keywords from description
+  for (const kw of HASHTAG_KEYWORDS) {
+    if (lower.includes(kw) && !seen.has(kw)) {
+      seen.add(kw);
+      tags.push(kw);
+      if (tags.length >= 3) break;
+    }
+  }
+
+  // If fewer than 2 tags, extract from category name
+  if (tags.length < 2) {
+    const catWords = tool.c.toLowerCase().replace(/^ai\s*/i, "").split(/\s+/);
+    for (const w of catWords) {
+      if (w.length > 2 && !seen.has(w)) {
+        seen.add(w);
+        tags.push(w);
+        if (tags.length >= 3) break;
+      }
+    }
+  }
+
+  // If still fewer than 2, extract from group name
+  if (tags.length < 2 && tool.g && tool.g !== tool.c) {
+    const groupWords = tool.g.toLowerCase().replace(/^ai\s*/i, "").replace(/^free\s*/i, "").split(/\s+/);
+    for (const w of groupWords) {
+      if (w.length > 2 && !seen.has(w)) {
+        seen.add(w);
+        tags.push(w);
+        if (tags.length >= 3) break;
+      }
+    }
+  }
+
+  return tags.slice(0, 3);
+}
+
 function ToolCard({
   tool,
   saved,
@@ -1502,6 +1557,8 @@ function ToolCard({
   featured?: boolean;
   trending?: boolean;
 }) {
+  const hashtags = useMemo(() => generateHashtags(tool), [tool.n, tool.d, tool.c, tool.g]);
+
   return (
     <article className={`tool-lift flex min-w-0 flex-col rounded-xl border border-border bg-card p-4 ${featured ? "ring-1 ring-primary/20" : ""}`}>
       <div className="flex min-w-0 items-start gap-3">
@@ -1542,6 +1599,15 @@ function ToolCard({
         </button>
       </div>
       <p className="my-3 min-h-8 text-sm leading-5 text-muted-foreground" style={{display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",wordBreak:"break-word",overflowWrap:"break-word"}}>{tool.d}</p>
+      {hashtags.length > 0 && (
+        <div className="flex flex-wrap gap-1 mb-2">
+          {hashtags.map((tag) => (
+            <span key={tag} className="rounded-md bg-primary/5 px-1.5 py-0.5 text-[10px] font-medium text-primary/70">
+              #{tag}
+            </span>
+          ))}
+        </div>
+      )}
       <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
         <div className="flex flex-wrap gap-1 min-w-0 max-w-[55%]">
           <span className="truncate rounded-md bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
