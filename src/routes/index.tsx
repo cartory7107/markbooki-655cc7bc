@@ -36,7 +36,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoAsset from "@/assets/markbook-symbol.png.asset.json";
-import logoClear from "@/assets/markbook-symbol-clear.png";
 import { supabase } from "@/integrations/supabase/client";
 
 type Tool = {
@@ -423,7 +422,7 @@ function Index() {
         <div className="mx-auto flex h-14 max-w-[1480px] items-center gap-2 px-4 lg:h-16">
           {/* Logo */}
           <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="MarkBook home">
-            <img src={logoClear} alt="MarkBook" className="h-8 w-8 object-contain" />
+            <img src={logoAsset.url} alt="MarkBook" className="h-8 w-8 object-contain" />
             <span className="text-lg font-extrabold tracking-tight hidden sm:inline">
               Mark<span className="gradient-text">Book</span>
             </span>
@@ -1324,7 +1323,7 @@ function Index() {
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <img src={logoClear} alt="MarkBook" className="h-8 w-8 object-contain" />
+                <img src={logoAsset.url} alt="MarkBook" className="h-8 w-8 object-contain" />
                 <span className="text-lg font-extrabold">
                   Mark<span className="gradient-text">Book</span>
                 </span>
@@ -1560,7 +1559,11 @@ function ToolCard({
           )}
         </div>
         <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
-          <span className="inline-flex items-center gap-1 rounded-lg border border-border bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/10 transition-colors">
+          <span className={`inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${
+            exclusive
+              ? "bg-white text-zinc-900 shadow-md hover:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800"
+              : "border border-border bg-primary/5 text-primary hover:bg-primary/10"
+          }`}>
             Visit <ExternalLink className="size-3" />
           </span>
         </a>
