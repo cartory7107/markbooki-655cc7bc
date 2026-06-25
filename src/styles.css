@@ -319,6 +319,27 @@
   -webkit-user-select: none;
 }
 
+/* ─── Logo shimmer — circular shimmer for loading logos ─── */
+@keyframes mb-logo-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.mb-logo-shimmer {
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklab, var(--muted) 60%, transparent) 25%,
+    color-mix(in oklab, var(--muted-foreground) 22%, transparent) 50%,
+    color-mix(in oklab, var(--muted) 60%, transparent) 75%
+  );
+  background-size: 200% 100%;
+  animation: mb-logo-shimmer 1.6s ease-in-out infinite;
+}
+
 /* Initial full-screen splash shown before React hydrates */
 #mb-initial-loader {
   position: fixed;

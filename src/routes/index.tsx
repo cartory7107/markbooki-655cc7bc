@@ -120,6 +120,28 @@ function getToolGradient(name: string) {
   return gradients[Math.abs(hash) % gradients.length];
 }
 
+// Returns raw CSS color string for inline style gradient backgrounds
+function getToolGradientColors(name: string) {
+  const colorPairs = [
+    ["#8b5cf6", "#9333ea"],
+    ["#3b82f6", "#4f46e5"],
+    ["#10b981", "#0d9488"],
+    ["#f97316", "#ef4444"],
+    ["#ec4899", "#e11d48"],
+    ["#06b6d4", "#2563eb"],
+    ["#f59e0b", "#eab308"],
+    ["#d946ef", "#9333ea"],
+    ["#84cc16", "#16a34a"],
+    ["#0ea5e9", "#6366f1"],
+    ["#ef4444", "#f97316"],
+    ["#14b8a6", "#0891b2"],
+  ];
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  const pair = colorPairs[Math.abs(hash) % colorPairs.length];
+  return `${pair[0]}, ${pair[1]}`;
+}
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -1438,13 +1460,27 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
       className="shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm"
       style={{ display: "inline-flex", position: "relative", width: pxSize, height: pxSize }}
     >
-      {/* Gradient initials placeholder — visible while image loads */}
+      {/* Shimmer placeholder — visible while image loads, fades out when loaded */}
       <span
-        className={`absolute inset-0 grid place-items-center bg-gradient-to-br ${gradient} font-bold text-white transition-opacity duration-200 ${
-          small ? "text-[9px]" : "text-xs"
-        } ${loaded ? "opacity-0" : "opacity-100"}`}
+        className={`absolute inset-0 grid place-items-center rounded-lg transition-opacity duration-300 ${
+          loaded ? "opacity-0" : "opacity-100"
+        }`}
+        style={{
+          background: `linear-gradient(135deg, ${getToolGradientColors(name)} 0%, color-mix(in oklab, var(--muted) 50%, transparent) 100%)`,
+        }}
       >
-        {initials(name)}
+        {!loaded && (
+          <span
+            className={`mb-logo-shimmer absolute inset-0 rounded-lg ${loaded ? "opacity-0" : "opacity-100"}`}
+            style={{ transition: "opacity 0.3s" }}
+          />
+        )}
+        <span
+          className={`relative z-[1] font-bold text-white ${small ? "text-[9px]" : "text-xs"}`}
+          style={{ textShadow: "0 1px 2px rgba(0,0,0,0.2)" }}
+        >
+          {initials(name)}
+        </span>
       </span>
       {/* Real logo image — fills the square cleanly */}
       <img
