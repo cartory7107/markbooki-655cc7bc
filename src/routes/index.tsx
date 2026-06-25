@@ -1560,7 +1560,11 @@ function ToolCard({
           )}
         </div>
         <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
-          <span className="inline-flex items-center gap-1 rounded-lg border border-border bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/10 transition-colors">
+          <span className={`inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${
+            exclusive
+              ? "bg-white text-zinc-900 shadow-md hover:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800"
+              : "border border-border bg-primary/5 text-primary hover:bg-primary/10"
+          }`}>
             Visit <ExternalLink className="size-3" />
           </span>
         </a>
