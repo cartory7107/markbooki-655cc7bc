@@ -150,7 +150,7 @@ a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
     <h2>Related ${tool.c} Tools</h2>
     <div class="rg">${relatedHtml}</div>
   </div>
-  <div class="cta"><h2>Explore 56,000+ AI Tools</h2><p>Discover the full MarkBook AI directory</p><a href="/">Browse All AI Tools \u2192</a></div>
+  <div class="cta"><h2>Explore 100,000+ AI Tools</h2><p>Discover the full MarkBook AI directory</p><a href="/">Browse All AI Tools \u2192</a></div>
 </div>
 </body></html>`, {
           status: 200,
