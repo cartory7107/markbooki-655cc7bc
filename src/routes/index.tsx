@@ -1460,26 +1460,17 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
       className="shrink-0 overflow-hidden rounded-lg bg-white dark:bg-zinc-800 shadow-sm"
       style={{ display: "inline-flex", position: "relative", width: pxSize, height: pxSize }}
     >
-      {/* Shimmer placeholder — visible while image loads, fades out when loaded */}
+      {/* MarkBook logo placeholder — visible while image loads, fades out when loaded */}
       <span
-        className={`absolute inset-0 grid place-items-center rounded-lg transition-opacity duration-300 ${
+        className={`absolute inset-0 grid place-items-center rounded-lg bg-white dark:bg-zinc-800 transition-opacity duration-300 ${
           loaded ? "opacity-0" : "opacity-100"
         }`}
-        style={{
-          background: `linear-gradient(135deg, ${getToolGradientColors(name)} 0%, color-mix(in oklab, var(--muted) 50%, transparent) 100%)`,
-        }}
       >
-        {!loaded && (
-          <span
-            className={`mb-logo-shimmer absolute inset-0 rounded-lg ${loaded ? "opacity-0" : "opacity-100"}`}
-            style={{ transition: "opacity 0.3s" }}
-          />
-        )}
         <img
           src={logoAsset.url}
           alt=""
           aria-hidden="true"
-          className="relative z-[1] size-[70%] object-contain opacity-90"
+          className="size-full object-contain"
         />
       </span>
       {/* Real logo image — fills the square cleanly */}
