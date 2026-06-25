@@ -177,7 +177,7 @@ function RootShell({ children }: { children: ReactNode }) {
                 <div class="mb-loader-logo">Mark<span class="mb-accent">Book</span></div>
                 <div class="mb-loader-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
               </div>
-              <script>(function(){var l=document.getElementById('mb-initial-loader');if(!l)return;function h(){if(!l)return;l.classList.add('mb-hide');setTimeout(function(){l&&l.parentNode&&l.parentNode.removeChild(l);},250);}window.__mbHideLoader=h;setTimeout(h,2500);})();</script>
+              <script>(function(){var l=document.getElementById('mb-initial-loader');if(!l)return;function h(){if(!l)return;l.classList.add('mb-hide');setTimeout(function(){l&&l.parentNode&&l.parentNode.removeChild(l);},150);}window.__mbHideLoader=h;setTimeout(h,900);})();</script>
             `,
           }}
         />
