@@ -1323,7 +1323,7 @@ function Index() {
           <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <img src={logoAsset.url} alt="MarkBook" className="h-8 w-8 object-contain" />
+                <img src={logoClear} alt="MarkBook" className="h-8 w-8 object-contain" />
                 <span className="text-lg font-extrabold">
                   Mark<span className="gradient-text">Book</span>
                 </span>
