@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UniversityRouteImport } from './routes/university'
 import { Route as ToolsDictionaryDotjsonRouteImport } from './routes/tools-dictionary[.]json'
 import { Route as ToolsApiDotjsonRouteImport } from './routes/tools-api[.]json'
 import { Route as SubmitRouteImport } from './routes/submit'
@@ -24,6 +25,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolSlugRouteImport } from './routes/tool/$slug'
 import { Route as CategorySlugRouteImport } from './routes/category/$slug'
 
+const UniversityRoute = UniversityRouteImport.update({
+  id: '/university',
+  path: '/university',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolsDictionaryDotjsonRoute = ToolsDictionaryDotjsonRouteImport.update({
   id: '/tools-dictionary.json',
   path: '/tools-dictionary.json',
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/submit': typeof SubmitRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
+  '/university': typeof UniversityRoute
   '/category/$slug': typeof CategorySlugRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/submit': typeof SubmitRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
+  '/university': typeof UniversityRoute
   '/category/$slug': typeof CategorySlugRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
@@ -141,6 +149,7 @@ export interface FileRoutesById {
   '/submit': typeof SubmitRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
+  '/university': typeof UniversityRoute
   '/category/$slug': typeof CategorySlugRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
@@ -159,6 +168,7 @@ export interface FileRouteTypes {
     | '/submit'
     | '/tools-api.json'
     | '/tools-dictionary.json'
+    | '/university'
     | '/category/$slug'
     | '/tool/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/submit'
     | '/tools-api.json'
     | '/tools-dictionary.json'
+    | '/university'
     | '/category/$slug'
     | '/tool/$slug'
   id:
@@ -191,6 +202,7 @@ export interface FileRouteTypes {
     | '/submit'
     | '/tools-api.json'
     | '/tools-dictionary.json'
+    | '/university'
     | '/category/$slug'
     | '/tool/$slug'
   fileRoutesById: FileRoutesById
@@ -208,12 +220,20 @@ export interface RootRouteChildren {
   SubmitRoute: typeof SubmitRoute
   ToolsApiDotjsonRoute: typeof ToolsApiDotjsonRoute
   ToolsDictionaryDotjsonRoute: typeof ToolsDictionaryDotjsonRoute
+  UniversityRoute: typeof UniversityRoute
   CategorySlugRoute: typeof CategorySlugRoute
   ToolSlugRoute: typeof ToolSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/university': {
+      id: '/university'
+      path: '/university'
+      fullPath: '/university'
+      preLoaderRoute: typeof UniversityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools-dictionary.json': {
       id: '/tools-dictionary.json'
       path: '/tools-dictionary.json'
@@ -328,9 +348,20 @@ const rootRouteChildren: RootRouteChildren = {
   SubmitRoute: SubmitRoute,
   ToolsApiDotjsonRoute: ToolsApiDotjsonRoute,
   ToolsDictionaryDotjsonRoute: ToolsDictionaryDotjsonRoute,
+  UniversityRoute: UniversityRoute,
   CategorySlugRoute: CategorySlugRoute,
   ToolSlugRoute: ToolSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

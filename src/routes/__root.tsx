@@ -88,7 +88,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
       {
         name: "keywords",
         content:
-          "MarkBook, MarkBook AI, markbook.top, MarkBook AI tools, MarkBook directory, AI tools, AI tools directory, best AI tools 2026, free AI tools, AI chatbot, AI image generator, AI video generator, AI code assistant, AI writing tool, AI music generator, AI voice generator, AI search engine, AI assistant, AI directory, AI tools list, AI tools comparison, AI software, ChatGPT alternatives, Midjourney alternatives, Claude alternatives, Gemini alternatives, generative AI tools, artificial intelligence tools, AI dictionary, AI encyclopedia",
+          "MarkBook, MarkBook AI, markbook.top, MarkBook AI tools, MarkBook directory, AI tools, AI tools directory, best AI tools 2026, free AI tools, AI chatbot, AI image generator, AI video generator, AI code assistant, AI writing tool, AI music generator, AI voice generator, AI search engine, AI assistant, AI directory, AI tools list, AI tools comparison, AI software, ChatGPT alternatives, Midjourney alternatives, Claude alternatives, Gemini alternatives, generative AI tools, artificial intelligence tools, AI dictionary, AI encyclopedia, AI research, AI research tools, AI tool list, ai directory, ai research, ai tool, ai tool list, best AI directory, top AI tools 2026, AI finder, discover AI tools, AI catalog, comprehensive AI directory, AI search platform, all AI tools in one place, AI tools review, AI tools comparison site",
       },
       { name: "application-name", content: "MarkBook" },
       { name: "apple-mobile-web-app-title", content: "MarkBook" },
@@ -174,6 +174,58 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
           "distribution": { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://markbook.top/tools-dictionary.json" },
           "temporalCoverage": "2024/2026",
           "spatialCoverage": "Worldwide"
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is MarkBook?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "MarkBook is the world's largest AI tools directory with 100,000+ AI tools across 500+ categories. It helps users discover, compare, and choose the best AI tools for any task."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is MarkBook free to use?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes, MarkBook is completely free. Search, browse, and compare AI tools without any cost."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How many AI tools are on MarkBook?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "MarkBook features over 100,000 AI tools spanning 500+ categories. New tools are added daily."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How to find the best AI tool?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Use MarkBook's search to find by keyword, browse categories, or filter by pricing. Sort by popularity or newest."
+              }
+            }
+          ]
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://markbook.top" },
+            { "@type": "ListItem", "position": 2, "name": "AI Tools Directory", "item": "https://markbook.top" },
+          ]
         }),
       },
     ],

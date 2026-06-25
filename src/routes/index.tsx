@@ -20,7 +20,6 @@ import {
   Newspaper,
   Plus,
   Search,
-  Sparkles,
   Star,
   Sun,
   Trophy,
@@ -86,6 +85,7 @@ const topNavItems = [
   { label: "Categories", icon: "📂", action: "categories" },
   { label: "Ranking", icon: "🏆", href: "/ranking" },
   { label: "Compare", icon: "⚖️", href: "/compare" },
+  { label: "University", icon: "🎓", href: "/university" },
   { label: "Latest AI", icon: "⚡", action: "latest" },
   { label: "AI News", icon: "📰", action: "news" },
   { label: "Submit", icon: "➕", href: "/submit" },
@@ -1013,15 +1013,6 @@ function Index() {
                   ? `${catalog.categoryEmojis?.[activeCategory] || "🤖"} ${activeCategory.replace("Free ", "")}`
                   : "🔥 Latest AI Tools"}
             </h2>
-            <p className="mt-1 text-xs text-muted-foreground">
-              {catalogLoaded ? (
-                <>{results.length.toLocaleString()} tools found</>
-              ) : (
-                <span className="mb-skeleton" style={{ width: "8ch", height: "1em", display: "inline-block" }}>
-                  &nbsp;
-                </span>
-              )}
-            </p>
           </div>
 
           {/* Loading indicator when filters change */}
@@ -1037,23 +1028,14 @@ function Index() {
             <ToolCardSkeletons />
           ) : results.length ? (
             <div className="grid gap-3 sm:grid-cols-2">
-              {results.map((tool, index) => {
-                // Deterministic pseudo-random: 1 exclusive per every 4 tools, but at unpredictable position
-                const groupIdx = Math.floor(index / 4);
-                let hash = 0;
-                for (let i = 0; i < tool.n.length; i++) hash = tool.n.charCodeAt(i) + ((hash << 5) - hash);
-                const posInGroup = Math.abs(hash) % 4; // 0,1,2,3
-                const isExclusive = (index % 4 === posInGroup);
-                return (
+              {results.map((tool, index) => (
                 <ToolCard
                   key={`${tool.n}-${tool.c}-${index}`}
                   tool={tool}
                   saved={savedTools.has(tool.n)}
                   onToggleSave={() => toggleSave(tool.n)}
-                  exclusive={isExclusive}
                 />
-                );
-              })}
+              ))}
             </div>
           ) : (
             <EmptyState
@@ -1295,25 +1277,41 @@ function Index() {
         </aside>
       </main>
 
-      {/* ─── Exclusive AI Tools (above footer) ─── */}
+      {/* ─── Top Picks (above footer) ─── */}
       {!query && activeCategory === "All" && exclusiveTools.length > 0 && (
         <section className="mx-auto max-w-[1480px] px-4 lg:px-6 mt-10">
-          <div className="mb-5 flex items-center gap-2">
-            <Sparkles className="size-5 text-fuchsia-500" />
-            <h2 className="text-lg font-bold">Exclusive AI</h2>
-            <span className="ml-2 text-xs text-muted-foreground">50 hand-picked top-tier tools</span>
+          {/* Top 4 Featured */}
+          <div className="mb-6">
+            <h2 className="text-lg font-bold mb-4">Editor's Pick</h2>
+            <div className="space-y-3">
+              {exclusiveTools.slice(0, 4).map((tool, i) => (
+                <ToolCard
+                  key={`pick-${tool.n}-${i}`}
+                  tool={tool}
+                  saved={savedTools.has(tool.n)}
+                  onToggleSave={() => toggleSave(tool.n)}
+                  featured
+                />
+              ))}
+            </div>
           </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {exclusiveTools.map((tool, i) => (
-              <ToolCard
-                key={`excl-bottom-${tool.n}-${i}`}
-                tool={tool}
-                saved={savedTools.has(tool.n)}
-                onToggleSave={() => toggleSave(tool.n)}
-                exclusive
-              />
-            ))}
-          </div>
+
+          {/* More recommended tools */}
+          {exclusiveTools.length > 4 && (
+            <div>
+              <h2 className="text-lg font-bold mb-4">Recommended</h2>
+              <div className="space-y-3">
+                {exclusiveTools.slice(4).map((tool, i) => (
+                  <ToolCard
+                    key={`rec-${tool.n}-${i}`}
+                    tool={tool}
+                    saved={savedTools.has(tool.n)}
+                    onToggleSave={() => toggleSave(tool.n)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </section>
       )}
 
@@ -1346,16 +1344,18 @@ function Index() {
               <h4 className="mb-3 text-sm font-bold">📚 Resources</h4>
               <div className="space-y-2">
                 {[
-                  { label: "AI News", href: "#" },
-                  { label: "Submit Tool", href: "/submit" },
-                  { label: "Advertise", href: "/advertise" },
-                  { label: "Ranking", href: "/ranking" },
-                ].map((item) => (
-                  <Link
-                    key={item.label}
-                    to={item.href}
-                    className="block text-sm text-muted-foreground hover:text-primary"
-                  >
+                  { label: "AI News", href: "#", external: false },
+                  { label: "University", href: "/university", external: false },
+                  { label: "Blog", href: "https://markbookai.blogspot.com/", external: true },
+                  { label: "Submit Tool", href: "/submit", external: false },
+                  { label: "Advertise", href: "/advertise", external: false },
+                  { label: "Ranking", href: "/ranking", external: false },
+                ].map((item) => item.external ? (
+                  <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer" className="block text-sm text-muted-foreground hover:text-primary">
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link key={item.label} to={item.href} className="block text-sm text-muted-foreground hover:text-primary">
                     {item.label}
                   </Link>
                 ))}
@@ -1493,17 +1493,17 @@ function ToolCard({
   tool,
   saved,
   onToggleSave,
-  exclusive = false,
+  featured = false,
   trending = false,
 }: {
   tool: Tool;
   saved: boolean;
   onToggleSave: () => void;
-  exclusive?: boolean;
+  featured?: boolean;
   trending?: boolean;
 }) {
   return (
-    <article className={`tool-lift flex min-w-0 flex-col rounded-xl border p-4 ${exclusive ? "holographic-bg border-border" : "border-border bg-card"}`}>
+    <article className={`tool-lift flex min-w-0 flex-col rounded-xl border border-border bg-card p-4 ${featured ? "ring-1 ring-primary/20" : ""}`}>
       <div className="flex min-w-0 items-start gap-3">
         <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
           <ToolIcon name={tool.n} url={tool.u} />
@@ -1513,14 +1513,9 @@ function ToolCard({
             <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline">
               <h3 className="truncate font-semibold text-sm">{tool.n}</h3>
             </a>
-            {exclusive && (
-              <span className="shrink-0 rounded-md bg-gradient-to-r from-fuchsia-500 to-violet-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                ✨ Exclusive
-              </span>
-            )}
             {trending && (
               <span className="shrink-0 rounded-md bg-orange-500/15 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:text-orange-400">
-                🔥 Trending
+                Trending
               </span>
             )}
             {(() => {
@@ -1559,11 +1554,7 @@ function ToolCard({
           )}
         </div>
         <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
-          <span className={`inline-flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-bold transition-colors ${
-            exclusive
-              ? "bg-white text-zinc-900 shadow-md hover:bg-zinc-100 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800"
-              : "border border-border bg-primary/5 text-primary hover:bg-primary/10"
-          }`}>
+          <span className="inline-flex items-center gap-1 rounded-lg border border-border bg-primary/5 px-3 py-1.5 text-xs font-bold text-primary transition-colors hover:bg-primary/10">
             Visit <ExternalLink className="size-3" />
           </span>
         </a>

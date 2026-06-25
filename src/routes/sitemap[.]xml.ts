@@ -24,8 +24,10 @@ export const Route = createFileRoute("/sitemap.xml")({
         const staticPages = [
           { path: "/", priority: "1.0", freq: "daily" },
           { path: "/ranking", priority: "0.9", freq: "weekly" },
+          { path: "/university", priority: "0.8", freq: "weekly" },
           { path: "/submit", priority: "0.7", freq: "monthly" },
           { path: "/advertise", priority: "0.5", freq: "monthly" },
+          { path: "/compare", priority: "0.7", freq: "weekly" },
           { path: "/tools-dictionary.json", priority: "0.8", freq: "weekly" },
         ];
         for (const p of staticPages) {
