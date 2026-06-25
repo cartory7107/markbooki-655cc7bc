@@ -423,7 +423,7 @@ function Index() {
         <div className="mx-auto flex h-14 max-w-[1480px] items-center gap-2 px-4 lg:h-16">
           {/* Logo */}
           <Link to="/" className="flex shrink-0 items-center gap-2" aria-label="MarkBook home">
-            <img src={logoClear} alt="MarkBook" className="h-8 w-8 object-contain" />
+            <img src={logoAsset.url} alt="MarkBook" className="h-8 w-8 object-contain" />
             <span className="text-lg font-extrabold tracking-tight hidden sm:inline">
               Mark<span className="gradient-text">Book</span>
             </span>
