@@ -36,6 +36,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import logoAsset from "@/assets/markbook-symbol.png.asset.json";
+import logoClear from "@/assets/markbook-symbol-clear.png";
 import { supabase } from "@/integrations/supabase/client";
 
 type Tool = {
