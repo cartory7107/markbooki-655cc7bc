@@ -203,7 +203,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
               "name": "How many AI tools are on MarkBook?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "MarkBook features over 116,000 AI tools spanning 500+ categories. New tools are added daily."}
+                "text": "MarkBook features over 116,000 AI tools spanning 500+ categories. New tools are added daily."
               }
             },
             {
