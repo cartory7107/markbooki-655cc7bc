@@ -1,16 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import {
   ArrowLeft,
   Crown,
   ExternalLink,
   Filter,
+  GitCompare,
+  Loader2,
   Medal,
   Search,
+  Sparkles,
   Trophy,
-  TrendingUp,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { aiRankTools } from "@/lib/ai-research.functions";
 
 type Tool = { n: string; d: string; c: string; g: string; p: string; u: string; v?: number; fl?: string };
 type Catalog = { tools: Tool[]; categories: Record<string, number> };
@@ -142,6 +146,36 @@ function RankingPage() {
 
   const [rankingLoading, setRankingLoading] = useState(false);
 
+  // AI verdict state
+  type AiRank = {
+    topic: string;
+    summary: string;
+    ranking: Array<{ rank: number; name: string; reason: string; strengths: string[]; bestFor: string }>;
+  };
+  const [aiTopic, setAiTopic] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState<string | null>(null);
+  const [aiResult, setAiResult] = useState<AiRank | null>(null);
+  const runAiRank = useServerFn(aiRankTools);
+
+  async function onAiRank() {
+    const topic = aiTopic.trim() || query.trim() || "best AI tools overall";
+    setAiLoading(true);
+    setAiError(null);
+    setAiResult(null);
+    try {
+      const out = await runAiRank({
+        data: { topic, candidates: catalog.tools.slice(0, 20).map((t) => t.n) },
+      });
+      setAiResult(out as AiRank);
+    } catch (e: unknown) {
+      setAiError(e instanceof Error ? e.message : "AI ranking failed.");
+    } finally {
+      setAiLoading(false);
+    }
+  }
+
+
   // Fetch from server API when filters change (also fires on mount)
   useEffect(() => {
     setRankingLoading(true);
@@ -172,10 +206,71 @@ function RankingPage() {
             <Trophy className="size-5 text-amber-500" />
             <h1 className="text-lg font-bold">AI Tools Ranking</h1>
           </div>
+          <div className="ml-auto flex items-center gap-2">
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/compare"><GitCompare className="size-4" /> Compare</Link>
+            </Button>
+          </div>
         </div>
       </header>
 
       <div className="mx-auto max-w-[1440px] px-4 py-6">
+        {/* AI Verdict Panel */}
+        <div className="mb-6 rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/5 to-purple-500/5 p-5">
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles className="size-4 text-primary" />
+            <h2 className="text-sm font-bold">Ask AI: which tool is actually the best?</h2>
+            <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">Live research</span>
+          </div>
+          <p className="text-xs text-muted-foreground mb-3">
+            AI researches current capabilities, pricing, and reputation — then gives you an honest ranked verdict.
+          </p>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <input
+              value={aiTopic}
+              onChange={(e) => setAiTopic(e.target.value)}
+              placeholder="e.g. best AI for writing code, image generation, video editing…"
+              className="h-10 flex-1 rounded-lg border border-border bg-background px-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
+            />
+            <Button onClick={onAiRank} disabled={aiLoading} className="shrink-0">
+              {aiLoading ? (
+                <><Loader2 className="size-4 animate-spin" /> Researching…</>
+              ) : (
+                <><Sparkles className="size-4" /> Get AI verdict</>
+              )}
+            </Button>
+          </div>
+          {aiError && (
+            <p className="mt-3 rounded-lg bg-destructive/10 px-3 py-2 text-xs text-destructive">{aiError}</p>
+          )}
+          {aiResult && (
+            <div className="mt-4 rounded-xl border border-border bg-card p-4">
+              <p className="text-xs text-muted-foreground mb-3 italic">{aiResult.summary}</p>
+              <ol className="space-y-3">
+                {aiResult.ranking.map((r) => (
+                  <li key={r.rank} className="flex gap-3">
+                    <span className={`grid size-7 shrink-0 place-items-center rounded-md text-xs font-bold ${
+                      r.rank === 1 ? "bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300" :
+                      r.rank <= 3 ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                    }`}>{r.rank}</span>
+                    <div className="min-w-0">
+                      <div className="font-bold text-sm">{r.name}</div>
+                      <p className="text-xs text-muted-foreground mt-0.5">{r.reason}</p>
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        {r.strengths.map((s, i) => (
+                          <span key={i} className="rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400">{s}</span>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-muted-foreground mt-1"><span className="font-semibold">Best for:</span> {r.bestFor}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-3 text-[10px] text-muted-foreground">AI-generated. Verify on the tool's official site before deciding.</p>
+            </div>
+          )}
+        </div>
+
         {/* Top 3 Podium */}
         <div className="mb-8 grid gap-4 sm:grid-cols-3">
           {results.slice(0, 3).map((tool, i) => {

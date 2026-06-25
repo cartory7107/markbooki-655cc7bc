@@ -86,6 +86,7 @@ const topNavItems = [
   { label: "Free Tools", icon: "🆓", action: "free" },
   { label: "Categories", icon: "📂", action: "categories" },
   { label: "Ranking", icon: "🏆", href: "/ranking" },
+  { label: "Compare", icon: "⚖️", href: "/compare" },
   { label: "Latest AI", icon: "⚡", action: "latest" },
   { label: "AI News", icon: "📰", action: "news" },
   { label: "Submit", icon: "➕", href: "/submit" },
