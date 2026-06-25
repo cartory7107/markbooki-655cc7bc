@@ -157,6 +157,7 @@ function Index() {
   const [activeFilter, setActiveFilter] = useState<"today" | "new" | "saved" | "popular">("today");
   const [authUser, setAuthUser] = useState<{ email: string; name?: string } | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [exclusiveTools, setExclusiveTools] = useState<Tool[]>([]);
   const topRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -194,6 +195,16 @@ function Index() {
         setCatalogLoaded(true);
       })
       .catch(() => setCatalogLoaded(true));
+  }, []);
+
+  // ── Load 50 exclusive tools for bottom section ──
+  useEffect(() => {
+    fetch("/exclusive-api.json")
+      .then((r) => r.json())
+      .then((data: { exclusives: Tool[] }) => {
+        setExclusiveTools(data.exclusives);
+      })
+      .catch(() => {});
   }, []);
 
   // ── Server-side search/browsing: triggered when query/category/pricing changes ──
@@ -1009,7 +1020,7 @@ function Index() {
                   tool={tool}
                   saved={savedTools.has(tool.n)}
                   onToggleSave={() => toggleSave(tool.n)}
-                  exclusive={index % 4 === 0}
+                  exclusive={(index + 1) % 4 === 0}
                 />
               ))}
             </div>
@@ -1084,28 +1095,7 @@ function Index() {
             </section>
           )}
 
-          {/* ─── Exclusive AI Tools ─── */}
-          {!query && activeCategory === "All" && catalogLoaded && (
-            <section className="mt-10">
-              <div className="mb-4 flex items-center gap-2">
-                <Sparkles className="size-5 text-fuchsia-500" />
-                <h2 className="text-lg font-bold">Exclusive AI Tools</h2>
-                <span className="ml-2 text-xs text-muted-foreground">Hand-picked top-tier picks</span>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {catalog.tools.slice(0, 6).map((tool, i) => (
-                  <ToolCard
-                    key={`excl-${tool.n}-${i}`}
-                    tool={tool}
-                    saved={savedTools.has(tool.n)}
-                    onToggleSave={() => toggleSave(tool.n)}
-                    exclusive
-                    trending
-                  />
-                ))}
-              </div>
-            </section>
-          )}
+
 
 
           {/* ─── Free AI Collections ─── */}
@@ -1273,6 +1263,28 @@ function Index() {
           </div>
         </aside>
       </main>
+
+      {/* ─── Exclusive AI Tools (above footer) ─── */}
+      {!query && activeCategory === "All" && exclusiveTools.length > 0 && (
+        <section className="mx-auto max-w-[1480px] px-4 lg:px-6 mt-10">
+          <div className="mb-5 flex items-center gap-2">
+            <Sparkles className="size-5 text-fuchsia-500" />
+            <h2 className="text-lg font-bold">Exclusive AI</h2>
+            <span className="ml-2 text-xs text-muted-foreground">50 hand-picked top-tier tools</span>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {exclusiveTools.map((tool, i) => (
+              <ToolCard
+                key={`excl-bottom-${tool.n}-${i}`}
+                tool={tool}
+                saved={savedTools.has(tool.n)}
+                onToggleSave={() => toggleSave(tool.n)}
+                exclusive
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ─── Footer ─── */}
       <footer className="mt-12 border-t border-border bg-card">
@@ -1510,10 +1522,10 @@ function ToolCard({
             </span>
           )}
         </div>
-        <a href={tool.u} target="_blank" rel="noopener noreferrer">
-          <Button variant="ghost" size="sm" className="shrink-0 text-xs text-primary hover:text-primary/80">
-            Visit <ExternalLink className="size-3 ml-0.5" />
-          </Button>
+        <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
+          <span className="inline-flex items-center gap-1 rounded-lg border border-border bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary hover:bg-primary/10 transition-colors">
+            Visit <ExternalLink className="size-3" />
+          </span>
         </a>
       </div>
     </article>

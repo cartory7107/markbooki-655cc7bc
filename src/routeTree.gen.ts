@@ -15,6 +15,7 @@ import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SearchApiDotjsonRouteImport } from './routes/search-api[.]json'
 import { Route as RankingRouteImport } from './routes/ranking'
+import { Route as ExclusiveApiDotjsonRouteImport } from './routes/exclusive-api[.]json'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AdminRouteImport } from './routes/admin'
@@ -50,6 +51,11 @@ const SearchApiDotjsonRoute = SearchApiDotjsonRouteImport.update({
 const RankingRoute = RankingRouteImport.update({
   id: '/ranking',
   path: '/ranking',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExclusiveApiDotjsonRoute = ExclusiveApiDotjsonRouteImport.update({
+  id: '/exclusive-api.json',
+  path: '/exclusive-api.json',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
+  '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
+  '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
+  '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/advertise'
     | '/auth'
+    | '/exclusive-api.json'
     | '/ranking'
     | '/search-api.json'
     | '/sitemap.xml'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/advertise'
     | '/auth'
+    | '/exclusive-api.json'
     | '/ranking'
     | '/search-api.json'
     | '/sitemap.xml'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/advertise'
     | '/auth'
+    | '/exclusive-api.json'
     | '/ranking'
     | '/search-api.json'
     | '/sitemap.xml'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   AdminRoute: typeof AdminRoute
   AdvertiseRoute: typeof AdvertiseRoute
   AuthRoute: typeof AuthRoute
+  ExclusiveApiDotjsonRoute: typeof ExclusiveApiDotjsonRoute
   RankingRoute: typeof RankingRoute
   SearchApiDotjsonRoute: typeof SearchApiDotjsonRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -230,6 +243,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RankingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/exclusive-api.json': {
+      id: '/exclusive-api.json'
+      path: '/exclusive-api.json'
+      fullPath: '/exclusive-api.json'
+      preLoaderRoute: typeof ExclusiveApiDotjsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -280,6 +300,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRoute: AdminRoute,
   AdvertiseRoute: AdvertiseRoute,
   AuthRoute: AuthRoute,
+  ExclusiveApiDotjsonRoute: ExclusiveApiDotjsonRoute,
   RankingRoute: RankingRoute,
   SearchApiDotjsonRoute: SearchApiDotjsonRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
@@ -292,3 +313,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
