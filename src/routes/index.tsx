@@ -1014,15 +1014,23 @@ function Index() {
             <ToolCardSkeletons />
           ) : results.length ? (
             <div className="grid gap-3 sm:grid-cols-2">
-              {results.map((tool, index) => (
+              {results.map((tool, index) => {
+                // Deterministic pseudo-random: 1 exclusive per every 4 tools, but at unpredictable position
+                const groupIdx = Math.floor(index / 4);
+                let hash = 0;
+                for (let i = 0; i < tool.n.length; i++) hash = tool.n.charCodeAt(i) + ((hash << 5) - hash);
+                const posInGroup = Math.abs(hash) % 4; // 0,1,2,3
+                const isExclusive = (index % 4 === posInGroup);
+                return (
                 <ToolCard
                   key={`${tool.n}-${tool.c}-${index}`}
                   tool={tool}
                   saved={savedTools.has(tool.n)}
                   onToggleSave={() => toggleSave(tool.n)}
-                  exclusive={(index + 1) % 4 === 0}
+                  exclusive={isExclusive}
                 />
-              ))}
+                );
+              })}
             </div>
           ) : (
             <EmptyState
