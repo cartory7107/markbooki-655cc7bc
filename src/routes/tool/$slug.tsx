@@ -96,9 +96,9 @@ ${kws}
 <meta property="og:title" content="${title}">
 <meta property="og:description" content="${desc}">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://markbook.cartory.top/tool/${slug}">
+<meta property="og:url" content="https://markbook.top/tool/${slug}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="canonical" href="https://markbook.cartory.top/tool/${slug}">
+<link rel="canonical" href="https://markbook.top/tool/${slug}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">

@@ -96,7 +96,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
       { property: "og:description", content: "The largest AI tools directory with 56,000+ tools. Compare AI chatbots, image generators, video tools, code assistants, and more. Updated daily." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "MarkBook AI" },
-      { property: "og:url", content: "https://markbook.cartory.top" },
+      { property: "og:url", content: "https://markbook.top" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "MarkBook — Discover 56,000+ AI Tools | Best AI Directory 2025" },
       { name: "twitter:description", content: "The largest AI tools directory with 56,000+ tools. Compare AI chatbots, image generators, video tools, code assistants, and more." },
@@ -108,7 +108,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "canonical", href: "https://markbook.cartory.top" },
+      { rel: "canonical", href: "https://markbook.top" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "preconnect", href: "https://icon.horse" },
@@ -126,11 +126,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
           "@context": "https://schema.org",
           "@type": "WebSite",
           "name": "MarkBook AI",
-          "url": "https://markbook.cartory.top",
+          "url": "https://markbook.top",
           "description": "The largest AI tools directory with 56,000+ AI tools across 500+ categories.",
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://markbook.cartory.top/?q={search_term_string}",
+            "target": "https://markbook.top/?q={search_term_string}",
             "query-input": "required name=search_term_string"
           },
           "publisher": {
@@ -147,9 +147,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth
           "@type": "Dataset",
           "name": "MarkBook AI Tools Directory",
           "description": "A comprehensive directory of 56,000+ AI tools spanning 500+ categories, including pricing, descriptions, categories, and direct links.",
-          "url": "https://markbook.cartory.top/tools-dictionary.json",
+          "url": "https://markbook.top/tools-dictionary.json",
           "creator": { "@type": "Organization", "name": "MarkBook" },
-          "distribution": { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://markbook.cartory.top/tools-dictionary.json" },
+          "distribution": { "@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": "https://markbook.top/tools-dictionary.json" },
           "temporalCoverage": "2024/2025",
           "spatialCoverage": "Worldwide"
         }),

@@ -7,7 +7,7 @@ Disallow: /admin
 Disallow: /auth
 
 # Sitemaps
-Sitemap: https://markbook.cartory.top/sitemap.xml
+Sitemap: https://markbook.top/sitemap.xml
 
 # Crawl-delay (optional, respects server resources)
 Crawl-delay: 1
