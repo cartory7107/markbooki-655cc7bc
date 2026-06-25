@@ -1475,12 +1475,12 @@ function ToolIcon({ name, url, small = false }: { name: string; url?: string; sm
             style={{ transition: "opacity 0.3s" }}
           />
         )}
-        <span
-          className={`relative z-[1] font-bold text-white ${small ? "text-[9px]" : "text-xs"}`}
-          style={{ textShadow: "0 1px 2px rgba(0,0,0,0.2)" }}
-        >
-          {initials(name)}
-        </span>
+        <img
+          src={logoAsset.url}
+          alt=""
+          aria-hidden="true"
+          className="relative z-[1] size-[70%] object-contain opacity-90"
+        />
       </span>
       {/* Real logo image — fills the square cleanly */}
       <img
