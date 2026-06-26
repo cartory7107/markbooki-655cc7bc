@@ -14,6 +14,7 @@ import { Route as ToolsDictionaryDotjsonRouteImport } from './routes/tools-dicti
 import { Route as ToolsApiDotjsonRouteImport } from './routes/tools-api[.]json'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SitemapStaticDotxmlRouteImport } from './routes/sitemap-static[.]xml'
 import { Route as SearchApiDotjsonRouteImport } from './routes/search-api[.]json'
 import { Route as RankingRouteImport } from './routes/ranking'
 import { Route as ExclusiveApiDotjsonRouteImport } from './routes/exclusive-api[.]json'
@@ -23,6 +24,7 @@ import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolSlugRouteImport } from './routes/tool/$slug'
+import { Route as SitemapToolsIndexDotxmlRouteImport } from './routes/sitemap-tools.$index[.]xml'
 import { Route as CategorySlugRouteImport } from './routes/category/$slug'
 
 const UniversityRoute = UniversityRouteImport.update({
@@ -48,6 +50,11 @@ const SubmitRoute = SubmitRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapStaticDotxmlRoute = SitemapStaticDotxmlRouteImport.update({
+  id: '/sitemap-static.xml',
+  path: '/sitemap-static.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SearchApiDotjsonRoute = SearchApiDotjsonRouteImport.update({
@@ -95,6 +102,11 @@ const ToolSlugRoute = ToolSlugRouteImport.update({
   path: '/tool/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SitemapToolsIndexDotxmlRoute = SitemapToolsIndexDotxmlRouteImport.update({
+  id: '/sitemap-tools/$index.xml',
+  path: '/sitemap-tools/$index.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
   id: '/category/$slug',
   path: '/category/$slug',
@@ -110,12 +122,14 @@ export interface FileRoutesByFullPath {
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
+  '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/sitemap-tools/$index.xml': typeof SitemapToolsIndexDotxmlRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
 export interface FileRoutesByTo {
@@ -127,12 +141,14 @@ export interface FileRoutesByTo {
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
+  '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/sitemap-tools/$index.xml': typeof SitemapToolsIndexDotxmlRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
 export interface FileRoutesById {
@@ -145,12 +161,14 @@ export interface FileRoutesById {
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
+  '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/sitemap-tools/$index.xml': typeof SitemapToolsIndexDotxmlRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
 export interface FileRouteTypes {
@@ -164,12 +182,14 @@ export interface FileRouteTypes {
     | '/exclusive-api.json'
     | '/ranking'
     | '/search-api.json'
+    | '/sitemap-static.xml'
     | '/sitemap.xml'
     | '/submit'
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
     | '/category/$slug'
+    | '/sitemap-tools/$index.xml'
     | '/tool/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -181,12 +201,14 @@ export interface FileRouteTypes {
     | '/exclusive-api.json'
     | '/ranking'
     | '/search-api.json'
+    | '/sitemap-static.xml'
     | '/sitemap.xml'
     | '/submit'
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
     | '/category/$slug'
+    | '/sitemap-tools/$index.xml'
     | '/tool/$slug'
   id:
     | '__root__'
@@ -198,12 +220,14 @@ export interface FileRouteTypes {
     | '/exclusive-api.json'
     | '/ranking'
     | '/search-api.json'
+    | '/sitemap-static.xml'
     | '/sitemap.xml'
     | '/submit'
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
     | '/category/$slug'
+    | '/sitemap-tools/$index.xml'
     | '/tool/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -216,12 +240,14 @@ export interface RootRouteChildren {
   ExclusiveApiDotjsonRoute: typeof ExclusiveApiDotjsonRoute
   RankingRoute: typeof RankingRoute
   SearchApiDotjsonRoute: typeof SearchApiDotjsonRoute
+  SitemapStaticDotxmlRoute: typeof SitemapStaticDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubmitRoute: typeof SubmitRoute
   ToolsApiDotjsonRoute: typeof ToolsApiDotjsonRoute
   ToolsDictionaryDotjsonRoute: typeof ToolsDictionaryDotjsonRoute
   UniversityRoute: typeof UniversityRoute
   CategorySlugRoute: typeof CategorySlugRoute
+  SitemapToolsIndexDotxmlRoute: typeof SitemapToolsIndexDotxmlRoute
   ToolSlugRoute: typeof ToolSlugRoute
 }
 
@@ -260,6 +286,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-static.xml': {
+      id: '/sitemap-static.xml'
+      path: '/sitemap-static.xml'
+      fullPath: '/sitemap-static.xml'
+      preLoaderRoute: typeof SitemapStaticDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/search-api.json': {
@@ -325,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sitemap-tools/$index.xml': {
+      id: '/sitemap-tools/$index.xml'
+      path: '/sitemap-tools/$index.xml'
+      fullPath: '/sitemap-tools/$index.xml'
+      preLoaderRoute: typeof SitemapToolsIndexDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/category/$slug': {
       id: '/category/$slug'
       path: '/category/$slug'
@@ -344,24 +384,16 @@ const rootRouteChildren: RootRouteChildren = {
   ExclusiveApiDotjsonRoute: ExclusiveApiDotjsonRoute,
   RankingRoute: RankingRoute,
   SearchApiDotjsonRoute: SearchApiDotjsonRoute,
+  SitemapStaticDotxmlRoute: SitemapStaticDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubmitRoute: SubmitRoute,
   ToolsApiDotjsonRoute: ToolsApiDotjsonRoute,
   ToolsDictionaryDotjsonRoute: ToolsDictionaryDotjsonRoute,
   UniversityRoute: UniversityRoute,
   CategorySlugRoute: CategorySlugRoute,
+  SitemapToolsIndexDotxmlRoute: SitemapToolsIndexDotxmlRoute,
   ToolSlugRoute: ToolSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
