@@ -24,7 +24,6 @@ import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolSlugRouteImport } from './routes/tool/$slug'
-import { Route as SitemapToolsIndexDotxmlRouteImport } from './routes/sitemap-tools.$index[.]xml'
 import { Route as CategorySlugRouteImport } from './routes/category/$slug'
 
 const UniversityRoute = UniversityRouteImport.update({
@@ -102,11 +101,6 @@ const ToolSlugRoute = ToolSlugRouteImport.update({
   path: '/tool/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SitemapToolsIndexDotxmlRoute = SitemapToolsIndexDotxmlRouteImport.update({
-  id: '/sitemap-tools/$index.xml',
-  path: '/sitemap-tools/$index.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
   id: '/category/$slug',
   path: '/category/$slug',
@@ -129,7 +123,6 @@ export interface FileRoutesByFullPath {
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/sitemap-tools/$index.xml': typeof SitemapToolsIndexDotxmlRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
 export interface FileRoutesByTo {
@@ -148,7 +141,6 @@ export interface FileRoutesByTo {
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/sitemap-tools/$index.xml': typeof SitemapToolsIndexDotxmlRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
 export interface FileRoutesById {
@@ -168,7 +160,6 @@ export interface FileRoutesById {
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/sitemap-tools/$index.xml': typeof SitemapToolsIndexDotxmlRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
 export interface FileRouteTypes {
@@ -189,7 +180,6 @@ export interface FileRouteTypes {
     | '/tools-dictionary.json'
     | '/university'
     | '/category/$slug'
-    | '/sitemap-tools/$index.xml'
     | '/tool/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -208,7 +198,6 @@ export interface FileRouteTypes {
     | '/tools-dictionary.json'
     | '/university'
     | '/category/$slug'
-    | '/sitemap-tools/$index.xml'
     | '/tool/$slug'
   id:
     | '__root__'
@@ -227,7 +216,6 @@ export interface FileRouteTypes {
     | '/tools-dictionary.json'
     | '/university'
     | '/category/$slug'
-    | '/sitemap-tools/$index.xml'
     | '/tool/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -247,7 +235,6 @@ export interface RootRouteChildren {
   ToolsDictionaryDotjsonRoute: typeof ToolsDictionaryDotjsonRoute
   UniversityRoute: typeof UniversityRoute
   CategorySlugRoute: typeof CategorySlugRoute
-  SitemapToolsIndexDotxmlRoute: typeof SitemapToolsIndexDotxmlRoute
   ToolSlugRoute: typeof ToolSlugRoute
 }
 
@@ -358,13 +345,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/sitemap-tools/$index.xml': {
-      id: '/sitemap-tools/$index.xml'
-      path: '/sitemap-tools/$index.xml'
-      fullPath: '/sitemap-tools/$index.xml'
-      preLoaderRoute: typeof SitemapToolsIndexDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/category/$slug': {
       id: '/category/$slug'
       path: '/category/$slug'
@@ -391,7 +371,6 @@ const rootRouteChildren: RootRouteChildren = {
   ToolsDictionaryDotjsonRoute: ToolsDictionaryDotjsonRoute,
   UniversityRoute: UniversityRoute,
   CategorySlugRoute: CategorySlugRoute,
-  SitemapToolsIndexDotxmlRoute: SitemapToolsIndexDotxmlRoute,
   ToolSlugRoute: ToolSlugRoute,
 }
 export const routeTree = rootRouteImport

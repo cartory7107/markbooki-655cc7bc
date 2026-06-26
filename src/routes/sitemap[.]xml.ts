@@ -10,7 +10,7 @@ const TOOLS_PER_SITEMAP = 50000;
  * stays within search-engine limits (max 50,000 URLs / ~50 MB per file).
  *
  * References:
- *   - /sitemap-static.xml  : public pages + category landing pages
+ *   - /sitemap-static.xml   : public pages + category landing pages
  *   - /sitemap-tools-N.xml : individual tool pages (up to 50k per file)
  */
 export const Route = createFileRoute("/sitemap.xml")({
