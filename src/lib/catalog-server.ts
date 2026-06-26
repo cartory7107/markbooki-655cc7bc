@@ -36,6 +36,14 @@ export function getCategoryEmojis(): Record<string, string> {
   return categoryEmojisJson as unknown as Record<string, string>;
 }
 
+/** Convert a display name into a URL-safe slug. */
+export function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 /** Fisher-Yates shuffle — returns a NEW array. */
 function shuffle<T>(arr: T[]): T[] {
   const out = arr.slice();
