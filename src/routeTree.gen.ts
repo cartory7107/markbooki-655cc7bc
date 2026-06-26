@@ -14,6 +14,7 @@ import { Route as ToolsDictionaryDotjsonRouteImport } from './routes/tools-dicti
 import { Route as ToolsApiDotjsonRouteImport } from './routes/tools-api[.]json'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SitemapToolsIndexDotxmlRouteImport } from './routes/sitemap-tools-$index[.]xml'
 import { Route as SitemapStaticDotxmlRouteImport } from './routes/sitemap-static[.]xml'
 import { Route as SearchApiDotjsonRouteImport } from './routes/search-api[.]json'
 import { Route as RankingRouteImport } from './routes/ranking'
@@ -49,6 +50,11 @@ const SubmitRoute = SubmitRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapToolsIndexDotxmlRoute = SitemapToolsIndexDotxmlRouteImport.update({
+  id: '/sitemap-tools-$index.xml',
+  path: '/sitemap-tools-$index.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapStaticDotxmlRoute = SitemapStaticDotxmlRouteImport.update({
@@ -117,6 +123,7 @@ export interface FileRoutesByFullPath {
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
+  '/sitemap-tools-$index.xml': typeof SitemapToolsIndexDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByTo {
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
+  '/sitemap-tools-$index.xml': typeof SitemapToolsIndexDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
@@ -154,6 +162,7 @@ export interface FileRoutesById {
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
+  '/sitemap-tools-$index.xml': typeof SitemapToolsIndexDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
@@ -174,6 +183,7 @@ export interface FileRouteTypes {
     | '/ranking'
     | '/search-api.json'
     | '/sitemap-static.xml'
+    | '/sitemap-tools-$index.xml'
     | '/sitemap.xml'
     | '/submit'
     | '/tools-api.json'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/ranking'
     | '/search-api.json'
     | '/sitemap-static.xml'
+    | '/sitemap-tools-$index.xml'
     | '/sitemap.xml'
     | '/submit'
     | '/tools-api.json'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/ranking'
     | '/search-api.json'
     | '/sitemap-static.xml'
+    | '/sitemap-tools-$index.xml'
     | '/sitemap.xml'
     | '/submit'
     | '/tools-api.json'
@@ -229,6 +241,7 @@ export interface RootRouteChildren {
   RankingRoute: typeof RankingRoute
   SearchApiDotjsonRoute: typeof SearchApiDotjsonRoute
   SitemapStaticDotxmlRoute: typeof SitemapStaticDotxmlRoute
+  SitemapToolsIndexDotxmlRoute: typeof SitemapToolsIndexDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubmitRoute: typeof SubmitRoute
   ToolsApiDotjsonRoute: typeof ToolsApiDotjsonRoute
@@ -273,6 +286,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap-tools-$index.xml': {
+      id: '/sitemap-tools-$index.xml'
+      path: '/sitemap-tools-$index.xml'
+      fullPath: '/sitemap-tools-$index.xml'
+      preLoaderRoute: typeof SitemapToolsIndexDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap-static.xml': {
@@ -365,6 +385,7 @@ const rootRouteChildren: RootRouteChildren = {
   RankingRoute: RankingRoute,
   SearchApiDotjsonRoute: SearchApiDotjsonRoute,
   SitemapStaticDotxmlRoute: SitemapStaticDotxmlRoute,
+  SitemapToolsIndexDotxmlRoute: SitemapToolsIndexDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubmitRoute: SubmitRoute,
   ToolsApiDotjsonRoute: ToolsApiDotjsonRoute,
