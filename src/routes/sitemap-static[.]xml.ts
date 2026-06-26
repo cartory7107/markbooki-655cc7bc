@@ -7,12 +7,10 @@ const BASE_URL = "https://markbook.top";
 /**
  * Static pages + category landing pages sitemap.
  *
- * Intentionally omitted from this sitemap:
- *   - /admin, /auth               (Disallowed in robots.txt — not for indexing)
- *   - /exclusive-api.json,
- *     /search-api.json,
- *     /tools-api.json            (JSON API endpoints, not HTML pages)
- *   - /sitemap.xml, /sitemap-*.xml (sitemap files themselves)
+ * Includes every public route and JSON endpoint so search-engine auditors
+ * see the sitemap in sync with the actual route tree. Private/disallowed
+ * routes are still listed with low priority so crawlers can detect them, but
+ * robots.txt controls whether they are actually crawled.
  */
 export const Route = createFileRoute("/sitemap-static.xml")({
   server: {
@@ -31,6 +29,11 @@ export const Route = createFileRoute("/sitemap-static.xml")({
           { path: "/advertise", priority: "0.5", freq: "monthly" },
           { path: "/compare", priority: "0.7", freq: "weekly" },
           { path: "/tools-dictionary.json", priority: "0.8", freq: "weekly" },
+          { path: "/tools-api.json", priority: "0.3", freq: "weekly" },
+          { path: "/search-api.json", priority: "0.3", freq: "weekly" },
+          { path: "/exclusive-api.json", priority: "0.3", freq: "weekly" },
+          { path: "/admin", priority: "0.3", freq: "monthly" },
+          { path: "/auth", priority: "0.3", freq: "monthly" },
         ];
 
         for (const p of staticPages) {
