@@ -1572,7 +1572,7 @@ function ToolCard({
 
   const cardStyle: React.CSSProperties = exclusive
     ? {
-        backgroundImage: "url('/holographic-card-bg.png')",
+        backgroundImage: "url('/holographic-card.png')",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }
