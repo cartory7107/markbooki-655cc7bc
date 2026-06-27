@@ -45,7 +45,12 @@ type Tool = {
   p: string;
   u: string;
   fl?: string;
+  /** Exclusive tile — render with holographic background. */
+  ex?: boolean;
+  /** Trending tag (verified-pool tool). */
+  tr?: boolean;
 };
+
 
 const PRICING_STYLES: Record<string, { bg: string; text: string; label: string }> = {
   Free: { bg: "bg-emerald-50 dark:bg-emerald-950/50", text: "text-emerald-600 dark:text-emerald-400", label: "Free" },
