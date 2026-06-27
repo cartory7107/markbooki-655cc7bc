@@ -45,7 +45,12 @@ type Tool = {
   p: string;
   u: string;
   fl?: string;
+  /** Exclusive tile — render with holographic background. */
+  ex?: boolean;
+  /** Trending tag (verified-pool tool). */
+  tr?: boolean;
 };
+
 
 const PRICING_STYLES: Record<string, { bg: string; text: string; label: string }> = {
   Free: { bg: "bg-emerald-50 dark:bg-emerald-950/50", text: "text-emerald-600 dark:text-emerald-400", label: "Free" },
@@ -1034,9 +1039,13 @@ function Index() {
                   tool={tool}
                   saved={savedTools.has(tool.n)}
                   onToggleSave={() => toggleSave(tool.n)}
+                  featured={!!tool.ex}
+                  trending={!!tool.tr}
+                  exclusive={!!tool.ex}
                 />
               ))}
             </div>
+
           ) : (
             <EmptyState
               onReset={() => {
@@ -1550,17 +1559,34 @@ function ToolCard({
   onToggleSave,
   featured = false,
   trending = false,
+  exclusive = false,
 }: {
   tool: Tool;
   saved: boolean;
   onToggleSave: () => void;
   featured?: boolean;
   trending?: boolean;
+  exclusive?: boolean;
 }) {
   const hashtags = useMemo(() => generateHashtags(tool), [tool.n, tool.d, tool.c, tool.g]);
 
+  const cardStyle: React.CSSProperties = exclusive
+    ? {
+        backgroundImage: "url('/holographic-card.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }
+    : {};
+
   return (
-    <article className={`tool-lift flex min-w-0 flex-col rounded-xl border border-border bg-card p-4 ${featured ? "ring-1 ring-primary/20" : ""}`}>
+    <article
+      style={cardStyle}
+      className={`tool-lift flex min-w-0 flex-col rounded-xl border p-4 ${
+        exclusive
+          ? "border-fuchsia-400/40 ring-1 ring-fuchsia-400/30 shadow-[0_0_24px_-12px_rgba(217,70,239,0.45)]"
+          : `border-border bg-card ${featured ? "ring-1 ring-primary/20" : ""}`
+      }`}
+    >
       <div className="flex min-w-0 items-start gap-3">
         <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
           <ToolIcon name={tool.n} url={tool.u} />
@@ -1568,8 +1594,13 @@ function ToolCard({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
             <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline">
-              <h3 className="truncate font-semibold text-sm">{tool.n}</h3>
+              <h3 className={`truncate font-semibold text-sm ${exclusive ? "text-white drop-shadow" : ""}`}>{tool.n}</h3>
             </a>
+            {exclusive && (
+              <span className="shrink-0 rounded-md bg-gradient-to-r from-fuchsia-500 to-violet-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                Exclusive
+              </span>
+            )}
             {trending && (
               <span className="shrink-0 rounded-md bg-orange-500/15 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:text-orange-400">
                 Trending
@@ -1585,8 +1616,9 @@ function ToolCard({
               );
             })()}
           </div>
-          <p className="mt-1 truncate text-xs text-muted-foreground">{tool.c}</p>
+          <p className={`mt-1 truncate text-xs ${exclusive ? "text-white/85" : "text-muted-foreground"}`}>{tool.c}</p>
         </div>
+
         <button
           onClick={(e) => {
             e.stopPropagation();
