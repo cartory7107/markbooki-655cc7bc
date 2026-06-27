@@ -95,25 +95,72 @@ export function getTopToolsBundle() {
 }
 
 /**
- * Generates organic-looking exclusive insertion positions.
- * Returns a Set of indices where exclusives should be placed.
- * Pattern: roughly every 3-6 tools (avg ~4), with variation to look human-curated.
+ * Domains that are code repos / hosting platforms rather than first-class AI
+ * products — pushed to the very bottom of every listing per product rules.
  */
-function generateExclusivePositions(totalSlots: number, seed: number): Set<number> {
-  const positions = new Set<number>();
-  let pos = 2 + (seed % 3); // Start at position 2-4
-  while (pos < totalSlots) {
-    positions.add(pos);
-    // Vary gap: 3, 4, 5, or 6 — uses simple hash-like variation
-    const gap = 3 + (((pos * 7 + seed * 13) % 4));
-    pos += gap;
+const DEMOTE_DOMAINS = [
+  "huggingface.co",
+  "github.com",
+  "github.io",
+  "gitlab.com",
+  "vercel.app",
+  "vercel.com",
+  "netlify.app",
+  "netlify.com",
+  "replit.com",
+  "repl.co",
+  "glitch.me",
+  "codepen.io",
+  "codesandbox.io",
+  "streamlit.app",
+  "gradio.app",
+  "modelscope.cn",
+  "kaggle.com",
+  "colab.research.google.com",
+];
+
+function isDemoted(url: string): boolean {
+  if (!url) return true;
+  const u = url.toLowerCase();
+  return DEMOTE_DOMAINS.some((d) => u.includes("//" + d) || u.includes("." + d));
+}
+
+/** A tool has "rich" data when it carries a non-trivial description + favicon. */
+function isRich(t: Tool): boolean {
+  return !!t.fl && (t.d?.length ?? 0) >= 40;
+}
+
+/** Hash a string → stable non-negative int (FNV-1a). */
+function hashStr(s: string): number {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
   }
-  return positions;
+  return h >>> 0;
 }
 
 /**
- * Server-side search & filter with relevance scoring, pagination,
- * and organic exclusive tool injection.
+ * Pick a random position 0..3 inside the current 4-tile group such that, when
+ * combined with the previous group's pick, no two exclusive tiles end up
+ * visually adjacent (group N pos 3 + group N+1 pos 0 would touch).
+ */
+function pickGroupPosition(groupIndex: number, prevPos: number | null, seed: number): number {
+  const base = hashStr(`${seed}:${groupIndex}`);
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const pos = (base + attempt * 7) % 4;
+    if (prevPos === null) return pos;
+    // Disallow adjacency across group boundary (prev last + new first)
+    if (prevPos === 3 && pos === 0) continue;
+    return pos;
+  }
+  // Fallback: middle slot is always safe
+  return 1;
+}
+
+/**
+ * Server-side search & filter with relevance scoring, pagination, ranking
+ * (verified-first, repos-last) and organic exclusive injection.
  */
 export function searchTools(opts: {
   q?: string;
@@ -141,13 +188,21 @@ export function searchTools(opts: {
     return p === pricing;
   }
 
-  // Build a Set of exclusive names for O(1) lookup
-  const exclusiveNames = new Set(exclusivePool.map((e) => e.n.toLowerCase()));
-  // Build category-matched exclusive pool for contextual injection
-  const categoryExclusives = category !== "All"
+  // Verified pool → tiers
+  //   exclusiveSet  = top ~8k trending picks (get holographic bg + Exclusive tag)
+  //   trendingSet   = remainder of verified pool (get Trending tag only)
+  const EXCLUSIVE_CUTOFF = Math.min(8000, exclusivePool.length);
+  const exclusiveSet = new Set(
+    exclusivePool.slice(0, EXCLUSIVE_CUTOFF).map((e) => e.n.toLowerCase()),
+  );
+  const trendingSet = new Set(exclusivePool.map((e) => e.n.toLowerCase()));
+
+  // Category-matched exclusive pool for contextual injection
+  const categoryExclusives = (category !== "All"
     ? exclusivePool.filter((e) => e.c === category || e.g === category)
-    : exclusivePool;
-  // Shuffle exclusives deterministically by offset so pagination is stable
+    : exclusivePool
+  ).slice(0, EXCLUSIVE_CUTOFF);
+
   const seededShuffle = (arr: typeof exclusivePool, seed: number) => {
     const out = arr.slice();
     for (let i = out.length - 1; i > 0; i--) {
@@ -166,7 +221,7 @@ export function searchTools(opts: {
       (category === "All" || tool.c === category || tool.g === category),
   );
 
-  // Relevance scoring (same algorithm as client-side)
+  // Relevance scoring for search queries
   if (term && filtered.length > 1) {
     const score = (name: string) => {
       const n = name.toLowerCase();
@@ -185,60 +240,121 @@ export function searchTools(opts: {
       return a.n.length - b.n.length;
     });
   } else if (!term && filtered.length > 1) {
-    // When browsing/filtering without search query: sort by requested mode
+    // Browse/filter mode — apply quality ranking:
+    //   tier 0: verified + rich data + working (non-repo) link
+    //   tier 1: verified
+    //   tier 2: rich data
+    //   tier 3: everything else
+    //   tier 9: repo / hosting domains (Hugging Face, GitHub, Vercel…) → bottom
+    const tier = (t: Tool) => {
+      if (isDemoted(t.u)) return 9;
+      const verified = trendingSet.has(t.n.toLowerCase());
+      const rich = isRich(t);
+      if (verified && rich) return 0;
+      if (verified) return 1;
+      if (rich) return 2;
+      return 3;
+    };
+
     if (sort === "popular") {
       filtered = filtered.slice().sort((a, b) => {
-        let ha = 0, hb = 0;
-        for (let i = 0; i < a.n.length; i++) ha = a.n.charCodeAt(i) + ((ha << 5) - ha);
-        for (let i = 0; i < b.n.length; i++) hb = b.n.charCodeAt(i) + ((hb << 5) - hb);
-        return ha - hb;
+        const ta = tier(a), tb = tier(b);
+        if (ta !== tb) return ta - tb;
+        return hashStr(a.n) - hashStr(b.n);
       });
     } else if (sort === "new") {
-      filtered = filtered.slice().reverse();
+      // newest first, but still keep repos at bottom & verified above unverified
+      filtered = filtered.slice().reverse().sort((a, b) => tier(a) - tier(b));
     } else {
+      // default ("today" / "latest"): tier-rank, then free-first, then stable
       filtered = filtered.slice().sort((a, b) => {
-        const aFree = isFree(a.p) ? 0 : 1;
-        const bFree = isFree(b.p) ? 0 : 1;
-        if (aFree !== bFree) return aFree - bFree;
-        return 0;
+        const ta = tier(a), tb = tier(b);
+        if (ta !== tb) return ta - tb;
+        const fa = isFree(a.p) ? 0 : 1;
+        const fb = isFree(b.p) ? 0 : 1;
+        return fa - fb;
       });
     }
   }
 
   const total = filtered.length;
 
-  // Get the page of results
-  let results = filtered.slice(offset, offset + limit);
+  // Get the page of results, then mark trending tags on every tile.
+  let results: Tool[] = filtered.slice(offset, offset + limit).map((t) => {
+    const key = t.n.toLowerCase();
+    if (trendingSet.has(key)) return { ...t, tr: true };
+    return t;
+  });
 
-  // Inject exclusive tools every ~4th position (organic spacing)
-  // Only when browsing (no search query) and not on specific category filter
-  if (!term && results.length > 8) {
-    const positions = generateExclusivePositions(results.length, offset);
-    const injected: typeof results = [];
+  // Inject exclusive tiles — 1 per 4-tile group, random position per group,
+  // never adjacent across group boundaries. Browsing mode only.
+  if (!term && results.length > 4) {
     const resultNames = new Set(results.map((r) => r.n.toLowerCase()));
+    const startGroup = Math.floor(offset / 4);
+    const injected: Tool[] = [];
+    let prevPos: number | null = null;
 
-    for (let i = 0; i < results.length; i++) {
-      // Check if an exclusive should be inserted before this position
-      if (positions.has(i)) {
-        // Find next exclusive that's not already in results
-        let inserted = false;
-        let attempts = 0;
-        while (exclusiveIndex < shuffledExclusives.length && attempts < 20) {
-          const ex = shuffledExclusives[exclusiveIndex];
-          exclusiveIndex++;
-          attempts++;
-          if (!resultNames.has(ex.n.toLowerCase()) && matchPricing(ex.p)) {
-            injected.push(ex as (typeof results)[0]);
-            inserted = true;
-            break;
-          }
+    for (let i = 0; i < results.length; i += 4) {
+      const group = results.slice(i, i + 4);
+      const groupIdx = startGroup + i / 4;
+      const pos = pickGroupPosition(groupIdx, prevPos, offset || 1);
+
+      // Find next exclusive that's not already in this page
+      let exclusiveTile: Tool | null = null;
+      let attempts = 0;
+      while (exclusiveIndex < shuffledExclusives.length && attempts < 30) {
+        const ex = shuffledExclusives[exclusiveIndex];
+        exclusiveIndex++;
+        attempts++;
+        const key = ex.n.toLowerCase();
+        if (!resultNames.has(key) && matchPricing(ex.p) && !isDemoted(ex.u)) {
+          exclusiveTile = { ...(ex as Tool), ex: true, tr: exclusiveSet.has(key) };
+          resultNames.add(key);
+          break;
         }
-        // If no exclusive found, just skip this position
       }
-      injected.push(results[i]);
+
+      if (exclusiveTile && group.length === 4) {
+        // Replace the slot at `pos` with the exclusive; the displaced tile is
+        // appended at the end of the group so we keep group size = 4.
+        const displaced = group[pos];
+        group[pos] = exclusiveTile;
+        group.push(displaced);
+        prevPos = pos;
+      } else {
+        prevPos = null;
+      }
+
+      injected.push(...group);
     }
     results = injected;
   }
 
   return { results, total };
 }
+
+/**
+ * Standalone ranking helper used by the SSR category page so it follows the
+ * same verified-first, repos-last rules as the homepage.
+ */
+export function rankBrowseList(tools: Tool[]): Tool[] {
+  const verified = new Set(getVerifiedPool().map((v) => v.n.toLowerCase()));
+  const FREE = new Set(["Free", "Free Plan", "Free Trial", "Free Credits", "Daily Free", "Monthly Free", "Open Source", "open_source", "freemium"]);
+  const tier = (t: Tool) => {
+    if (isDemoted(t.u)) return 9;
+    const v = verified.has(t.n.toLowerCase());
+    const rich = isRich(t);
+    if (v && rich) return 0;
+    if (v) return 1;
+    if (rich) return 2;
+    return 3;
+  };
+  return tools.slice().sort((a, b) => {
+    const ta = tier(a), tb = tier(b);
+    if (ta !== tb) return ta - tb;
+    const fa = FREE.has(a.p) ? 0 : 1;
+    const fb = FREE.has(b.p) ? 0 : 1;
+    return fa - fb;
+  });
+}
+
