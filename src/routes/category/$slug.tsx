@@ -66,11 +66,12 @@ export const Route = createFileRoute("/category/$slug")({
           return new Response("Not Found", { status: 404, headers: { "Content-Type": "text/plain" } });
         }
 
-        // Get first batch of tools (60)
-        const FREE_PRICINGS = new Set(["Free", "Free Plan", "Free Trial", "Free Credits", "Daily Free", "Monthly Free", "Open Source", "open_source", "freemium"]);
-        let categoryTools = catalog.tools
-          .filter(t => t.c === matchedCategory || t.g === matchedCategory)
-          .sort((a, b) => (FREE_PRICINGS.has(a.p) ? 0 : 1) - (FREE_PRICINGS.has(b.p) ? 0 : 1));
+        // Get first batch of tools (60) — verified+rich first, repos last
+        const { rankBrowseList } = await import("@/lib/catalog-server");
+        let categoryTools = rankBrowseList(
+          catalog.tools.filter(t => t.c === matchedCategory || t.g === matchedCategory),
+        );
+
 
         const firstBatch = categoryTools.slice(0, 60);
         const total = categoryTools.length;
