@@ -1039,9 +1039,13 @@ function Index() {
                   tool={tool}
                   saved={savedTools.has(tool.n)}
                   onToggleSave={() => toggleSave(tool.n)}
+                  featured={!!tool.ex}
+                  trending={!!tool.tr}
+                  exclusive={!!tool.ex}
                 />
               ))}
             </div>
+
           ) : (
             <EmptyState
               onReset={() => {
