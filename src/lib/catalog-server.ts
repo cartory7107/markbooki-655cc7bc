@@ -15,7 +15,12 @@ export type Tool = {
   p: string;
   u: string;
   fl?: string;
+  /** Exclusive flag — set by searchTools for injected exclusive tiles. */
+  ex?: boolean;
+  /** Trending flag — verified-pool tool that is also viral/popular. */
+  tr?: boolean;
 };
+
 
 export type VerifiedTool = { n: string; d: string; c: string; g: string; p: string; u: string; fl?: string };
 
