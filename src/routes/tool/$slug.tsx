@@ -199,8 +199,12 @@ ${kws}
 body{font-family:Inter,system-ui,sans-serif;background:#09090b;color:#fafafa;line-height:1.6}
 a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
 
+/* Grid background — matches homepage */
+@keyframes gridMove{0%{background-position:0 0}100%{background-position:60px 60px}}
+body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(to right,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.07) 1px,transparent 1px);background-size:60px 60px;animation:gridMove 20s linear infinite;mask-image:radial-gradient(ellipse at 50% 30%,black 20%,transparent 70%);-webkit-mask-image:radial-gradient(ellipse at 50% 30%,black 20%,transparent 70%)}
+
 /* Top nav */
-.nav{border-bottom:1px solid #1c1c1f;background:rgba(9,9,11,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);position:sticky;top:0;z-index:50}
+.nav{border-bottom:1px solid #1c1c1f;background:rgba(9,9,11,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);position:sticky;top:0;z-index:50}
 .nav-inner{max-width:1080px;margin:0 auto;padding:0 20px;display:flex;align-items:center;height:56px;gap:16px}
 .nav-logo{font-size:18px;font-weight:900;background:linear-gradient(135deg,#6366f1,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;white-space:nowrap}
 .nav-back{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:#a1a1aa;font-weight:500}.nav-back:hover{color:#fff}
@@ -208,7 +212,7 @@ a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
 .nav-share button{width:34px;height:34px;border-radius:8px;border:1px solid #27272a;background:#111113;color:#a1a1aa;cursor:pointer;font-size:14px;display:grid;place-items:center;transition:all .15s}
 .nav-share button:hover{border-color:#6366f1;color:#6366f1;background:rgba(99,102,241,.06)}
 
-.c{max-width:1080px;margin:0 auto;padding:0 20px}
+.c{max-width:1080px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
 .bb{padding:14px 0 8px;font-size:12px;color:#71717a;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.bb a{color:#71717a}.bb a:hover{color:#e4e4e7}
 .bb svg{width:12px;height:12px}
 
@@ -219,7 +223,8 @@ a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
 /* Left column */
 .p-left{display:flex;flex-direction:column}
 .p-header{display:flex;align-items:flex-start;gap:20px}
-.p-logo{width:80px;height:80px;min-width:80px;border-radius:20px;display:grid;place-items:center;font-size:26px;font-weight:800;color:#fff;box-shadow:0 8px 32px -8px rgba(99,102,241,.3)}
+.p-logo{width:80px;height:80px;min-width:80px;border-radius:20px;display:grid;place-items:center;font-size:26px;font-weight:800;color:#fff;box-shadow:0 8px 32px -8px rgba(99,102,241,.35);transition:transform .3s,box-shadow .3s}
+.p-logo:hover{transform:scale(1.05);box-shadow:0 12px 40px -8px rgba(99,102,241,.45)}
 .p-logo img{width:100%;height:100%;border-radius:20px;object-fit:contain;padding:10px}
 .p-info{flex:1;min-width:0}
 .p-name{font-size:clamp(22px,3.5vw,32px);font-weight:900;line-height:1.2;letter-spacing:-.02em}
@@ -251,7 +256,8 @@ a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
 
 /* Right column sidebar */
 .p-right{display:flex;flex-direction:column;gap:12px}
-.sidebar-card{border-radius:14px;border:1px solid #1c1c1f;background:#111113;overflow:hidden}
+.sidebar-card{border-radius:14px;border:1px solid #1c1c1f;background:#111113;overflow:hidden;transition:border-color .2s,box-shadow .2s}
+.sidebar-card:hover{border-color:#27272a;box-shadow:0 4px 20px -8px rgba(0,0,0,.4)}
 .sidebar-card h3{font-size:13px;font-weight:700;padding:12px 16px;border-bottom:1px solid #1c1c1f;display:flex;align-items:center;gap:8px;color:#e4e4e7}
 
 /* Quick info card */
@@ -268,8 +274,8 @@ a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
 
 /* Social links card */
 .social-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:14px 16px}
-.sl{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;border:1px solid #1c1c1f;background:#0a0a0b;transition:border-color .15s;cursor:pointer;text-decoration:none;color:#d4d4d8}
-.sl:hover{border-color:#3f3f46;color:#fafafa}
+.sl{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;border:1px solid #1c1c1f;background:#0a0a0b;transition:all .2s;cursor:pointer;text-decoration:none;color:#d4d4d8}
+.sl:hover{border-color:#3f3f46;color:#fafafa;transform:translateY(-1px)}
 .sl-ico{width:32px;height:32px;min-width:32px;border-radius:8px;display:grid;place-items:center;font-size:13px;font-weight:700;color:#fff}
 .sl-text{font-size:12px;font-weight:600}
 
@@ -280,12 +286,13 @@ a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
 
 /* Related tools */
 .rg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px;margin-top:12px}
-.rt{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid #1c1c1f;background:#111113;transition:all .15s}.rt:hover{border-color:#6366f1;background:#141416}
+.rt{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:1px solid #1c1c1f;background:#111113;transition:all .2s}.rt:hover{border-color:#6366f1;background:#141416;transform:translateY(-1px);box-shadow:0 4px 16px -6px rgba(99,102,241,.2)}
 .ri{width:36px;height:36px;min-width:36px;border-radius:9px;display:grid;place-items:center;font-size:10px;font-weight:700;color:#fff}
 .rt div{min-width:0;flex:1}.rt b{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#e4e4e7}.rt span{font-size:11px;color:#71717a}
 
 /* FAQ */
-.faq-item{border:1px solid #1c1c1f;border-radius:12px;margin-bottom:8px;overflow:hidden}
+.faq-item{border:1px solid #1c1c1f;border-radius:12px;margin-bottom:8px;overflow:hidden;transition:border-color .2s}
+.faq-item:hover{border-color:#27272a}
 .faq-q{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;font-size:14px;font-weight:600;cursor:pointer;background:#111113;transition:background .15s}
 .faq-q:hover{background:#18181b}
 .faq-a{padding:0 18px 14px;font-size:13px;color:#a1a1aa;line-height:1.8;display:none}

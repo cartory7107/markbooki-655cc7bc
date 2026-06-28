@@ -154,21 +154,14 @@ function hashStr(s: string): number {
 }
 
 /**
- * Pick a random position 0..3 inside the current 4-tile group such that, when
- * combined with the previous group's pick, no two exclusive tiles end up
- * visually adjacent (group N pos 3 + group N+1 pos 0 would touch).
+ * Pick a position 0..3 for the exclusive tile in each 4-tile group.
+ * Uses a cycling diagonal pattern (2, 1, 3, 0, 2, 1, 3, 0...)
+ * so exclusives are never adjacent (not even across group boundaries).
  */
-function pickGroupPosition(groupIndex: number, prevPos: number | null, seed: number): number {
-  const base = hashStr(`${seed}:${groupIndex}`);
-  for (let attempt = 0; attempt < 4; attempt++) {
-    const pos = (base + attempt * 7) % 4;
-    if (prevPos === null) return pos;
-    // Disallow adjacency across group boundary (prev last + new first)
-    if (prevPos === 3 && pos === 0) continue;
-    return pos;
-  }
-  // Fallback: middle slot is always safe
-  return 1;
+function pickGroupPosition(groupIndex: number, _prevPos: number | null, _seed: number): number {
+  // Diagonal cycle: pos 2, 1, 3, 0 — no two consecutive groups can be adjacent
+  const cycle = [2, 1, 3, 0];
+  return cycle[groupIndex % cycle.length];
 }
 
 /**
