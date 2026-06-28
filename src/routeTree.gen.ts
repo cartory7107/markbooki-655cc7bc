@@ -12,25 +12,25 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UniversityRouteImport } from './routes/university'
 import { Route as ToolsDictionaryDotjsonRouteImport } from './routes/tools-dictionary[.]json'
 import { Route as ToolsApiDotjsonRouteImport } from './routes/tools-api[.]json'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SitemapStaticDotxmlRouteImport } from './routes/sitemap-static[.]xml'
 import { Route as SearchApiDotjsonRouteImport } from './routes/search-api[.]json'
 import { Route as RankingRouteImport } from './routes/ranking'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as ExclusiveApiDotjsonRouteImport } from './routes/exclusive-api[.]json'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AiNewsApiDotjsonRouteImport } from './routes/ai-news-api[.]json'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as TermsRouteImport } from './routes/terms'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolSlugRouteImport } from './routes/tool/$slug'
 import { Route as SitemapToolsIndexRouteImport } from './routes/sitemap-tools.$index'
 import { Route as CategorySlugRouteImport } from './routes/category/$slug'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as AiNewsApiDotjsonRouteImport } from './routes/ai-news-api[.]json'
 
 const UniversityRoute = UniversityRouteImport.update({
   id: '/university',
@@ -45,6 +45,11 @@ const ToolsDictionaryDotjsonRoute = ToolsDictionaryDotjsonRouteImport.update({
 const ToolsApiDotjsonRoute = ToolsApiDotjsonRouteImport.update({
   id: '/tools-api.json',
   path: '/tools-api.json',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubmitRoute = SubmitRouteImport.update({
@@ -72,6 +77,16 @@ const RankingRoute = RankingRouteImport.update({
   path: '/ranking',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExclusiveApiDotjsonRoute = ExclusiveApiDotjsonRouteImport.update({
   id: '/exclusive-api.json',
   path: '/exclusive-api.json',
@@ -87,6 +102,11 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AiNewsApiDotjsonRoute = AiNewsApiDotjsonRouteImport.update({
+  id: '/ai-news-api.json',
+  path: '/ai-news-api.json',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdvertiseRoute = AdvertiseRouteImport.update({
   id: '/advertise',
   path: '/advertise',
@@ -100,16 +120,6 @@ const AdminRoute = AdminRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -132,26 +142,18 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AiNewsApiDotjsonRoute = AiNewsApiDotjsonRouteImport.update({
-  id: '/ai-news-api.json',
-  path: '/ai-news-api.json',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
+  '/ai-news-api.json': typeof AiNewsApiDotjsonRoute
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
@@ -161,10 +163,7 @@ export interface FileRoutesByFullPath {
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
-  '/about': typeof AboutRoute
-  '/ai-news-api.json': typeof AiNewsApiDotjsonRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/profile': typeof ProfileRoute
   '/sitemap-tools/$index': typeof SitemapToolsIndexRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
@@ -173,10 +172,12 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
+  '/ai-news-api.json': typeof AiNewsApiDotjsonRoute
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
@@ -186,10 +187,7 @@ export interface FileRoutesByTo {
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
-  '/about': typeof AboutRoute
-  '/ai-news-api.json': typeof AiNewsApiDotjsonRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/profile': typeof ProfileRoute
   '/sitemap-tools/$index': typeof SitemapToolsIndexRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
@@ -199,10 +197,12 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
+  '/ai-news-api.json': typeof AiNewsApiDotjsonRoute
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
   '/privacy': typeof PrivacyRoute
+  '/profile': typeof ProfileRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
@@ -212,10 +212,7 @@ export interface FileRoutesById {
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
-  '/about': typeof AboutRoute
-  '/ai-news-api.json': typeof AiNewsApiDotjsonRoute
   '/category/$slug': typeof CategorySlugRoute
-  '/profile': typeof ProfileRoute
   '/sitemap-tools/$index': typeof SitemapToolsIndexRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
@@ -226,10 +223,12 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/advertise'
+    | '/ai-news-api.json'
     | '/auth'
     | '/compare'
     | '/exclusive-api.json'
     | '/privacy'
+    | '/profile'
     | '/ranking'
     | '/search-api.json'
     | '/sitemap-static.xml'
@@ -239,10 +238,7 @@ export interface FileRouteTypes {
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
-    | '/about'
-    | '/ai-news-api.json'
     | '/category/$slug'
-    | '/profile'
     | '/sitemap-tools/$index'
     | '/tool/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -251,10 +247,12 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/advertise'
+    | '/ai-news-api.json'
     | '/auth'
     | '/compare'
     | '/exclusive-api.json'
     | '/privacy'
+    | '/profile'
     | '/ranking'
     | '/search-api.json'
     | '/sitemap-static.xml'
@@ -264,10 +262,7 @@ export interface FileRouteTypes {
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
-    | '/about'
-    | '/ai-news-api.json'
     | '/category/$slug'
-    | '/profile'
     | '/sitemap-tools/$index'
     | '/tool/$slug'
   id:
@@ -276,22 +271,22 @@ export interface FileRouteTypes {
     | '/about'
     | '/admin'
     | '/advertise'
+    | '/ai-news-api.json'
     | '/auth'
     | '/compare'
     | '/exclusive-api.json'
     | '/privacy'
+    | '/profile'
     | '/ranking'
     | '/search-api.json'
     | '/sitemap-static.xml'
     | '/sitemap.xml'
     | '/submit'
+    | '/terms'
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
-    | '/about'
-    | '/ai-news-api.json'
     | '/category/$slug'
-    | '/profile'
     | '/sitemap-tools/$index'
     | '/tool/$slug'
   fileRoutesById: FileRoutesById
@@ -344,6 +339,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsApiDotjsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/submit': {
       id: '/submit'
       path: '/submit'
@@ -379,6 +381,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RankingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/exclusive-api.json': {
       id: '/exclusive-api.json'
       path: '/exclusive-api.json'
@@ -400,6 +416,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ai-news-api.json': {
+      id: '/ai-news-api.json'
+      path: '/ai-news-api.json'
+      fullPath: '/ai-news-api.json'
+      preLoaderRoute: typeof AiNewsApiDotjsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/advertise': {
       id: '/advertise'
       path: '/advertise'
@@ -412,6 +435,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -435,46 +465,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapToolsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/ai-news-api.json': {
-      id: '/ai-news-api.json'
-      path: '/ai-news-api.json'
-      fullPath: '/ai-news-api.json'
-      preLoaderRoute: typeof AiNewsApiDotjsonRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/category/$slug': {
       id: '/category/$slug'
       path: '/category/$slug'
       fullPath: '/category/$slug'
       preLoaderRoute: typeof CategorySlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -507,3 +502,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -6,6 +6,14 @@
 import catalogJson from "../../public/ai-catalog.json";
 import verifiedPoolJson from "../../public/verified-top-pool.json";
 import categoryEmojisJson from "../../public/category-emojis.json";
+import categoryMapJson from "../../public/category-map.json";
+
+const CATEGORY_MAP = categoryMapJson as unknown as Record<string, string>;
+
+/** Normalize a raw category to one of ~100 major categories. */
+export function normalizeCategory(cat: string): string {
+  return CATEGORY_MAP[cat] || "AI Other";
+}
 
 export type Tool = {
   n: string;
@@ -30,7 +38,14 @@ type CatalogData = {
 };
 
 export function getCatalog(): CatalogData {
-  return catalogJson as unknown as CatalogData;
+  const raw = catalogJson as unknown as CatalogData;
+  // Build normalized category counts
+  const cats: Record<string, number> = {};
+  for (const t of raw.tools) {
+    const nc = normalizeCategory(t.c);
+    cats[nc] = (cats[nc] || 0) + 1;
+  }
+  return { ...raw, categories: cats };
 }
 
 export function getVerifiedPool(): VerifiedTool[] {
@@ -216,7 +231,7 @@ export function searchTools(opts: {
     (tool) =>
       (!term || `${tool.n} ${tool.d} ${tool.c} ${tool.g}`.toLowerCase().includes(term)) &&
       matchPricing(tool.p) &&
-      (category === "All" || tool.c === category || tool.g === category),
+      (category === "All" || normalizeCategory(tool.c) === category || normalizeCategory(tool.g) === category || tool.c === category || tool.g === category),
   );
 
   // Relevance scoring for search queries

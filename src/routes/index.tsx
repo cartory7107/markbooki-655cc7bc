@@ -856,8 +856,8 @@ function Index() {
                     }`}
                   >
                     <span>{emoji}</span>
-                    <span className="hidden sm:inline">{name.replace("Free ", "")}</span>
-                    <span className="sm:hidden">{name.replace("Free ", "").slice(0, 12)}</span>
+                    <span className="hidden sm:inline">{name}</span>
+                    <span className="sm:hidden">{name.slice(0, 14)}</span>
                     <span className="rounded-full bg-background/20 px-1 py-0.5 text-[10px]">{count}</span>
                   </button>
                 );
@@ -971,7 +971,7 @@ function Index() {
               {query
                 ? `Results for "${query}"`
                 : activeCategory !== "All"
-                  ? `${catalog.categoryEmojis?.[activeCategory] || "🤖"} ${activeCategory.replace("Free ", "")}`
+                  ? `${catalog.categoryEmojis?.[activeCategory] || "🤖"} ${activeCategory}`
                   : "⚡ Latest AI Tools"}
             </h2>
           </div>
@@ -1642,22 +1642,25 @@ function ToolCard({
       }
     : {};
 
+  const toolSlug = tool.n.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
   return (
     <article
+      onClick={() => { window.location.href = `/tool/${toolSlug}`; }}
       style={cardStyle}
-      className={`tool-lift flex min-w-0 flex-col rounded-xl border p-4 ${
+      className={`tool-lift flex min-w-0 flex-col rounded-xl border p-4 cursor-pointer ${
         exclusive
           ? "border-fuchsia-400/40 ring-1 ring-fuchsia-400/30 shadow-[0_0_24px_-12px_rgba(217,70,239,0.45)]"
           : `border-border bg-card ${featured ? "ring-1 ring-primary/20" : ""}`
       }`}
     >
       <div className="flex min-w-0 items-start gap-3">
-        <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
+        <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0" onClick={(e) => e.stopPropagation()}>
           <ToolIcon name={tool.n} url={tool.u} />
         </a>
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 flex-wrap">
-            <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline">
+            <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline" onClick={(e) => e.stopPropagation()}>
               <h3 className={`truncate font-semibold text-sm ${exclusive ? "text-white drop-shadow" : ""}`}>{tool.n}</h3>
             </a>
             {isRecommended && (
@@ -1756,14 +1759,17 @@ function ToolCard({
                   : "text-muted-foreground hover:bg-accent hover:text-foreground"
               }`}
             >
-              <ThumbsUp className={`size-3.5 ${reactionData.type === "like" ? "fill-emerald-500" : ""}`} />
+              {reactionData.emoji && reactionData.type === "like"
+                ? <span className="text-sm leading-none">{reactionData.emoji}</span>
+                : <ThumbsUp className={`size-3.5 ${reactionData.type === "like" ? "fill-emerald-500" : ""}`} />
+              }
               <span className="text-[11px]">{reactionData.counts.like}</span>
             </button>
             {/* Emoji popup */}
             {showReactionPopup && (
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex gap-1 rounded-xl border border-border bg-popover p-2 shadow-xl">
                 {REACTION_EMOJIS.map((em) => (
-                  <button key={em} onClick={(e) => { e.stopPropagation(); onReaction(tool.n, "like", em); }}
+                  <button key={em} onClick={(e) => { e.stopPropagation(); onReaction(tool.n, "like", em); onToggleReactionPopup(tool.n); }}
                     className="size-9 grid place-items-center rounded-lg hover:bg-accent text-lg transition-transform hover:scale-125">
                     {em}
                   </button>
@@ -1784,7 +1790,7 @@ function ToolCard({
             <span className="text-[11px]">{reactionData.counts.dislike}</span>
           </button>
           {/* Visit button */}
-          <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
+          <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0" onClick={(e) => e.stopPropagation()}>
             <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5 px-3 py-1.5 text-xs font-bold text-primary transition-all hover:from-primary/20 hover:to-primary/10 hover:shadow-[0_0_12px_-4px_rgba(var(--primary),0.4)]">
               🌐 Visit <ExternalLink className="size-3" />
             </span>
