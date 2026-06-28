@@ -1597,13 +1597,13 @@ function ToolCard({
               <h3 className={`truncate font-semibold text-sm ${exclusive ? "text-white drop-shadow" : ""}`}>{tool.n}</h3>
             </a>
             {exclusive && (
-              <span className="shrink-0 rounded-md bg-gradient-to-r from-fuchsia-500 to-violet-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                Exclusive
+              <span className="shrink-0 rounded-md bg-gradient-to-r from-fuchsia-500 to-violet-500 px-1.5 py-0.5 text-[10px] font-bold text-white animate-pulse">
+                ✨ Exclusive
               </span>
             )}
             {trending && (
-              <span className="shrink-0 rounded-md bg-orange-500/15 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:text-orange-400">
-                Trending
+              <span className="shrink-0 rounded-md bg-gradient-to-r from-orange-500/20 to-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:text-orange-400">
+                🔥 Trending
               </span>
             )}
             {(() => {
@@ -1652,8 +1652,8 @@ function ToolCard({
           )}
         </div>
         <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
-          <span className="inline-flex items-center gap-1 rounded-lg border border-border bg-primary/5 px-3 py-1.5 text-xs font-bold text-primary transition-colors hover:bg-primary/10">
-            Visit <ExternalLink className="size-3" />
+          <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5 px-3 py-1.5 text-xs font-bold text-primary transition-all hover:from-primary/20 hover:to-primary/10 hover:shadow-[0_0_12px_-4px_rgba(var(--primary),0.4)]">
+            🌐 Visit <ExternalLink className="size-3" />
           </span>
         </a>
       </div>

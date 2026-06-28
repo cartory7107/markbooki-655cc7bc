@@ -114,7 +114,7 @@ export const Route = createFileRoute("/category/$slug")({
               <p>${escapeHtml(tool.d)}</p>
               <div class="tc-meta">
                 <span class="tc-price" style="${pricingClass}">${PRICING_LABEL[tool.p] || tool.p}</span>
-                ${tool.u && tool.u !== "#" ? `<a href="${escapeHtml(tool.u)}" target="_blank" rel="noopener">Visit &#8599;</a>` : ""}
+                ${tool.u && tool.u !== "#" ? `<a href="${escapeHtml(tool.u)}" target="_blank" rel="noopener">🌐 Visit &#8599;</a>` : ""}
               </div>
             </div>
           </article>`;

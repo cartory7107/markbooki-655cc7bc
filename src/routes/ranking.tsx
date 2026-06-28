@@ -339,7 +339,7 @@ function RankingPage() {
                 <th className="hidden px-4 py-3 text-left text-xs font-semibold text-muted-foreground sm:table-cell">Category</th>
                 <th className="hidden px-4 py-3 text-left text-xs font-semibold text-muted-foreground md:table-cell">Description</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground">Pricing</th>
-                <th className="px-4 py-3 text-right text-xs font-semibold text-muted-foreground">Visit</th>
+                <th className="px-4 py-3 text-right text-xs font-semibold text-muted-foreground">🌐 Visit</th>
               </tr>
             </thead>
             <tbody>
@@ -380,7 +380,7 @@ function RankingPage() {
                   <td className="px-4 py-3 text-right">
                     <Button variant="ghost" size="sm" className="text-xs" asChild>
                       <a href={tool.u} target="_blank" rel="noopener noreferrer">
-                        Visit <ExternalLink className="size-3" />
+                        🌐 Visit <ExternalLink className="size-3" />
                       </a>
                     </Button>
                   </td>

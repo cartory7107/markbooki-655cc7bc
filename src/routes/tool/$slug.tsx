@@ -139,7 +139,7 @@ a{color:#6366f1;text-decoration:none}a:hover{color:#818cf8}
     <div class="info">
       <span class="${(tool.p === "Free" || tool.p === "Free Plan" || tool.p === "Free Trial" || tool.p === "Free Credits" || tool.p === "Daily Free" || tool.p === "Monthly Free") ? "free" : "paid"}">${tool.p}</span>
     </div>
-    ${tool.u && tool.u !== "#" ? `<a href="${tool.u}" target="_blank" rel="noopener" class="btn">Visit ${tool.n} \u2192</a>` : ""}
+    ${tool.u && tool.u !== "#" ? `<a href="${tool.u}" target="_blank" rel="noopener" class="btn">🌐 Visit ${tool.n} \u2192</a>` : ""}
   </div>
   <div class="sec seo">
     <h2>About ${tool.n}</h2>
