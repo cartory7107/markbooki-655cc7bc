@@ -29,6 +29,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolSlugRouteImport } from './routes/tool/$slug'
 import { Route as SitemapToolsIndexRouteImport } from './routes/sitemap-tools.$index'
 import { Route as CategorySlugRouteImport } from './routes/category/$slug'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as AiNewsApiDotjsonRouteImport } from './routes/ai-news-api[.]json'
 
 const UniversityRoute = UniversityRouteImport.update({
   id: '/university',
@@ -130,6 +132,16 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
   path: '/category/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiNewsApiDotjsonRoute = AiNewsApiDotjsonRouteImport.update({
+  id: '/ai-news-api.json',
+  path: '/ai-news-api.json',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -149,7 +161,10 @@ export interface FileRoutesByFullPath {
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
+  '/about': typeof AboutRoute
+  '/ai-news-api.json': typeof AiNewsApiDotjsonRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/profile': typeof ProfileRoute
   '/sitemap-tools/$index': typeof SitemapToolsIndexRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
@@ -171,7 +186,10 @@ export interface FileRoutesByTo {
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
+  '/about': typeof AboutRoute
+  '/ai-news-api.json': typeof AiNewsApiDotjsonRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/profile': typeof ProfileRoute
   '/sitemap-tools/$index': typeof SitemapToolsIndexRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
@@ -194,7 +212,10 @@ export interface FileRoutesById {
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
+  '/about': typeof AboutRoute
+  '/ai-news-api.json': typeof AiNewsApiDotjsonRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/profile': typeof ProfileRoute
   '/sitemap-tools/$index': typeof SitemapToolsIndexRoute
   '/tool/$slug': typeof ToolSlugRoute
 }
@@ -218,7 +239,10 @@ export interface FileRouteTypes {
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
+    | '/about'
+    | '/ai-news-api.json'
     | '/category/$slug'
+    | '/profile'
     | '/sitemap-tools/$index'
     | '/tool/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -240,7 +264,10 @@ export interface FileRouteTypes {
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
+    | '/about'
+    | '/ai-news-api.json'
     | '/category/$slug'
+    | '/profile'
     | '/sitemap-tools/$index'
     | '/tool/$slug'
   id:
@@ -261,23 +288,31 @@ export interface FileRouteTypes {
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
+    | '/about'
+    | '/ai-news-api.json'
     | '/category/$slug'
+    | '/profile'
     | '/sitemap-tools/$index'
     | '/tool/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AdminRoute: typeof AdminRoute
   AdvertiseRoute: typeof AdvertiseRoute
+  AiNewsApiDotjsonRoute: typeof AiNewsApiDotjsonRoute
   AuthRoute: typeof AuthRoute
   CompareRoute: typeof CompareRoute
   ExclusiveApiDotjsonRoute: typeof ExclusiveApiDotjsonRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ProfileRoute: typeof ProfileRoute
   RankingRoute: typeof RankingRoute
   SearchApiDotjsonRoute: typeof SearchApiDotjsonRoute
   SitemapStaticDotxmlRoute: typeof SitemapStaticDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubmitRoute: typeof SubmitRoute
+  TermsRoute: typeof TermsRoute
   ToolsApiDotjsonRoute: typeof ToolsApiDotjsonRoute
   ToolsDictionaryDotjsonRoute: typeof ToolsDictionaryDotjsonRoute
   UniversityRoute: typeof UniversityRoute
@@ -400,6 +435,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapToolsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-news-api.json': {
+      id: '/ai-news-api.json'
+      path: '/ai-news-api.json'
+      fullPath: '/ai-news-api.json'
+      preLoaderRoute: typeof AiNewsApiDotjsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/category/$slug': {
       id: '/category/$slug'
       path: '/category/$slug'
@@ -407,21 +456,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategorySlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AdminRoute: AdminRoute,
   AdvertiseRoute: AdvertiseRoute,
+  AiNewsApiDotjsonRoute: AiNewsApiDotjsonRoute,
   AuthRoute: AuthRoute,
   CompareRoute: CompareRoute,
   ExclusiveApiDotjsonRoute: ExclusiveApiDotjsonRoute,
+  PrivacyRoute: PrivacyRoute,
+  ProfileRoute: ProfileRoute,
   RankingRoute: RankingRoute,
   SearchApiDotjsonRoute: SearchApiDotjsonRoute,
   SitemapStaticDotxmlRoute: SitemapStaticDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubmitRoute: SubmitRoute,
+  TermsRoute: TermsRoute,
   ToolsApiDotjsonRoute: ToolsApiDotjsonRoute,
   ToolsDictionaryDotjsonRoute: ToolsDictionaryDotjsonRoute,
   UniversityRoute: UniversityRoute,

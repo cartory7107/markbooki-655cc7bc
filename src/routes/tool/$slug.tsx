@@ -102,7 +102,7 @@ export const Route = createFileRoute("/tool/$slug")({
         const views = randomViews(tool.n);
         const domain = tool.u ? (() => { try { return new URL(tool.u).hostname; } catch { return ""; } })() : "";
         const socialIcons = ["Facebook", "Instagram", "Discord", "TikTok"];
-        const socialColors = { Facebook: "#1877F2", Instagram: "#E4405F", Discord: "#5865F2", TikTok: "#000000" };
+        const socialColors: Record<string, string> = { Facebook: "#1877F2", Instagram: "#E4405F", Discord: "#5865F2", TikTok: "#000000" };
         const socialHtml = socialIcons.map(s =>
           `<div class="sc" style="--sc:${socialColors[s]}"><span>${s[0]}</span><small>${s}</small></div>`
         ).join("");

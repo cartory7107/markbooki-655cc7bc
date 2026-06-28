@@ -1154,6 +1154,7 @@ function Index() {
             </div>
           </section>
           )}
+        </section>
 
         {/* ─── Right Sidebar ─── */}
         <aside className="hidden lg:block">
@@ -1190,6 +1191,7 @@ function Index() {
                 </a>
               </div>
             </div>
+            )}
 
             {/* Top Ranked */}
             <div className="overflow-hidden rounded-xl border border-border bg-card p-3">
