@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -243,18 +244,6 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <div
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: `
-              <div id="mb-initial-loader" aria-hidden="true">
-                <div class="mb-loader-logo">Mark<span class="mb-accent">Book</span></div>
-                <div class="mb-loader-bars" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-              </div>
-              <script>(function(){var l=document.getElementById('mb-initial-loader');if(!l)return;function h(){if(!l)return;l.classList.add('mb-hide');setTimeout(function(){l&&l.parentNode&&l.parentNode.removeChild(l);},150);}window.__mbHideLoader=h;setTimeout(h,900);})();</script>
-            `,
-          }}
-        />
         {children}
         <Scripts />
 
@@ -264,14 +253,45 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function hideInitialLoader(delay = 0) {
+  if (typeof window === "undefined") return;
+
+  window.setTimeout(() => {
+    document.querySelectorAll<HTMLElement>("#mb-initial-loader").forEach((loader) => {
+      loader.classList.add("mb-hide");
+      window.setTimeout(() => loader.parentElement?.removeChild(loader), 180);
+    });
+  }, delay);
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && (window as any).__mbHideLoader) {
-      (window as any).__mbHideLoader();
-    }
+    hideInitialLoader();
+  }, [pathname]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of Array.from(mutation.addedNodes)) {
+          if (!(node instanceof HTMLElement)) continue;
+          if (node.id === "mb-initial-loader" || node.querySelector("#mb-initial-loader")) {
+            hideInitialLoader();
+            return;
+          }
+        }
+      }
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+    hideInitialLoader();
+
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
