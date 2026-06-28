@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UniversityRouteImport } from './routes/university'
 import { Route as ToolsDictionaryDotjsonRouteImport } from './routes/tools-dictionary[.]json'
 import { Route as ToolsApiDotjsonRouteImport } from './routes/tools-api[.]json'
+import { Route as ToolApiDotjsonRouteImport } from './routes/tool-api[.]json'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
@@ -45,6 +46,11 @@ const ToolsDictionaryDotjsonRoute = ToolsDictionaryDotjsonRouteImport.update({
 const ToolsApiDotjsonRoute = ToolsApiDotjsonRouteImport.update({
   id: '/tools-api.json',
   path: '/tools-api.json',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolApiDotjsonRoute = ToolApiDotjsonRouteImport.update({
+  id: '/tool-api.json',
+  path: '/tool-api.json',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -160,6 +166,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/terms': typeof TermsRoute
+  '/tool-api.json': typeof ToolApiDotjsonRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
@@ -184,6 +191,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/terms': typeof TermsRoute
+  '/tool-api.json': typeof ToolApiDotjsonRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
@@ -209,6 +217,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/terms': typeof TermsRoute
+  '/tool-api.json': typeof ToolApiDotjsonRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
@@ -235,6 +244,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/submit'
     | '/terms'
+    | '/tool-api.json'
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
@@ -259,6 +269,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/submit'
     | '/terms'
+    | '/tool-api.json'
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
@@ -283,6 +294,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/submit'
     | '/terms'
+    | '/tool-api.json'
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
@@ -308,6 +320,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubmitRoute: typeof SubmitRoute
   TermsRoute: typeof TermsRoute
+  ToolApiDotjsonRoute: typeof ToolApiDotjsonRoute
   ToolsApiDotjsonRoute: typeof ToolsApiDotjsonRoute
   ToolsDictionaryDotjsonRoute: typeof ToolsDictionaryDotjsonRoute
   UniversityRoute: typeof UniversityRoute
@@ -337,6 +350,13 @@ declare module '@tanstack/react-router' {
       path: '/tools-api.json'
       fullPath: '/tools-api.json'
       preLoaderRoute: typeof ToolsApiDotjsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tool-api.json': {
+      id: '/tool-api.json'
+      path: '/tool-api.json'
+      fullPath: '/tool-api.json'
+      preLoaderRoute: typeof ToolApiDotjsonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -492,6 +512,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubmitRoute: SubmitRoute,
   TermsRoute: TermsRoute,
+  ToolApiDotjsonRoute: ToolApiDotjsonRoute,
   ToolsApiDotjsonRoute: ToolsApiDotjsonRoute,
   ToolsDictionaryDotjsonRoute: ToolsDictionaryDotjsonRoute,
   UniversityRoute: UniversityRoute,

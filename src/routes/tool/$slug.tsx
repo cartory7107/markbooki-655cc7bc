@@ -1,22 +1,31 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { useEffect, useRef, useState, useMemo } from "react";
-import { createServerFn } from "@tanstack/react-start";
-import { getToolBySlug, slugify } from "@/lib/catalog-server";
-
-const getToolData = createServerFn({ method: "GET" })
-  .validator((d: { slug: string }) => d)
-  .handler(({ data }) => getToolBySlug(data.slug));
+import { slugify } from "@/lib/catalog-server";
 
 function ToolDetailPage() {
   const { slug } = Route.useParams();
-  const [data, setData] = useState<Awaited<ReturnType<typeof getToolData>>(null);
+  const [data, setData] = useState<{
+    tool: { n: string; d: string; c: string; g: string; p: string; u: string };
+    normCat: string;
+    emoji: string;
+    related: { n: string; normCat: string; emoji: string }[];
+    sameCategoryCount: number;
+    totalTools: number;
+  } | null>(null);
+  const [loading, setLoading] = useState(true);
   const [openFaq, setOpenFaq] = useState(0);
   const [copied, setCopied] = useState(false);
   const logoRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getToolData({ data: { slug } }).then(setData);
+    let cancelled = false;
+    setLoading(true);
+    fetch(`/tool-api.json?slug=${encodeURIComponent(slug)}`)
+      .then(r => r.json())
+      .then(d => { if (!cancelled) { setData(d); setLoading(false); } })
+      .catch(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
   }, [slug]);
 
   const tool = data?.tool;
@@ -54,18 +63,18 @@ function ToolDetailPage() {
   // Favicon loader
   useEffect(() => {
     if (!logoRef.current || !domain) return;
+    const el = logoRef.current;
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload = () => {
-      if (!logoRef.current) return;
-      logoRef.current.innerHTML = "";
-      logoRef.current.style.padding = "10px";
-      logoRef.current.style.background = "#fff";
+      el.innerHTML = "";
+      el.style.padding = "10px";
+      el.style.background = "#fff";
       const i = document.createElement("img");
       i.src = img.src;
       i.alt = tool?.n || "";
-      i.className = "logo-img";
-      logoRef.current.appendChild(i);
+      i.className = "w-full h-full rounded-[20px] object-contain";
+      el.appendChild(i);
     };
     img.onerror = () => {
       const img2 = new Image();
@@ -75,6 +84,17 @@ function ToolDetailPage() {
     };
     img.src = `https://icon.horse/icon/${domain}`;
   }, [domain, tool?.n]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center moving-grid-bg">
+        <div className="text-center">
+          <div className="inline-block size-8 animate-spin rounded-full border-2 border-zinc-700 border-t-indigo-500 mb-3"></div>
+          <p className="text-sm text-zinc-500">Loading tool details...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!tool) {
     return (
@@ -92,14 +112,13 @@ function ToolDetailPage() {
   const halfStar = (parseFloat(rating) - fullStars) >= 0.3;
   const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
 
-  const pricingTag = (p: string) => {
+  const pTag = (() => {
     const free = ["Free", "Free Plan", "Free Trial", "Free Credits", "Daily Free", "Monthly Free", "Open Source", "open_source", "freemium"];
-    if (free.includes(p)) return "Free";
-    if (p === "Paid" || p === "Paid Plans") return "Paid";
-    return p || "Contact";
-  };
+    if (free.includes(tool.p)) return "Free";
+    if (tool.p === "Paid" || tool.p === "Paid Plans") return "Paid";
+    return tool.p || "Contact";
+  })();
 
-  const pTag = pricingTag(tool.p);
   const features = [
     pTag === "Free" ? "Free to use" : pTag === "Paid" ? "Premium plans available" : `${tool.p} pricing`,
     domain ? `Hosted at ${domain}` : null,
@@ -110,9 +129,9 @@ function ToolDetailPage() {
 
   const faqs = [
     { q: `What is ${tool.n}?`, a: tool.d },
-    { q: `Is ${tool.n} free to use?`, a: `${tool.n} is available as ${tool.p}. Visit their official website for the most up-to-date pricing information and available plans.` },
-    { q: `What are the best ${tool.n} alternatives?`, a: `You can find ${normCat.toLowerCase()} alternatives to ${tool.n} right here on MarkBook. Browse the related tools section below or explore the full ${normCat} category to compare options.` },
-    { q: `How is ${tool.n} rated?`, a: `${tool.n} has an average rating of ${rating}/5 based on ${reviews} user reviews on MarkBook. Ratings are aggregated from user feedback across multiple sources.` },
+    { q: `Is ${tool.n} free to use?`, a: `${tool.n} is available as ${tool.p}. Visit their official website for the most up-to-date pricing information.` },
+    { q: `What are the best ${tool.n} alternatives?`, a: `Browse the related tools section below or explore the full ${normCat} category to compare options on MarkBook.` },
+    { q: `How is ${tool.n} rated?`, a: `${tool.n} has an average rating of ${rating}/5 based on ${reviews} user reviews on MarkBook.` },
   ];
 
   return (
@@ -144,7 +163,7 @@ function ToolDetailPage() {
           <div className="flex items-center gap-1.5 py-3.5 text-xs text-zinc-500 flex-wrap">
             <a href="/" className="hover:text-zinc-200 transition-colors">Home</a>
             <svg className="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
-            <a href="/" className="hover:text-zinc-200 transition-colors">{normCat}</a>
+            <span className="hover:text-zinc-200 transition-colors">{normCat}</span>
             <svg className="size-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 18l6-6-6-6"/></svg>
             <span className="text-zinc-200">{tool.n}</span>
           </div>
@@ -154,7 +173,7 @@ function ToolDetailPage() {
             {/* Left */}
             <div>
               <div className="flex items-start gap-5">
-                <div ref={logoRef} className={`tool-logo shrink-0 w-20 h-20 min-w-20 rounded-[20px] grid place-items-center text-[26px] font-extrabold text-white bg-gradient-to-br ${colorForName(tool.n)} shadow-[0_8px_32px_-8px_rgba(99,102,241,.35)] transition-transform duration-300 hover:scale-105 hover:shadow-[0_12px_40px_-8px_rgba(99,102,241,.45)]`}>
+                <div ref={logoRef} className={`shrink-0 w-20 h-20 min-w-20 rounded-[20px] grid place-items-center text-[26px] font-extrabold text-white bg-gradient-to-br ${colorForName(tool.n)} shadow-[0_8px_32px_-8px_rgba(99,102,241,.35)] transition-transform duration-300 hover:scale-105`}>
                   {initials(tool.n)}
                 </div>
                 <div className="min-w-0">
@@ -173,7 +192,7 @@ function ToolDetailPage() {
                 <span className={`inline-block rounded-lg px-3 py-1.5 text-[11px] font-bold text-white ${pTag === "Free" ? "bg-gradient-to-r from-emerald-500 to-green-500" : pTag === "Paid" ? "bg-gradient-to-r from-amber-500 to-orange-500" : "bg-gradient-to-r from-zinc-600 to-zinc-700"}`}>{pTag}</span>
                 <span className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-white/[.04] px-3 py-1.5 text-xs text-zinc-400">👁 {views} weekly</span>
                 <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-500/10 bg-amber-500/[.06] px-3 py-1.5 text-xs text-amber-400">
-                  <span className="text-amber-400 tracking-wide">{"★".repeat(fullStars)}{halfStar ? "★" : ""}{"☆".repeat(emptyStars)}</span>
+                  <span className="tracking-wide">{"★".repeat(fullStars)}{"☆".repeat(emptyStars)}</span>
                   <b>{rating}</b>
                   <span className="text-zinc-500 font-normal">({reviews})</span>
                 </span>
@@ -196,18 +215,10 @@ function ToolDetailPage() {
 
             {/* Right sidebar */}
             <div className="flex flex-col gap-3">
-              {/* Quick Info */}
-              <div className="sidebar-card">
+              <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/40 overflow-hidden transition-colors hover:border-zinc-700">
                 <h3 className="text-[13px] font-bold text-zinc-200 border-b border-zinc-800/80 px-4 py-3 flex items-center gap-2">🔧 Quick Info</h3>
-                <div className="px-4 py-3.5 space-y-0">
-                  {[
-                    ["Pricing", pTag],
-                    ["Category", `${emoji} ${normCat}`],
-                    ["Group", tool.g || "—"],
-                    ["Weekly Views", views],
-                    ["Rating", <span className="text-amber-400">★ {rating}/5</span>],
-                    ["Tools in Category", String(data?.sameCategoryCount || 0)],
-                  ].map(([label, value], i) => (
+                <div className="px-4 py-2">
+                  {([["Pricing", pTag], ["Category", `${emoji} ${normCat}`], ["Group", tool.g || "—"], ["Weekly Views", views], ["Rating", <span className="text-amber-400">★ {rating}/5</span>], ["Tools in Category", String(data?.sameCategoryCount || 0)]] as [string, string | JSX.Element][]).map(([label, value], i) => (
                     <div key={label} className={`flex justify-between items-center py-2.5 ${i < 5 ? "border-b border-zinc-800/50" : ""}`}>
                       <span className="text-xs text-zinc-500">{label}</span>
                       <span className="text-xs font-semibold text-zinc-200">{value}</span>
@@ -216,8 +227,7 @@ function ToolDetailPage() {
                 </div>
               </div>
 
-              {/* Highlights */}
-              <div className="sidebar-card">
+              <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/40 overflow-hidden transition-colors hover:border-zinc-700">
                 <h3 className="text-[13px] font-bold text-zinc-200 border-b border-zinc-800/80 px-4 py-3 flex items-center gap-2">✅ Highlights</h3>
                 <ul className="px-4 py-3.5 space-y-1.5">
                   {features.map(f => (
@@ -228,19 +238,18 @@ function ToolDetailPage() {
                 </ul>
               </div>
 
-              {/* Online Presence */}
-              <div className="sidebar-card">
+              <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/40 overflow-hidden transition-colors hover:border-zinc-700">
                 <h3 className="text-[13px] font-bold text-zinc-200 border-b border-zinc-800/80 px-4 py-3 flex items-center gap-2">🌐 Online Presence</h3>
                 <div className="grid grid-cols-2 gap-2 p-3.5">
-                  {[
+                  {([
                     { icon: "🌐", label: domain || "Website", href: tool.u, bg: "#6366f1" },
                     { icon: "𝕏", label: "X / Twitter", href: `https://twitter.com/search?q=${encodeURIComponent(tool.n)}`, bg: "#000" },
-                    { icon: "G", label: "Google Reviews", href: `https://www.google.com/search?q=${encodeURIComponent(tool.n + " review")}`, bg: "#ea4335" },
+                    { icon: "G", label: "Google", href: `https://www.google.com/search?q=${encodeURIComponent(tool.n + " review")}`, bg: "#ea4335" },
                     { icon: "▶", label: "YouTube", href: `https://www.youtube.com/results?search_query=${encodeURIComponent(tool.n)}`, bg: "#f00" },
-                  ].map(s => (
+                  ]).map(s => (
                     <a key={s.label} href={s.href} target="_blank" rel="noopener"
                       className="flex items-center gap-2.5 rounded-[10px] border border-zinc-800/80 bg-zinc-950 p-2.5 text-zinc-300 transition-all hover:border-zinc-700 hover:text-zinc-100 hover:-translate-y-0.5">
-                      <span className="w-8 h-8 min-w-8 rounded-lg grid place-items-center text-[13px] font-bold text-white" style={{ background: s.bg }}>{s.icon}</span>
+                      <span className="w-8 h-8 min-w-8 rounded-lg grid place-items-center text-[13px] font-bold text-white shrink-0" style={{ background: s.bg }}>{s.icon}</span>
                       <span className="text-xs font-semibold truncate">{s.label}</span>
                     </a>
                   ))}
@@ -255,7 +264,7 @@ function ToolDetailPage() {
             <p className="text-sm text-zinc-500 mb-5">Everything you need to know about this {normCat.toLowerCase()} tool</p>
             <div className="space-y-3 text-sm text-zinc-400 leading-relaxed">
               <p>{tool.n} is a {normCat.toLowerCase()} tool that {tool.d.toLowerCase().replace(/\.$/, "")}. Available as {pTag.toLowerCase()}, it is listed in the MarkBook AI tools directory alongside {data?.sameCategoryCount || 0} {normCat.toLowerCase()} tools from top providers worldwide.</p>
-              <p>Looking for {tool.n} alternatives or similar {normCat.toLowerCase()}? MarkBook helps you compare features, pricing, and reviews across thousands of AI tools. Find the best {normCat.toLowerCase()} for your specific needs and workflow.</p>
+              <p>Looking for {tool.n} alternatives or similar {normCat.toLowerCase()}? MarkBook helps you compare features, pricing, and reviews across thousands of AI tools.</p>
             </div>
           </div>
 
@@ -267,11 +276,11 @@ function ToolDetailPage() {
               {faqs.map((faq, i) => (
                 <div key={i} className="rounded-xl border border-zinc-800/80 overflow-hidden transition-colors hover:border-zinc-700/80">
                   <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)}
-                    className={`w-full flex justify-between items-center px-4.5 py-3.5 text-[14px] font-semibold text-left bg-zinc-900/50 transition-colors hover:bg-zinc-900 cursor-pointer ${openFaq === i ? "text-indigo-400" : "text-zinc-200"}`}>
+                    className={`w-full flex justify-between items-center px-5 py-3.5 text-[14px] font-semibold text-left bg-zinc-900/50 transition-colors hover:bg-zinc-900 cursor-pointer ${openFaq === i ? "text-indigo-400" : "text-zinc-200"}`}>
                     {faq.q}
                     <span className={`text-xs text-zinc-600 transition-transform duration-200 ${openFaq === i ? "rotate-180" : ""}`}>▼</span>
                   </button>
-                  {openFaq === i && <div className="px-4.5 pb-3.5 text-[13px] text-zinc-400 leading-relaxed">{faq.a}</div>}
+                  {openFaq === i && <div className="px-5 pb-3.5 text-[13px] text-zinc-400 leading-relaxed">{faq.a}</div>}
                 </div>
               ))}
             </div>
@@ -281,12 +290,12 @@ function ToolDetailPage() {
           {data?.related && data.related.length > 0 && (
             <div className="border-t border-zinc-800/80 py-8">
               <h2 className="text-lg font-extrabold mb-1.5">Related {normCat} Tools</h2>
-              <p className="text-sm text-zinc-500 mb-4">Similar tools you might also like — {data.sameCategoryCount} tools in this category</p>
+              <p className="text-sm text-zinc-500 mb-4">{data.sameCategoryCount} tools in this category</p>
               <div className="grid gap-2 sm:grid-cols-2">
                 {data.related.map(r => {
                   const rSlug = slugify(r.n);
                   return (
-                    <a key={r.n} href={`/tool/${rSlug}`} className="flex items-center gap-2.5 rounded-xl border border-zinc-800/80 bg-zinc-900/40 p-3 transition-all hover:border-indigo-500/50 hover:bg-zinc-900/70 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_-6px_rgba(99,102,241,.2)]">
+                    <a key={r.n} href={`/tool/${rSlug}`} className="flex items-center gap-2.5 rounded-xl border border-zinc-800/80 bg-zinc-900/40 p-3 transition-all hover:border-indigo-500/50 hover:bg-zinc-900/70 hover:-translate-y-0.5">
                       <span className={`w-9 h-9 min-w-9 rounded-lg grid place-items-center text-[10px] font-bold text-white bg-gradient-to-br ${colorForName(r.n)}`}>{initials(r.n)}</span>
                       <div className="min-w-0">
                         <b className="block text-[13px] font-semibold text-zinc-200 truncate">{r.n}</b>
@@ -299,21 +308,18 @@ function ToolDetailPage() {
             </div>
           )}
 
-          {/* CTA */}
           <div className="border-t border-zinc-800/80 py-12 text-center">
             <h2 className="text-xl font-extrabold mb-1.5">Explore {(data?.totalTools || 0).toLocaleString()}+ AI Tools</h2>
-            <p className="text-sm text-zinc-500 mb-5">Discover the full MarkBook AI directory — your gateway to the best AI tools</p>
+            <p className="text-sm text-zinc-500 mb-5">Discover the full MarkBook AI directory</p>
             <a href="/" className="inline-block rounded-xl bg-gradient-to-r from-indigo-500 to-violet-500 px-7 py-3 text-sm font-bold text-white shadow-[0_6px_24px_-6px_rgba(99,102,241,.4)] transition-all hover:shadow-[0_10px_32px_-6px_rgba(99,102,241,.55)] hover:-translate-y-0.5">Browse All AI Tools →</a>
           </div>
-
-          <div className="border-t border-zinc-800/80 py-5 text-center text-xs text-zinc-600">© 2025 MarkBook — AI Tools Directory. All rights reserved.</div>
+          <div className="border-t border-zinc-800/80 py-5 text-center text-xs text-zinc-600">© 2025 MarkBook — AI Tools Directory</div>
         </div>
       </div>
     </div>
   );
 }
 
-/* Helpers */
 const COLORS = [
   "from-violet-500 to-purple-600", "from-blue-500 to-indigo-600", "from-emerald-500 to-teal-600",
   "from-orange-500 to-red-500", "from-pink-500 to-rose-600", "from-cyan-500 to-blue-600",
