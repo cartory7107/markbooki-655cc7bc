@@ -99,7 +99,6 @@ export function getTopToolsBundle() {
  * products — pushed to the very bottom of every listing per product rules.
  */
 const DEMOTE_DOMAINS = [
-  "huggingface.co",
   "github.com",
   "github.io",
   "gitlab.com",
@@ -113,7 +112,6 @@ const DEMOTE_DOMAINS = [
   "codepen.io",
   "codesandbox.io",
   "streamlit.app",
-  "gradio.app",
   "modelscope.cn",
   "kaggle.com",
   "colab.research.google.com",
@@ -245,7 +243,7 @@ export function searchTools(opts: {
     //   tier 1: verified
     //   tier 2: rich data
     //   tier 3: everything else
-    //   tier 9: repo / hosting domains (Hugging Face, GitHub, Vercel…) → bottom
+    //   tier 9: repo / hosting domains (GitHub, Vercel…) → bottom
     const tier = (t: Tool) => {
       if (isDemoted(t.u)) return 9;
       const verified = trendingSet.has(t.n.toLowerCase());
