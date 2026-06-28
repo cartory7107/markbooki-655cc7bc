@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import {
   ArrowRight,
@@ -1609,7 +1609,6 @@ function ToolCard({
   showReactionPopup: boolean;
   onToggleReactionPopup: (name: string) => void;
 }) {
-  const navigate = useNavigate();
   const hashtags = useMemo(() => generateHashtags(tool), [tool.n, tool.d, tool.c, tool.g]);
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -1647,7 +1646,7 @@ function ToolCard({
 
   return (
     <article
-      onClick={() => { navigate({ to: "/tool/$slug", params: { slug: toolSlug } }); }}
+      onClick={() => { window.location.href = `/tool/${toolSlug}`; }}
       style={cardStyle}
       className={`tool-lift flex min-w-0 flex-col rounded-xl border p-4 cursor-pointer ${
         exclusive

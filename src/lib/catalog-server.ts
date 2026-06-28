@@ -56,36 +56,6 @@ export function getCategoryEmojis(): Record<string, string> {
   return categoryEmojisJson as unknown as Record<string, string>;
 }
 
-/**
- * Lightweight tool detail data for the /tool/:slug page.
- * Returns null if slug not found.
- */
-export function getToolBySlug(slug: string): {
-  tool: Tool;
-  normCat: string;
-  emoji: string;
-  related: { n: string; c: string; g: string; u: string; normCat: string; emoji: string }[];
-  sameCategoryCount: number;
-  totalTools: number;
-} | null {
-  const catalog = getCatalog();
-  const emojis = getCategoryEmojis();
-  let tool: Tool | null = null;
-  for (const t of catalog.tools) {
-    if (slugify(t.n) === slug) { tool = t; break; }
-  }
-  if (!tool) return null;
-
-  const normCat = normalizeCategory(tool.c);
-  const related = catalog.tools
-    .filter(t => (normalizeCategory(t.c) === normCat || t.g === tool!.g) && t.n !== tool!.n)
-    .slice(0, 8)
-    .map(t => ({ n: t.n, c: t.c, g: t.g, u: t.u, normCat: normalizeCategory(t.c), emoji: emojis[normalizeCategory(t.c)] || "🤖" }));
-  const sameCategoryCount = catalog.tools.filter(t => normalizeCategory(t.c) === normCat).length;
-
-  return { tool, normCat, emoji: emojis[normCat] || "🤖", related, sameCategoryCount, totalTools: catalog.tools.length };
-}
-
 /** Convert a display name into a URL-safe slug. */
 export function slugify(input: string): string {
   return input
@@ -184,14 +154,21 @@ function hashStr(s: string): number {
 }
 
 /**
- * Pick a position 0..3 for the exclusive tile in each 4-tile group.
- * Uses a cycling diagonal pattern (2, 1, 3, 0, 2, 1, 3, 0...)
- * so exclusives are never adjacent (not even across group boundaries).
+ * Pick a random position 0..3 inside the current 4-tile group such that, when
+ * combined with the previous group's pick, no two exclusive tiles end up
+ * visually adjacent (group N pos 3 + group N+1 pos 0 would touch).
  */
-function pickGroupPosition(groupIndex: number, _prevPos: number | null, _seed: number): number {
-  // Diagonal cycle: pos 2, 1, 3, 0 — no two consecutive groups can be adjacent
-  const cycle = [2, 1, 3, 0];
-  return cycle[groupIndex % cycle.length];
+function pickGroupPosition(groupIndex: number, prevPos: number | null, seed: number): number {
+  const base = hashStr(`${seed}:${groupIndex}`);
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const pos = (base + attempt * 7) % 4;
+    if (prevPos === null) return pos;
+    // Disallow adjacency across group boundary (prev last + new first)
+    if (prevPos === 3 && pos === 0) continue;
+    return pos;
+  }
+  // Fallback: middle slot is always safe
+  return 1;
 }
 
 /**
