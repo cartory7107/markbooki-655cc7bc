@@ -275,6 +275,30 @@ export function searchTools(opts: {
     }
   }
 
+  // Never return blank results — if search yields nothing, show popular tools
+  if (filtered.length === 0 && term) {
+    const words = term.split(/\s+/).filter(w => w.length > 2);
+    if (words.length > 0) {
+      // Try each word individually for partial matches
+      for (const w of words) {
+        const partials = catalog.tools.filter(
+          (tool) => `${tool.n} ${tool.d} ${tool.c} ${tool.g}`.toLowerCase().includes(w.toLowerCase().slice(0, -1)) || `${tool.n} ${tool.d} ${tool.c} ${tool.g}`.toLowerCase().includes(w.toLowerCase())
+        );
+        if (partials.length > 0) {
+          filtered = partials.slice(0, limit);
+          break;
+        }
+      }
+    }
+    // If still nothing, return top popular tools
+    if (filtered.length === 0) {
+      filtered = catalog.tools
+        .filter((t) => !isDemoted(t.u))
+        .slice(0, limit)
+        .map((t) => ({ ...t, tr: trendingSet.has(t.n.toLowerCase()) }));
+    }
+  }
+
   const total = filtered.length;
 
   // Get the page of results, then mark trending tags on every tile.

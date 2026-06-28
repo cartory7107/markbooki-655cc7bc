@@ -176,22 +176,63 @@ function RankingPage() {
   }
 
 
-  // Fetch from server API when filters change (also fires on mount)
+  // Phase 1: Instant load from lightweight tools-api.json (~10KB, 20 tools)
   useEffect(() => {
+    setRankingLoading(true);
+    fetch(`/tools-api.json`)
+      .then((r) => r.json())
+      .then((d: { topTools: Tool[] }) => {
+        if (d.topTools?.length > 0) {
+          setCatalog((prev) => prev.tools.length === 0 ? { tools: d.topTools, categories: {} } : prev);
+        }
+        setRankingLoading(false);
+      })
+      .catch(() => setRankingLoading(false));
+  }, []);
+
+  // Phase 2: Enhanced load from search-api.json for filtering/searching (runs after mount + when filters change)
+  const [initialLoaded, setInitialLoaded] = useState(false);
+  useEffect(() => {
+    if (!initialLoaded) return; // Skip on first render — Phase 1 handles that
     setRankingLoading(true);
     const params = new URLSearchParams();
     if (query.trim()) params.set("q", query.trim());
     if (pricing !== "All") params.set("pricing", pricing);
+    params.set("sort", "popular");
     params.set("limit", "50");
+
+    // Short timeout: fallback to tools-api if search-api is slow
+    const timeout = setTimeout(() => {
+      fetch(`/tools-api.json`)
+        .then((r) => r.json())
+        .then((d: { topTools: Tool[] }) => {
+          if (d.topTools?.length > 0) {
+            setCatalog({ tools: d.topTools, categories: {} });
+          }
+          setRankingLoading(false);
+        })
+        .catch(() => setRankingLoading(false));
+    }, 3000);
 
     fetch(`/search-api.json?${params}`)
       .then((r) => r.json())
       .then((d: { results: Tool[]; total: number }) => {
-        setCatalog({ tools: d.results, categories: {} });
+        clearTimeout(timeout);
+        if (d.results?.length > 0) {
+          setCatalog({ tools: d.results, categories: {} });
+        }
         setRankingLoading(false);
       })
-      .catch(() => setRankingLoading(false));
-  }, [query, pricing]);
+      .catch(() => {
+        clearTimeout(timeout);
+        setRankingLoading(false);
+      });
+  }, [query, pricing, initialLoaded]);
+
+  // Mark initial load complete after first data arrives
+  useEffect(() => {
+    if (catalog.tools.length > 0 && !initialLoaded) setInitialLoaded(true);
+  }, [catalog.tools, initialLoaded]);
 
   const results = catalog.tools.slice(0, 50);
 
@@ -271,7 +312,16 @@ function RankingPage() {
           )}
         </div>
 
+        {/* Loading State */}
+        {rankingLoading && (
+          <div className="mb-6 flex flex-col items-center gap-4 py-12">
+            <div className="h-8 w-8 animate-spin rounded-full border-3 border-primary border-t-transparent" />
+            <p className="text-sm font-medium text-muted-foreground">Loading top AI tools…</p>
+          </div>
+        )}
+
         {/* Top 3 Podium */}
+        {!rankingLoading && results.length > 0 && (
         <div className="mb-8 grid gap-4 sm:grid-cols-3">
           {results.slice(0, 3).map((tool, i) => {
             const medals = [
@@ -299,6 +349,7 @@ function RankingPage() {
             );
           })}
         </div>
+        )}
 
         {/* Filters */}
         <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -330,6 +381,7 @@ function RankingPage() {
         </div>
 
         {/* Ranking Table */}
+        {!rankingLoading && (
         <div className="overflow-hidden rounded-xl border border-border bg-card">
           <table className="w-full">
             <thead>
@@ -389,6 +441,16 @@ function RankingPage() {
             </tbody>
           </table>
         </div>
+        )}
+
+        {/* Empty state */}
+        {!rankingLoading && results.length === 0 && (
+          <div className="flex flex-col items-center gap-3 py-16 text-center">
+            <Trophy className="size-10 text-muted-foreground" />
+            <h3 className="text-lg font-bold">No tools found</h3>
+            <p className="text-sm text-muted-foreground">Try adjusting your filters or search query.</p>
+          </div>
+        )}
       </div>
     </div>
   );

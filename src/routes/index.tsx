@@ -11,17 +11,22 @@ import {
   ExternalLink,
   Filter,
   Flame,
+  Flag,
   Globe,
   Image,
   LogIn,
   LogOut,
   Menu,
   Moon,
+  MoreVertical,
   Newspaper,
   Plus,
   Search,
+  Send,
   Star,
   Sun,
+  ThumbsDown,
+  ThumbsUp,
   Trophy,
   TrendingUp,
   User,
@@ -72,18 +77,7 @@ type Catalog = {
   categoryEmojis: Record<string, string>;
 };
 
-const aiNews = [
-  { title: "OpenAI Launches GPT-5 with Enhanced Reasoning Capabilities", time: "2h ago" },
-  { title: "Google DeepMind Unveils AlphaFold 4 for Drug Discovery", time: "3h ago" },
-  { title: "Anthropic Claude Achieves New Benchmark in Code Generation", time: "5h ago" },
-  { title: "Meta Releases Llama 5 as Open-Source AI Model", time: "6h ago" },
-  { title: "Microsoft Copilot Gets Major Enterprise Update", time: "8h ago" },
-  { title: "Stability AI Announces Real-Time Video Generation", time: "10h ago" },
-  { title: "Apple Intelligence Expands to More Countries", time: "12h ago" },
-  { title: "EU AI Act Enforcement Begins Across Member States", time: "14h ago" },
-  { title: "NVIDIA Announces Next-Gen AI Chips for Data Centers", time: "16h ago" },
-  { title: "AI-Powered Code Editors See 300% Growth in Adoption", time: "18h ago" },
-];
+
 
 const topNavItems = [
   { label: "Free Tools", icon: "🆓", action: "free" },
@@ -178,6 +172,7 @@ function Index() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [dark, setDark] = useState(false);
   const [mobileMenu, setMobileMenu] = useState(false);
+  const [aiNews, setAiNews] = useState<Array<{ title: string; time: string; url?: string; source?: string }>>([]);
   const [mobileSidebar, setMobileSidebar] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
   const [savedTools, setSavedTools] = useState<Set<string>>(new Set());
@@ -186,6 +181,13 @@ function Index() {
   const [authUser, setAuthUser] = useState<{ email: string; name?: string } | null>(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [exclusiveTools, setExclusiveTools] = useState<Tool[]>([]);
+  const [showVisitorPopup, setShowVisitorPopup] = useState(false);
+  const [reportTool, setReportTool] = useState<string | null>(null);
+  const [reportReason, setReportReason] = useState("");
+  const [reportSubmitted, setReportSubmitted] = useState(false);
+  const [recommendTools, setRecommendTools] = useState<Set<string>>(new Set());
+  const [reactions, setReactions] = useState<Record<string, { type: "like" | "dislike" | null; emoji: string | null; counts: { like: number; dislike: number } }>>({});
+  const [reactionPopup, setReactionPopup] = useState<string | null>(null);
   const topRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
@@ -208,6 +210,26 @@ function Index() {
       }, 300);
     }
   }, [scrollToResults]);
+
+  // ── Fetch AI news from server endpoint ──
+  useEffect(() => {
+    fetch("/ai-news-api.json")
+      .then((r) => r.json())
+      .then((data) => setAiNews(data))
+      .catch(() => {});
+  }, []);
+
+  // ── New visitor popup: show once ──
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const seen = localStorage.getItem("mb-visitor-popup-seen");
+    if (!seen) {
+      const timer = setTimeout(() => {
+        if (!authUser) setShowVisitorPopup(true);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [authUser]);
 
   // ── Load lightweight homepage data from server API (~10KB instead of 11MB) ──
   useEffect(() => {
@@ -401,6 +423,31 @@ function Index() {
       return next;
     });
   }, []);
+
+  // Helper to generate ToolCard props for reaction/recommend/report features
+  const getReactionProps = useCallback((tool: Tool) => ({
+    reactionData: reactions[tool.n] || { type: null as "like" | "dislike" | null, emoji: null as string | null, counts: { like: 0, dislike: 0 } },
+    onReaction: (_name: string, type: "like" | "dislike", emoji?: string) => {
+      setReactions((prev) => {
+        const name = tool.n;
+        const curr = prev[name] || { type: null, emoji: null, counts: { like: 0, dislike: 0 } };
+        if (type === "like" && curr.type === "like") {
+          return { ...prev, [name]: { ...curr, type: null, emoji: null, counts: { ...curr.counts, like: Math.max(0, curr.counts.like - 1) } } };
+        }
+        if (type === "dislike" && curr.type === "dislike") {
+          return { ...prev, [name]: { ...curr, type: null, emoji: null, counts: { ...curr.counts, dislike: Math.max(0, curr.counts.dislike - 1) } } };
+        }
+        const wasLike = curr.type === "like";
+        const wasDislike = curr.type === "dislike";
+        return { ...prev, [name]: { type, emoji: emoji || null, counts: { like: (curr.counts.like + (type === "like" ? 1 : 0)) - (wasLike ? 1 : 0), dislike: (curr.counts.dislike + (type === "dislike" ? 1 : 0)) - (wasDislike ? 1 : 0) } } };
+      });
+    },
+    onReport: (_name: string) => setReportTool(tool.n),
+    onRecommend: (_name: string) => setRecommendTools((prev) => { const next = new Set(prev); if (next.has(tool.n)) next.delete(tool.n); else next.add(tool.n); return next; }),
+    isRecommended: recommendTools.has(tool.n),
+    showReactionPopup: reactionPopup === tool.n,
+    onToggleReactionPopup: (_name: string) => setReactionPopup(reactionPopup === tool.n ? null : tool.n),
+  }), [reactions, recommendTools, reactionPopup]);
 
 
 
@@ -610,14 +657,14 @@ function Index() {
                 className="h-10 w-full rounded-lg border border-border bg-muted/40 pl-9 pr-4 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
               />
             </div>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2">
               {topNavItems.map((item) =>
                 item.href ? (
                   <Link
                     key={item.label}
                     to={item.href}
                     onClick={() => setMobileMenu(false)}
-                    className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium hover:bg-accent"
+                    className="flex items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2.5 text-sm font-medium hover:bg-accent"
                   >
                     <span className="text-sm">{item.icon}</span>
                     {item.label}
@@ -626,10 +673,13 @@ function Index() {
                   <button
                     key={item.label}
                     onClick={() => {
-                      if (item.action === "free") setPricing("Free");
+                      if (item.action === "free") { setPricing("Free"); setVisible(20); }
+                      else if (item.action === "categories") setMobileSidebar(true);
+                      else if (item.action === "latest") { document.getElementById("tools-feed")?.scrollIntoView({ behavior: "smooth" }); }
+                      else if (item.action === "news") { document.getElementById("ai-news-section")?.scrollIntoView({ behavior: "smooth" }); }
                       setMobileMenu(false);
                     }}
-                    className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-2 text-sm font-medium hover:bg-accent"
+                    className="flex items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2.5 text-sm font-medium hover:bg-accent"
                   >
                     <span className="text-sm">{item.icon}</span>
                     {item.label}
@@ -655,9 +705,9 @@ function Index() {
               ) : (
                 <button
                   onClick={() => { handleSignIn(); setMobileMenu(false); }}
-                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-2.5 text-sm font-medium"
+                  className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2.5 text-sm font-semibold text-primary-foreground"
                 >
-                  <LogIn className="size-3.5" /> Sign In
+                  Sign Up | Login
                 </button>
               )}
             </div>
@@ -750,6 +800,23 @@ function Index() {
               </div>
             ))}
           </div>
+          {/* Submit AI CTA */}
+          <div className="mx-auto mt-6 flex max-w-xl flex-col items-center gap-3 sm:flex-row sm:justify-center">
+            <div className="text-center sm:text-left">
+              <p className="text-sm font-bold text-foreground">
+                🚀 Submit Your Unique AI Tool — Get Featured!
+              </p>
+              <p className="text-xs text-muted-foreground">
+                List your AI on the fastest-growing AI directory
+              </p>
+            </div>
+            <Link
+              to="/submit"
+              className="shrink-0 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-primary to-violet-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
+            >
+              Submit Now <ArrowRight className="size-4" />
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -823,85 +890,28 @@ function Index() {
       {/* ─── Main Content: 3-Column Layout ─── */}
       <main className="mx-auto grid max-w-[1480px] gap-0 px-4 py-5 lg:grid-cols-[250px_minmax(0,1fr)_280px] lg:px-6">
 
-        {/* ─── Left Sidebar: Categories ─── */}
+        {/* ─── Left Sidebar: Featured (placeholder) ─── */}
         <aside className="hidden lg:block">
           <div className="sticky top-20 space-y-4">
-            {/* Categories List */}
             <div className="overflow-hidden rounded-xl border border-border bg-card">
               <div className="border-b border-border p-3">
                 <h2 className="flex items-center gap-2.5 text-sm font-bold">
-                  📂 Categories
-                  <span className="ml-auto rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">
-                    {categories.length}
-                  </span>
+                  ⭐ Featured
                 </h2>
               </div>
-              <div className="max-h-[calc(100vh-200px)] overflow-y-auto p-1.5 category-scroll">
-                <button
-                  onClick={() => {
-                    setActiveCategory("All");
-                    setVisible(20);
-                  }}
-                  className={`mb-0.5 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm font-medium transition-colors ${
-                    activeCategory === "All"
-                      ? "bg-primary/10 text-primary"
-                      : "text-foreground/75 hover:bg-accent"
-                  }`}
-                >
-                  <span>🌐</span>
-                  <span className="flex-1">All Categories</span>
-                  <span className="text-xs text-muted-foreground">{totalTools}</span>
-                </button>
-                {categories.map(([name, count]) => {
-                  const emoji = catalog.categoryEmojis?.[name] || "🤖";
-                  return (
-                    <button
-                      key={name}
-                      onClick={() => {
-                        setActiveCategory(name);
-                        setVisible(20);
-                        document.getElementById("tools-feed")?.scrollIntoView({ behavior: "smooth" });
-                      }}
-                      className={`mb-0.5 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm transition-colors ${
-                        activeCategory === name
-                          ? "bg-primary/10 text-primary font-medium"
-                          : "text-foreground/65 hover:bg-accent hover:text-foreground"
-                      }`}
-                    >
-                      <span className="shrink-0 text-sm">{emoji}</span>
-                      <span className="min-w-0 flex-1 truncate">{name.replace("Free ", "")}</span>
-                      <span className="shrink-0 text-xs text-muted-foreground">{count}</span>
-                    </button>
-                  );
-                })}
+              <div className="flex min-h-[200px] items-center justify-center p-6">
+                <p className="text-center text-xs text-muted-foreground">Featured AI tools will appear here</p>
               </div>
             </div>
 
-            {/* Sponsored */}
+            {/* Sponsored placeholder */}
             <div className="overflow-hidden rounded-xl border border-border bg-card p-4">
               <p className="mb-3 text-[10px] uppercase tracking-widest text-muted-foreground">
                 💎 Sponsored
               </p>
-              {[
-                { n: "Lovable", d: "Build apps by chatting with AI", c: "Build faster", u: "https://lovable.dev" },
-                { n: "Recraft", d: "Create production-ready visuals", c: "Design better", u: "https://recraft.ai" },
-              ].map((ad) => (
-                <div key={ad.n} className="mb-3 last:mb-0">
-                  <div className="flex items-center gap-2.5 mb-2">
-                    <ToolIcon name={ad.n} url={ad.u} small />
-                    <div>
-                      <p className="text-sm font-semibold">{ad.n}</p>
-                      <p className="mt-0.5 text-[10px] text-muted-foreground">Verified partner</p>
-                    </div>
-                  </div>
-                  <p className="text-xs text-muted-foreground mb-2">{ad.d}</p>
-                  <a href={ad.u} target="_blank" rel="noopener noreferrer">
-                    <Button variant="outline" size="sm" className="w-full text-xs">
-                      {ad.c} <ExternalLink className="size-3 ml-1" />
-                    </Button>
-                  </a>
-                </div>
-              ))}
+              <div className="flex min-h-[120px] items-center justify-center rounded-lg border border-dashed border-border">
+                <p className="text-center text-xs text-muted-foreground">Ad space available</p>
+              </div>
               <Link
                 to="/advertise"
                 className="mt-3 flex items-center justify-between text-xs font-medium text-muted-foreground hover:text-primary"
@@ -912,55 +922,7 @@ function Index() {
           </div>
         </aside>
 
-        {/* ─── Mobile Category Drawer ─── */}
-        {mobileSidebar && (
-          <div className="fixed inset-0 z-50 lg:hidden">
-            <div className="absolute inset-0 bg-black/50" onClick={() => setMobileSidebar(false)} />
-            <div className="absolute left-0 top-0 bottom-0 w-80 overflow-y-auto bg-background p-4 shadow-2xl">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-base font-bold">📂 Categories</h2>
-                <button onClick={() => setMobileSidebar(false)}>
-                  <X className="size-5" />
-                </button>
-              </div>
-              <button
-                onClick={() => {
-                  setActiveCategory("All");
-                  setMobileSidebar(false);
-                  setVisible(20);
-                }}
-                className={`mb-1 flex w-full items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-medium ${
-                  activeCategory === "All" ? "bg-primary/10 text-primary" : "hover:bg-accent"
-                }`}
-              >
-                🌐 All Categories
-                <span className="ml-auto text-xs text-muted-foreground">{totalTools}</span>
-              </button>
-              {categories.map(([name, count]) => {
-                const emoji = catalog.categoryEmojis?.[name] || "🤖";
-                return (
-                  <button
-                    key={name}
-                    onClick={() => {
-                      setActiveCategory(name);
-                      setMobileSidebar(false);
-                      setVisible(20);
-                    }}
-                    className={`mb-0.5 flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm ${
-                      activeCategory === name
-                        ? "bg-primary/10 text-primary font-medium"
-                        : "text-foreground/65 hover:bg-accent"
-                    }`}
-                  >
-                    <span className="text-sm">{emoji}</span>
-                    <span className="min-w-0 flex-1 truncate">{name.replace("Free ", "")}</span>
-                    <span className="text-xs text-muted-foreground">{count}</span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-        )}
+        {/* Mobile Category Drawer removed — categories now via top scroll only */}
 
         {/* ─── Center: Tool Feed ─── */}
         <section id="tools-feed" className="min-w-0">
@@ -997,16 +959,10 @@ function Index() {
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {s === "today" ? "🔥 Today" : s === "new" ? "✨ New" : "📈 Popular"}
+                  {s === "today" ? "⚡ Latest" : s === "new" ? "✨ New" : "📈 Popular"}
                 </button>
               ))}
             </div>
-            <button
-              onClick={() => setMobileSidebar(true)}
-              className="ml-2 flex items-center gap-1 rounded-lg border border-border px-2 py-1 text-xs font-medium hover:bg-accent lg:hidden"
-            >
-              📂 Categories
-            </button>
           </div>
 
           {/* Section Title */}
@@ -1016,7 +972,7 @@ function Index() {
                 ? `Results for "${query}"`
                 : activeCategory !== "All"
                   ? `${catalog.categoryEmojis?.[activeCategory] || "🤖"} ${activeCategory.replace("Free ", "")}`
-                  : "🔥 Latest AI Tools"}
+                  : "⚡ Latest AI Tools"}
             </h2>
           </div>
 
@@ -1024,7 +980,7 @@ function Index() {
           {searchLoading && catalogLoaded && (
             <div className="mb-4 flex items-center justify-center gap-3 rounded-xl border border-primary/20 bg-primary/5 py-5">
               <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-              <span className="text-sm font-medium text-primary">Updating tools...</span>
+              <span className="text-sm font-medium text-primary">Searching...</span>
             </div>
           )}
 
@@ -1042,6 +998,7 @@ function Index() {
                   featured={!!tool.ex}
                   trending={!!tool.tr}
                   exclusive={!!tool.ex}
+                  {...getReactionProps(tool)}
                 />
               ))}
             </div>
@@ -1162,18 +1119,21 @@ function Index() {
           )}
 
           {/* ─── AI News Section ─── */}
+          {aiNews.length > 0 && (
           <section id="ai-news-section" className="mt-10">
             <div className="mb-4 flex items-center gap-2">
               <Newspaper className="size-5 text-primary" />
               <h2 className="text-lg font-bold">AI News</h2>
-              <span className="ml-2 text-xs text-muted-foreground">Latest updates</span>
+              <span className="ml-2 text-xs text-muted-foreground">Live updates</span>
             </div>
             <div className="overflow-hidden rounded-xl border border-border bg-card">
               <div className="divide-y divide-border">
                 {aiNews.map((news, i) => (
                   <a
                     key={i}
-                    href="#"
+                    href={news.url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-accent"
                   >
                     <span className="flex size-6 shrink-0 place-items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">
@@ -1181,7 +1141,7 @@ function Index() {
                     </span>
                     <div className="min-w-0">
                       <p className="line-clamp-2 text-sm font-medium leading-5">{news.title}</p>
-                      <span className="mt-1 block text-[10px] text-muted-foreground">{news.time}</span>
+                      <span className="mt-1 block text-[10px] text-muted-foreground">{news.time}{news.source && news.source !== "AI News" ? ` · ${news.source}` : ""}</span>
                     </div>
                   </a>
                 ))}
@@ -1193,12 +1153,13 @@ function Index() {
               </div>
             </div>
           </section>
-        </section>
+          )}
 
         {/* ─── Right Sidebar ─── */}
         <aside className="hidden lg:block">
           <div className="sticky top-20 space-y-4">
             {/* AI News */}
+            {aiNews.length > 0 && (
             <div className="overflow-hidden rounded-xl border border-border bg-card">
               <div className="flex items-center gap-2 border-b border-border p-3">
                 <span className="text-sm">📰</span>
@@ -1208,7 +1169,9 @@ function Index() {
                 {aiNews.slice(0, 8).map((news, i) => (
                   <a
                     key={i}
-                    href="#"
+                    href={news.url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-start gap-2.5 px-3 py-2 transition-colors hover:bg-accent"
                   >
                     <span className="mt-0.5 flex size-5 shrink-0 place-items-center rounded-full bg-primary/10 text-[9px] font-bold text-primary">
@@ -1216,7 +1179,7 @@ function Index() {
                     </span>
                     <div className="min-w-0">
                       <p className="line-clamp-2 text-xs font-medium leading-4">{news.title}</p>
-                      <span className="mt-0.5 block text-[10px] text-muted-foreground">{news.time}</span>
+                      <span className="mt-0.5 block text-[10px] text-muted-foreground">{news.time}{news.source && news.source !== "AI News" ? ` · ${news.source}` : ""}</span>
                     </div>
                   </a>
                 ))}
@@ -1300,6 +1263,7 @@ function Index() {
                   saved={savedTools.has(tool.n)}
                   onToggleSave={() => toggleSave(tool.n)}
                   featured
+                  {...getReactionProps(tool)}
                 />
               ))}
             </div>
@@ -1316,12 +1280,70 @@ function Index() {
                     tool={tool}
                     saved={savedTools.has(tool.n)}
                     onToggleSave={() => toggleSave(tool.n)}
+                    {...getReactionProps(tool)}
                   />
                 ))}
               </div>
             </div>
           )}
         </section>
+      )}
+
+      {/* ─── New Visitor Popup ─── */}
+      {showVisitorPopup && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4" onClick={() => { setShowVisitorPopup(false); localStorage.setItem("mb-visitor-popup-seen", "1"); }}>
+          <div className="relative w-full max-w-sm rounded-2xl border border-border bg-card p-8 text-center shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => { setShowVisitorPopup(false); localStorage.setItem("mb-visitor-popup-seen", "1"); }} className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"><X className="size-5" /></button>
+            <span className="mx-auto grid size-16 place-items-center rounded-2xl bg-primary/10 text-3xl">👋</span>
+            <h3 className="mt-5 text-xl font-extrabold">Welcome to MarkBook!</h3>
+            <p className="mt-3 text-sm text-muted-foreground leading-6">Join thousands of AI enthusiasts discovering the best tools. Sign in to save, recommend, and track your favorites.</p>
+            <div className="mt-6 space-y-2">
+              <Button variant="brand" className="w-full gap-2" onClick={() => { setShowVisitorPopup(false); localStorage.setItem("mb-visitor-popup-seen", "1"); handleSignIn(); }}>
+                <LogIn className="size-4" /> Sign Up & Login
+              </Button>
+              <Button variant="outline" className="w-full" onClick={() => { setShowVisitorPopup(false); localStorage.setItem("mb-visitor-popup-seen", "1"); }}>
+                Do it later
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Report Dialog ─── */}
+      {reportTool && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 p-4" onClick={() => { setReportTool(null); setReportReason(""); setReportSubmitted(false); }}>
+          <div className="relative w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <button onClick={() => { setReportTool(null); setReportReason(""); setReportSubmitted(false); }} className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"><X className="size-5" /></button>
+            {!reportSubmitted ? (
+              <>
+                <div className="flex items-center gap-2 mb-4">
+                  <Flag className="size-5 text-red-500" />
+                  <h3 className="text-lg font-bold">Report Tool</h3>
+                </div>
+                <p className="text-sm text-muted-foreground mb-4">Why are you reporting <strong>{reportTool}</strong>?</p>
+                <div className="space-y-2">
+                  {["Scam or fraudulent", "Abusive content", "Phishing attempt", "Broken link / doesn't work", "Misleading description"].map((reason) => (
+                    <button key={reason} onClick={() => setReportReason(reason)}
+                      className={`w-full rounded-lg border px-3 py-2.5 text-left text-sm transition-colors ${reportReason === reason ? "border-red-400 bg-red-50 text-red-600 dark:bg-red-950/30 dark:text-red-400" : "border-border hover:bg-accent"}`}>
+                      {reason}
+                    </button>
+                  ))}
+                </div>
+                <Button variant="outline" className="mt-4 w-full text-red-500 hover:bg-red-50 dark:hover:bg-red-950/30" disabled={!reportReason}
+                  onClick={() => { setReportSubmitted(true); }}>
+                  <Send className="size-4 mr-2" /> Submit Report
+                </Button>
+              </>
+            ) : (
+              <div className="py-6 text-center">
+                <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-emerald-50 text-3xl dark:bg-emerald-950/30">✅</span>
+                <h3 className="mt-4 text-lg font-bold">Report Submitted</h3>
+                <p className="mt-2 text-sm text-muted-foreground">Thank you! Our team will review your report.</p>
+                <Button variant="outline" className="mt-5" onClick={() => { setReportTool(null); setReportReason(""); setReportSubmitted(false); }}>Close</Button>
+              </div>
+            )}
+          </div>
+        </div>
       )}
 
       {/* ─── Footer ─── */}
@@ -1373,10 +1395,10 @@ function Index() {
             <div>
               <h4 className="mb-3 text-sm font-bold">🏢 Company</h4>
               <div className="space-y-2">
-                {["About Us", "Contact", "Privacy Policy", "Terms of Service"].map((item) => (
-                  <a key={item} href="#" className="block text-sm text-muted-foreground hover:text-primary">
-                    {item}
-                  </a>
+                {[{ label: "About Us", to: "/about" }, { label: "Contact", to: "/about" }, { label: "Privacy Policy", to: "/privacy" }, { label: "Terms of Service", to: "/terms" }].map((item) => (
+                  <Link key={item.label} to={item.to} className="block text-sm text-muted-foreground hover:text-primary">
+                    {item.label}
+                  </Link>
                 ))}
               </div>
             </div>
@@ -1553,6 +1575,9 @@ function generateHashtags(tool: Tool): string[] {
   return tags.slice(0, 3);
 }
 
+// Reaction emojis for the popup
+const REACTION_EMOJIS = ["👍", "❤️", "🔥", "😮", "😢"];
+
 function ToolCard({
   tool,
   saved,
@@ -1560,6 +1585,13 @@ function ToolCard({
   featured = false,
   trending = false,
   exclusive = false,
+  reactionData,
+  onReaction,
+  onReport,
+  onRecommend,
+  isRecommended,
+  showReactionPopup,
+  onToggleReactionPopup,
 }: {
   tool: Tool;
   saved: boolean;
@@ -1567,8 +1599,38 @@ function ToolCard({
   featured?: boolean;
   trending?: boolean;
   exclusive?: boolean;
+  reactionData: { type: "like" | "dislike" | null; emoji: string | null; counts: { like: number; dislike: number } };
+  onReaction: (name: string, type: "like" | "dislike", emoji?: string) => void;
+  onReport: (name: string) => void;
+  onRecommend: (name: string) => void;
+  isRecommended: boolean;
+  showReactionPopup: boolean;
+  onToggleReactionPopup: (name: string) => void;
 }) {
   const hashtags = useMemo(() => generateHashtags(tool), [tool.n, tool.d, tool.c, tool.g]);
+  const [showMenu, setShowMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  // Close menu on outside click
+  useEffect(() => {
+    if (!showMenu) return;
+    const handler = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) setShowMenu(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showMenu]);
+
+  // Close popup on outside click
+  useEffect(() => {
+    if (!showReactionPopup) return;
+    const handler = (e: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(e.target as Node)) onToggleReactionPopup(tool.n);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showReactionPopup, tool.n, onToggleReactionPopup]);
 
   const cardStyle: React.CSSProperties = exclusive
     ? {
@@ -1596,6 +1658,11 @@ function ToolCard({
             <a href={tool.u} target="_blank" rel="noopener noreferrer" className="hover:underline">
               <h3 className={`truncate font-semibold text-sm ${exclusive ? "text-white drop-shadow" : ""}`}>{tool.n}</h3>
             </a>
+            {isRecommended && (
+              <span className="shrink-0 rounded-md bg-gradient-to-r from-emerald-500 to-green-500 px-2 py-0.5 text-[10px] font-extrabold text-white shadow-sm">
+                Recommended
+              </span>
+            )}
             {exclusive && (
               <span className="shrink-0 rounded-md bg-gradient-to-r from-fuchsia-500 via-pink-500 to-violet-500 px-2 py-0.5 text-[10px] font-extrabold text-white shadow-[0_0_10px_-2px_rgba(217,70,239,0.6)] ring-1 ring-fuchsia-400/50">
                 ✨ Exclusive
@@ -1619,16 +1686,41 @@ function ToolCard({
           <p className={`mt-1 truncate text-xs ${exclusive ? "text-white/85" : "text-muted-foreground"}`}>{tool.c}</p>
         </div>
 
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleSave();
-          }}
-          className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-primary transition-colors"
-          title={saved ? "Unsave" : "Save"}
-        >
-          <Bookmark className={`size-4 ${saved ? "fill-primary text-primary" : ""}`} />
-        </button>
+        {/* Three-dot menu button */}
+        <div className="relative" ref={menuRef}>
+          <button
+            onClick={(e) => { e.stopPropagation(); setShowMenu(!showMenu); }}
+            className="shrink-0 rounded-md p-1 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            title="More options"
+          >
+            <MoreVertical className="size-4" />
+          </button>
+          {showMenu && (
+            <div className="absolute right-0 top-full z-50 mt-1 w-44 overflow-hidden rounded-xl border border-border bg-popover shadow-xl">
+              <button
+                onClick={(e) => { e.stopPropagation(); onToggleSave(); setShowMenu(false); }}
+                className="flex w-full items-center gap-2.5 px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+              >
+                <Bookmark className={`size-4 ${saved ? "fill-primary text-primary" : ""}`} />
+                {saved ? "Unsave" : "Save"}
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); onRecommend(tool.n); setShowMenu(false); }}
+                className="flex w-full items-center gap-2.5 px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-foreground"
+              >
+                <Send className="size-4" />
+                {isRecommended ? "Unrecommend" : "Recommend"}
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); onReport(tool.n); setShowMenu(false); }}
+                className="flex w-full items-center gap-2.5 px-3 py-2 text-sm font-medium text-red-500 transition-colors hover:bg-red-50 dark:hover:bg-red-950/30"
+              >
+                <Flag className="size-4" />
+                Report
+              </button>
+            </div>
+          )}
+        </div>
       </div>
       <p className="my-3 min-h-8 text-sm leading-5 text-muted-foreground" style={{display:"-webkit-box",WebkitLineClamp:2,WebkitBoxOrient:"vertical",overflow:"hidden",wordBreak:"break-word",overflowWrap:"break-word"}}>{tool.d}</p>
       {hashtags.length > 0 && (
@@ -1641,7 +1733,7 @@ function ToolCard({
         </div>
       )}
       <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
-        <div className="flex flex-wrap gap-1 min-w-0 max-w-[55%]">
+        <div className="flex items-center gap-2 min-w-0 max-w-[55%]">
           <span className="truncate rounded-md bg-gradient-to-r from-violet-500/15 to-indigo-500/10 px-1.5 py-0.5 text-[10px] font-bold text-violet-600 dark:text-violet-400 border border-violet-500/20">
             🏷️ {tool.c.replace(/\s+/g, "").replace(/^AI/i, "AI")}
           </span>
@@ -1651,11 +1743,51 @@ function ToolCard({
             </span>
           )}
         </div>
-        <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
-          <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5 px-3 py-1.5 text-xs font-bold text-primary transition-all hover:from-primary/20 hover:to-primary/10 hover:shadow-[0_0_12px_-4px_rgba(var(--primary),0.4)]">
-            🌐 Visit <ExternalLink className="size-3" />
-          </span>
-        </a>
+        <div className="flex items-center gap-1.5 shrink-0">
+          {/* Like button */}
+          <div className="relative" ref={popupRef}>
+            <button
+              onClick={(e) => { e.stopPropagation(); onToggleReactionPopup(tool.n); }}
+              className={`flex items-center gap-1 rounded-lg px-2 py-1 text-xs transition-colors ${
+                reactionData.type === "like"
+                  ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
+              }`}
+            >
+              <ThumbsUp className={`size-3.5 ${reactionData.type === "like" ? "fill-emerald-500" : ""}`} />
+              <span className="text-[11px]">{reactionData.counts.like}</span>
+            </button>
+            {/* Emoji popup */}
+            {showReactionPopup && (
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 flex gap-1 rounded-xl border border-border bg-popover p-2 shadow-xl">
+                {REACTION_EMOJIS.map((em) => (
+                  <button key={em} onClick={(e) => { e.stopPropagation(); onReaction(tool.n, "like", em); }}
+                    className="size-9 grid place-items-center rounded-lg hover:bg-accent text-lg transition-transform hover:scale-125">
+                    {em}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          {/* Dislike button */}
+          <button
+            onClick={(e) => { e.stopPropagation(); onReaction(tool.n, "dislike"); }}
+            className={`flex items-center gap-1 rounded-lg px-2 py-1 text-xs transition-colors ${
+              reactionData.type === "dislike"
+                ? "bg-red-50 text-red-500 dark:bg-red-950/30 dark:text-red-400"
+                : "text-muted-foreground hover:bg-accent hover:text-foreground"
+            }`}
+          >
+            <ThumbsDown className={`size-3.5 ${reactionData.type === "dislike" ? "fill-red-500" : ""}`} />
+            <span className="text-[11px]">{reactionData.counts.dislike}</span>
+          </button>
+          {/* Visit button */}
+          <a href={tool.u} target="_blank" rel="noopener noreferrer" className="shrink-0">
+            <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary/30 bg-gradient-to-r from-primary/10 to-primary/5 px-3 py-1.5 text-xs font-bold text-primary transition-all hover:from-primary/20 hover:to-primary/10 hover:shadow-[0_0_12px_-4px_rgba(var(--primary),0.4)]">
+              🌐 Visit <ExternalLink className="size-3" />
+            </span>
+          </a>
+        </div>
       </div>
     </article>
   );

@@ -42,12 +42,34 @@ function ComparePage() {
 
   const runCompare = useServerFn(compareTools);
 
+  // Phase 1: Instant load from lightweight tools-api.json
   useEffect(() => {
-    fetch("/search-api.json?limit=200")
+    fetch("/tools-api.json")
       .then((r) => r.json())
-      .then((d: { results: Tool[] }) => setAllTools(d.results))
+      .then((d: { topTools: Tool[] }) => {
+        if (d.topTools?.length > 0) {
+          setAllTools(d.topTools);
+        }
+      })
       .catch(() => {});
   }, []);
+
+  // Phase 2: Load more tools from search-api when user starts searching
+  useEffect(() => {
+    if (!search.trim()) return; // Don't fetch until user types
+    fetch(`/search-api.json?limit=200&q=${encodeURIComponent(search)}`)
+      .then((r) => r.json())
+      .then((d: { results: Tool[] }) => {
+        if (d.results?.length > 0) {
+          setAllTools((prev) => {
+            const existingNames = new Set(prev.map(t => t.n));
+            const newTools = d.results.filter(t => !existingNames.has(t.n));
+            return [...prev, ...newTools].slice(0, 200);
+          });
+        }
+      })
+      .catch(() => {});
+  }, [search]);
 
   const matches = useMemo(() => {
     if (!search.trim()) return allTools.slice(0, 12);

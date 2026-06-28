@@ -22,6 +22,9 @@ import { Route as CompareRouteImport } from './routes/compare'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdvertiseRouteImport } from './routes/advertise'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ToolSlugRouteImport } from './routes/tool/$slug'
 import { Route as SitemapToolsIndexRouteImport } from './routes/sitemap-tools.$index'
@@ -92,6 +95,21 @@ const AdminRoute = AdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -115,16 +133,19 @@ const CategorySlugRoute = CategorySlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
+  '/privacy': typeof PrivacyRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
+  '/terms': typeof TermsRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
@@ -134,16 +155,19 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
+  '/privacy': typeof PrivacyRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
+  '/terms': typeof TermsRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
@@ -154,16 +178,19 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/admin': typeof AdminRoute
   '/advertise': typeof AdvertiseRoute
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
+  '/privacy': typeof PrivacyRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
+  '/terms': typeof TermsRoute
   '/tools-api.json': typeof ToolsApiDotjsonRoute
   '/tools-dictionary.json': typeof ToolsDictionaryDotjsonRoute
   '/university': typeof UniversityRoute
@@ -175,16 +202,19 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/admin'
     | '/advertise'
     | '/auth'
     | '/compare'
     | '/exclusive-api.json'
+    | '/privacy'
     | '/ranking'
     | '/search-api.json'
     | '/sitemap-static.xml'
     | '/sitemap.xml'
     | '/submit'
+    | '/terms'
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
@@ -194,16 +224,19 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/admin'
     | '/advertise'
     | '/auth'
     | '/compare'
     | '/exclusive-api.json'
+    | '/privacy'
     | '/ranking'
     | '/search-api.json'
     | '/sitemap-static.xml'
     | '/sitemap.xml'
     | '/submit'
+    | '/terms'
     | '/tools-api.json'
     | '/tools-dictionary.json'
     | '/university'
@@ -213,11 +246,13 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/admin'
     | '/advertise'
     | '/auth'
     | '/compare'
     | '/exclusive-api.json'
+    | '/privacy'
     | '/ranking'
     | '/search-api.json'
     | '/sitemap-static.xml'
