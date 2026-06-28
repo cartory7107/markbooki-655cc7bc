@@ -56,6 +56,36 @@ export function getCategoryEmojis(): Record<string, string> {
   return categoryEmojisJson as unknown as Record<string, string>;
 }
 
+/**
+ * Lightweight tool detail data for the /tool/:slug page.
+ * Returns null if slug not found.
+ */
+export function getToolBySlug(slug: string): {
+  tool: Tool;
+  normCat: string;
+  emoji: string;
+  related: { n: string; c: string; g: string; u: string; normCat: string; emoji: string }[];
+  sameCategoryCount: number;
+  totalTools: number;
+} | null {
+  const catalog = getCatalog();
+  const emojis = getCategoryEmojis();
+  let tool: Tool | null = null;
+  for (const t of catalog.tools) {
+    if (slugify(t.n) === slug) { tool = t; break; }
+  }
+  if (!tool) return null;
+
+  const normCat = normalizeCategory(tool.c);
+  const related = catalog.tools
+    .filter(t => (normalizeCategory(t.c) === normCat || t.g === tool!.g) && t.n !== tool!.n)
+    .slice(0, 8)
+    .map(t => ({ n: t.n, c: t.c, g: t.g, u: t.u, normCat: normalizeCategory(t.c), emoji: emojis[normalizeCategory(t.c)] || "🤖" }));
+  const sameCategoryCount = catalog.tools.filter(t => normalizeCategory(t.c) === normCat).length;
+
+  return { tool, normCat, emoji: emojis[normCat] || "🤖", related, sameCategoryCount, totalTools: catalog.tools.length };
+}
+
 /** Convert a display name into a URL-safe slug. */
 export function slugify(input: string): string {
   return input
