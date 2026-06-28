@@ -53,18 +53,18 @@ type Tool = {
 
 
 const PRICING_STYLES: Record<string, { bg: string; text: string; label: string }> = {
-  Free: { bg: "bg-emerald-50 dark:bg-emerald-950/50", text: "text-emerald-600 dark:text-emerald-400", label: "Free" },
-  "Free Plan": { bg: "bg-green-50 dark:bg-green-950/50", text: "text-green-600 dark:text-green-400", label: "Free Plan" },
-  "Free Trial": { bg: "bg-sky-50 dark:bg-sky-950/50", text: "text-sky-600 dark:text-sky-400", label: "Free Trial" },
-  "Free Credits": { bg: "bg-violet-50 dark:bg-violet-950/50", text: "text-violet-600 dark:text-violet-400", label: "Free Credits" },
-  "Daily Free": { bg: "bg-cyan-50 dark:bg-cyan-950/50", text: "text-cyan-600 dark:text-cyan-400", label: "Daily Free" },
-  "Monthly Free": { bg: "bg-teal-50 dark:bg-teal-950/50", text: "text-teal-600 dark:text-teal-400", label: "Monthly Free" },
-  Paid: { bg: "bg-amber-50 dark:bg-amber-950/50", text: "text-amber-600 dark:text-amber-400", label: "Paid" },
-  "Paid Plans": { bg: "bg-orange-50 dark:bg-orange-950/50", text: "text-orange-600 dark:text-orange-400", label: "Paid Plans" },
-  "Open Source": { bg: "bg-blue-50 dark:bg-blue-950/50", text: "text-blue-600 dark:text-blue-400", label: "Open Source" },
-  unknown: { bg: "bg-zinc-50 dark:bg-zinc-950/50", text: "text-zinc-600 dark:text-zinc-400", label: "Unknown" },
-  Unknown: { bg: "bg-zinc-50 dark:bg-zinc-950/50", text: "text-zinc-600 dark:text-zinc-400", label: "Unknown" },
-  freemium: { bg: "bg-indigo-50 dark:bg-indigo-950/50", text: "text-indigo-600 dark:text-indigo-400", label: "Freemium" },
+  Free: { bg: "bg-gradient-to-r from-emerald-500 to-green-500", text: "text-white", label: "\uD83C\uDFE2 Free" },
+  "Free Plan": { bg: "bg-gradient-to-r from-green-500 to-emerald-500", text: "text-white", label: "\uD83D\uDC8E Free Plan" },
+  "Free Trial": { bg: "bg-gradient-to-r from-sky-500 to-blue-500", text: "text-white", label: "\uD83C\uDF1F Free Trial" },
+  "Free Credits": { bg: "bg-gradient-to-r from-violet-500 to-purple-500", text: "text-white", label: "\uD83C\uDFC6 Free Credits" },
+  "Daily Free": { bg: "bg-gradient-to-r from-cyan-500 to-teal-500", text: "text-white", label: "\u2B50 Daily Free" },
+  "Monthly Free": { bg: "bg-gradient-to-r from-teal-500 to-cyan-500", text: "text-white", label: "\uD83D\uDCC5 Monthly Free" },
+  Paid: { bg: "bg-gradient-to-r from-amber-500 to-orange-500", text: "text-white", label: "\uD83D\uDCB0 Paid" },
+  "Paid Plans": { bg: "bg-gradient-to-r from-orange-500 to-red-500", text: "text-white", label: "\uD83D\uDD25 Paid Plans" },
+  "Open Source": { bg: "bg-gradient-to-r from-blue-500 to-indigo-500", text: "text-white", label: "\uD83D\uDCDA Open Source" },
+  unknown: { bg: "bg-gradient-to-r from-zinc-400 to-zinc-500", text: "text-white", label: "\u2753 Unknown" },
+  Unknown: { bg: "bg-gradient-to-r from-zinc-400 to-zinc-500", text: "text-white", label: "\u2753 Unknown" },
+  freemium: { bg: "bg-gradient-to-r from-indigo-500 to-violet-500", text: "text-white", label: "\uD83C\uDFAF Freemium" },
 };
 type Catalog = {
   tools: Tool[];
@@ -1597,12 +1597,12 @@ function ToolCard({
               <h3 className={`truncate font-semibold text-sm ${exclusive ? "text-white drop-shadow" : ""}`}>{tool.n}</h3>
             </a>
             {exclusive && (
-              <span className="shrink-0 rounded-md bg-gradient-to-r from-fuchsia-500 to-violet-500 px-1.5 py-0.5 text-[10px] font-bold text-white animate-pulse">
+              <span className="shrink-0 rounded-md bg-gradient-to-r from-fuchsia-500 via-pink-500 to-violet-500 px-2 py-0.5 text-[10px] font-extrabold text-white shadow-[0_0_10px_-2px_rgba(217,70,239,0.6)] ring-1 ring-fuchsia-400/50">
                 ✨ Exclusive
               </span>
             )}
             {trending && (
-              <span className="shrink-0 rounded-md bg-gradient-to-r from-orange-500/20 to-amber-500/20 px-1.5 py-0.5 text-[10px] font-bold text-orange-600 dark:text-orange-400">
+              <span className="shrink-0 rounded-md bg-gradient-to-r from-orange-500 to-amber-500 px-2 py-0.5 text-[10px] font-extrabold text-white shadow-[0_0_10px_-2px_rgba(249,115,22,0.5)] ring-1 ring-orange-400/50">
                 🔥 Trending
               </span>
             )}
@@ -1610,7 +1610,7 @@ function ToolCard({
               const style = PRICING_STYLES[tool.p];
               if (!style) return null;
               return (
-                <span className={`shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-bold ${style.bg} ${style.text}`}>
+                <span className={`shrink-0 rounded-md px-2 py-0.5 text-[10px] font-extrabold shadow-sm ${style.bg} ${style.text}`}>
                   {tool.fl && !tool.fl.startsWith("http") ? tool.fl : style.label}
                 </span>
               );
@@ -1634,7 +1634,7 @@ function ToolCard({
       {hashtags.length > 0 && (
         <div className="flex flex-wrap gap-1 mb-2">
           {hashtags.map((tag) => (
-            <span key={tag} className="rounded-md bg-primary/5 px-1.5 py-0.5 text-[10px] font-medium text-primary/70">
+            <span key={tag} className="rounded-md bg-gradient-to-r from-primary/15 to-primary/5 px-1.5 py-0.5 text-[10px] font-semibold text-primary border border-primary/20">
               #{tag}
             </span>
           ))}
@@ -1642,12 +1642,12 @@ function ToolCard({
       )}
       <div className="mt-auto flex items-center justify-between border-t border-border pt-3">
         <div className="flex flex-wrap gap-1 min-w-0 max-w-[55%]">
-          <span className="truncate rounded-md bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
-            #{tool.c.replace(/\s+/g, "").replace(/^AI/i, "AI")}
+          <span className="truncate rounded-md bg-gradient-to-r from-violet-500/15 to-indigo-500/10 px-1.5 py-0.5 text-[10px] font-bold text-violet-600 dark:text-violet-400 border border-violet-500/20">
+            🏷️ {tool.c.replace(/\s+/g, "").replace(/^AI/i, "AI")}
           </span>
           {tool.g && tool.g !== tool.c && (
-            <span className="truncate rounded-md bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground hidden sm:inline">
-              #{tool.g.replace(/\s+/g, "").replace(/^FreeAI/i, "AI")}
+            <span className="truncate rounded-md bg-gradient-to-r from-indigo-500/15 to-blue-500/10 px-1.5 py-0.5 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 border border-indigo-500/20 hidden sm:inline">
+              📂 {tool.g.replace(/\s+/g, "").replace(/^FreeAI/i, "AI")}
             </span>
           )}
         </div>

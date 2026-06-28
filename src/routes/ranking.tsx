@@ -367,14 +367,14 @@ function RankingPage() {
                     {tool.d}
                   </td>
                   <td className="px-4 py-3">
-                    <span className={`rounded-md px-1.5 py-0.5 text-[10px] font-bold ${
+                    <span className={`rounded-md px-2 py-0.5 text-[10px] font-extrabold text-white shadow-sm ${
                       tool.p === "Free" || tool.p === "Free Plan" || tool.p === "Free Trial" || tool.p === "Free Credits" || tool.p === "Daily Free" || tool.p === "Monthly Free"
-                        ? "bg-emerald-50 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400"
+                        ? "bg-gradient-to-r from-emerald-500 to-green-500"
                         : tool.p === "Paid" || tool.p === "Paid Plans"
-                          ? "bg-amber-50 text-amber-600 dark:bg-amber-950 dark:text-amber-400"
-                          : "bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400"
+                          ? "bg-gradient-to-r from-amber-500 to-orange-500"
+                          : "bg-gradient-to-r from-blue-500 to-indigo-500"
                     }`}>
-                      {tool.p}
+                      {tool.p === "Free" ? "🟢 Free" : tool.p === "Paid" || tool.p === "Paid Plans" ? "💰 " + tool.p : tool.p}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-right">
