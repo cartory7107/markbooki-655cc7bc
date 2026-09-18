@@ -35,7 +35,7 @@ function SubmitPage() {
 
   const handleSignIn = async () => {
     const { lovable } = await import("@/integrations/lovable/index");
-    await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/submit" });
+    await lovable.auth.signInWithOAuth("google", { redirect_uri: (await import("@/lib/auth-config")).getOAuthRedirectUri("/submit") });
   };
 
   // Require login to submit

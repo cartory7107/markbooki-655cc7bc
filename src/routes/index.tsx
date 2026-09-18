@@ -340,7 +340,7 @@ function Index() {
 
   const handleSignIn = async () => {
     const { lovable } = await import("@/integrations/lovable/index");
-    await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+    await lovable.auth.signInWithOAuth("google", { redirect_uri: (await import("@/lib/auth-config")).getOAuthRedirectUri() });
   };
 
   const handleSignOut = async () => {

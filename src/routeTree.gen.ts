@@ -16,10 +16,13 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SubmitRouteImport } from './routes/submit'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SitemapStaticDotxmlRouteImport } from './routes/sitemap-static[.]xml'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SigninRouteImport } from './routes/signin'
 import { Route as SearchApiDotjsonRouteImport } from './routes/search-api[.]json'
 import { Route as RankingRouteImport } from './routes/ranking'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as ExclusiveApiDotjsonRouteImport } from './routes/exclusive-api[.]json'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -67,6 +70,16 @@ const SitemapStaticDotxmlRoute = SitemapStaticDotxmlRouteImport.update({
   path: '/sitemap-static.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SigninRoute = SigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchApiDotjsonRoute = SearchApiDotjsonRouteImport.update({
   id: '/search-api.json',
   path: '/search-api.json',
@@ -85,6 +98,11 @@ const ProfileRoute = ProfileRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExclusiveApiDotjsonRoute = ExclusiveApiDotjsonRouteImport.update({
@@ -152,10 +170,13 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
+  '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
@@ -176,10 +197,13 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
+  '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
@@ -201,10 +225,13 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/compare': typeof CompareRoute
   '/exclusive-api.json': typeof ExclusiveApiDotjsonRoute
+  '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/profile': typeof ProfileRoute
   '/ranking': typeof RankingRoute
   '/search-api.json': typeof SearchApiDotjsonRoute
+  '/signin': typeof SigninRoute
+  '/signup': typeof SignupRoute
   '/sitemap-static.xml': typeof SitemapStaticDotxmlRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
@@ -227,10 +254,13 @@ export interface FileRouteTypes {
     | '/auth'
     | '/compare'
     | '/exclusive-api.json'
+    | '/login'
     | '/privacy'
     | '/profile'
     | '/ranking'
     | '/search-api.json'
+    | '/signin'
+    | '/signup'
     | '/sitemap-static.xml'
     | '/sitemap.xml'
     | '/submit'
@@ -251,10 +281,13 @@ export interface FileRouteTypes {
     | '/auth'
     | '/compare'
     | '/exclusive-api.json'
+    | '/login'
     | '/privacy'
     | '/profile'
     | '/ranking'
     | '/search-api.json'
+    | '/signin'
+    | '/signup'
     | '/sitemap-static.xml'
     | '/sitemap.xml'
     | '/submit'
@@ -275,10 +308,13 @@ export interface FileRouteTypes {
     | '/auth'
     | '/compare'
     | '/exclusive-api.json'
+    | '/login'
     | '/privacy'
     | '/profile'
     | '/ranking'
     | '/search-api.json'
+    | '/signin'
+    | '/signup'
     | '/sitemap-static.xml'
     | '/sitemap.xml'
     | '/submit'
@@ -300,10 +336,13 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   CompareRoute: typeof CompareRoute
   ExclusiveApiDotjsonRoute: typeof ExclusiveApiDotjsonRoute
+  LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
   ProfileRoute: typeof ProfileRoute
   RankingRoute: typeof RankingRoute
   SearchApiDotjsonRoute: typeof SearchApiDotjsonRoute
+  SigninRoute: typeof SigninRoute
+  SignupRoute: typeof SignupRoute
   SitemapStaticDotxmlRoute: typeof SitemapStaticDotxmlRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubmitRoute: typeof SubmitRoute
@@ -367,6 +406,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SitemapStaticDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signin': {
+      id: '/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof SigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search-api.json': {
       id: '/search-api.json'
       path: '/search-api.json'
@@ -393,6 +446,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exclusive-api.json': {
@@ -484,10 +544,13 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   CompareRoute: CompareRoute,
   ExclusiveApiDotjsonRoute: ExclusiveApiDotjsonRoute,
+  LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
   ProfileRoute: ProfileRoute,
   RankingRoute: RankingRoute,
   SearchApiDotjsonRoute: SearchApiDotjsonRoute,
+  SigninRoute: SigninRoute,
+  SignupRoute: SignupRoute,
   SitemapStaticDotxmlRoute: SitemapStaticDotxmlRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubmitRoute: SubmitRoute,
@@ -502,3 +565,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

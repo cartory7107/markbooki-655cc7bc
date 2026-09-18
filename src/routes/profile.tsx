@@ -33,7 +33,7 @@ function ProfilePage() {
 
   const handleSignIn = async () => {
     const { lovable } = await import("@/integrations/lovable/index");
-    await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/profile" });
+    await lovable.auth.signInWithOAuth("google", { redirect_uri: (await import("@/lib/auth-config")).getOAuthRedirectUri("/profile") });
   };
 
   if (loading) {
