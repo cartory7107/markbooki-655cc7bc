@@ -1,9 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { generateText, Output } from "ai";
 import { z } from "zod";
-import { createLovableAiGatewayProvider } from "./ai-gateway.server";
-
-const MODEL = "google/gemini-2.5-flash-lite";
+import { resolveAiGateway } from "./ai-gateway.server";
 
 // ── Compare tools ──────────────────────────────────────────────────────────
 const CompareInput = z.object({
@@ -30,10 +28,9 @@ const CompareSchema = z.object({
 export const compareTools = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => CompareInput.parse(data))
   .handler(async ({ data }) => {
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("AI service is not configured");
+    const gateway = resolveAiGateway();
+    if (!gateway) throw new Error("AI service is not configured");
 
-    const gateway = createLovableAiGatewayProvider(key);
     const prompt = `Compare these AI tools side-by-side based on current public information, reviews, and capabilities as of 2025-2026.
 
 Tools: ${data.tools.join(", ")}
@@ -43,7 +40,7 @@ For each tool, give an honest assessment: what it actually does well, where it f
 
     try {
       const { experimental_output } = await generateText({
-        model: gateway(MODEL),
+        model: gateway.provider(gateway.model),
         experimental_output: Output.object({ schema: CompareSchema }),
         prompt,
       });
@@ -51,7 +48,7 @@ For each tool, give an honest assessment: what it actually does well, where it f
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg.includes("429")) throw new Error("AI is busy right now — please try again in a moment.");
-      if (msg.includes("402")) throw new Error("AI credits exhausted. Please add credits in your workspace.");
+      if (msg.includes("402") || msg.includes("quota")) throw new Error("AI credits exhausted. Please check your API key billing or quota.");
       throw new Error("AI comparison failed. Please try again.");
     }
   });
@@ -82,10 +79,9 @@ const RankSchema = z.object({
 export const aiRankTools = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => RankInput.parse(data))
   .handler(async ({ data }) => {
-    const key = process.env.LOVABLE_API_KEY;
-    if (!key) throw new Error("AI service is not configured");
+    const gateway = resolveAiGateway();
+    if (!gateway) throw new Error("AI service is not configured");
 
-    const gateway = createLovableAiGatewayProvider(key);
     const candidateList = data.candidates && data.candidates.length > 0
       ? `\nConsider especially these candidates: ${data.candidates.slice(0, 20).join(", ")}.`
       : "";
@@ -97,7 +93,7 @@ Return a ranked top list (5-7 tools ideal) with a short reason and concrete stre
 
     try {
       const { experimental_output } = await generateText({
-        model: gateway(MODEL),
+        model: gateway.provider(gateway.model),
         experimental_output: Output.object({ schema: RankSchema }),
         prompt,
       });
@@ -105,7 +101,7 @@ Return a ranked top list (5-7 tools ideal) with a short reason and concrete stre
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e);
       if (msg.includes("429")) throw new Error("AI is busy right now — please try again in a moment.");
-      if (msg.includes("402")) throw new Error("AI credits exhausted. Please add credits in your workspace.");
+      if (msg.includes("402") || msg.includes("quota")) throw new Error("AI credits exhausted. Please check your API key billing or quota.");
       throw new Error("AI ranking failed. Please try again.");
     }
   });

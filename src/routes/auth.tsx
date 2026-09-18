@@ -86,25 +86,16 @@ function AuthPage() {
     setSigningIn(true);
     setError(null);
     try {
-      const { lovable } = await import("@/integrations/lovable/index");
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: getOAuthRedirectUri(),
-      });
+      const { signInWithGoogle } = await import("@/lib/auth");
+      const result = await signInWithGoogle();
 
-      if (result.error) {
-        const msg = result.error instanceof Error ? result.error.message : String(result.error);
-        setError(mapAuthError(msg));
+      if (!result.ok) {
+        setError(mapAuthError(result.error.message));
         setSigningIn(false);
         return;
       }
 
-      if (result.redirected) {
-        // Browser is navigating to Google — keep the spinner up.
-        return;
-      }
-
-      // No redirect and no error means an unexpected state — reset.
-      setSigningIn(false);
+      // Browser is navigating to Google — keep the spinner up.
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       setError(mapAuthError(msg));
